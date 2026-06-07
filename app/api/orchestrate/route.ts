@@ -4,35 +4,37 @@ export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
     const task = formData.get('task') as string;
-    const image = formData.get('image') as File | null;
+    const imageFile = formData.get('image') as File | null;
+
+    if (!task?.trim()) {
+      return NextResponse.json({ error: "Please enter a task" }, { status: 400 });
+    }
 
     const apiKey = process.env.OPENAI_API_KEY;
     if (!apiKey) {
       return NextResponse.json({ error: "OpenAI API key is missing" }, { status: 401 });
     }
 
-    let messages: any[] = [
-      { 
-        role: "system", 
-        content: "You are Orchestrator, a helpful AI with vision. You can see and analyze images very well. Always acknowledge when you see an image." 
+    const messages: any[] = [
+      {
+        role: "system",
+        content: "You are Orchestrator with full vision capabilities. Always analyze the image when provided."
       }
     ];
 
-    // Add the user's text
-    if (task?.trim()) {
-      messages.push({ role: "user", content: task });
-    }
+    // Add user task
+    messages.push({ role: "user", content: task });
 
-    // Add the image if present
-    if (image) {
-      const bytes = await image.arrayBuffer();
+    // Add image if present
+    if (imageFile) {
+      const bytes = await imageFile.arrayBuffer();
       const base64 = Buffer.from(bytes).toString('base64');
-      const mimeType = image.type || 'image/png';
+      const mimeType = imageFile.type || 'image/png';
 
       messages.push({
         role: "user",
         content: [
-          { type: "text", text: task || "Please describe this image in detail." },
+          { type: "text", text: "Describe this image in detail and answer my question." },
           { 
             type: "image_url", 
             image_url: { url: `data:${mimeType};base64,${base64}` } 
@@ -50,21 +52,24 @@ export async function POST(request: NextRequest) {
       body: JSON.stringify({
         model: "gpt-4o-mini",
         messages,
+        max_tokens: 800,
         temperature: 0.7,
       }),
     });
 
     if (!response.ok) {
-      return NextResponse.json({ error: `OpenAI Error: ${response.status}` }, { status: response.status });
+      const err = await response.text();
+      console.error(err);
+      return NextResponse.json({ error: "OpenAI API error" }, { status: response.status });
     }
 
     const data = await response.json();
-    const result = data.choices?.[0]?.message?.content || "No response received.";
+    const result = data.choices?.[0]?.message?.content || "No response.";
 
     return NextResponse.json({ result });
 
   } catch (error) {
-    console.error(error);
-    return NextResponse.json({ error: "Failed to connect to AI." }, { status: 500 });
+    console.error("Orchestrator error:", error);
+    return NextResponse.json({ error: "Server error processing request" }, { status: 500 });
   }
 }
