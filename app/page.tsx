@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createClientComponentClient } from '@supabase/ssr';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -68,7 +68,6 @@ export default function Orchestrator() {
     setUser(null);
   };
 
-  // Login Screen
   if (!user) {
     return (
       <div className="min-h-screen bg-zinc-950 text-white flex items-center justify-center p-8">
@@ -90,7 +89,6 @@ export default function Orchestrator() {
     );
   }
 
-  // Main App (Logged in)
   return (
     <div className="min-h-screen bg-zinc-950 text-white p-8">
       <div className="max-w-4xl mx-auto">
@@ -115,7 +113,7 @@ export default function Orchestrator() {
             />
 
             <div>
-              <label className="block text-sm text-zinc-400 mb-3">Upload Image (Vision enabled)</label>
+              <label className="block text-sm text-zinc-400 mb-3">Upload Image</label>
               <input type="file" accept="image/*" onChange={handleImageUpload} className="block w-full text-sm text-zinc-400" />
               {imagePreview && <img src={imagePreview} className="mt-4 max-h-64 rounded-xl border border-zinc-700" />}
             </div>
