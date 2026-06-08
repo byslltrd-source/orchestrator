@@ -19,12 +19,14 @@ export default function Orchestrator() {
   if (!user) {
     return (
       <div className="min-h-screen bg-zinc-950 text-white flex items-center justify-center">
-        <div className="text-center">
+        <div className="text-center max-w-md px-6">
+          <div className="text-8xl mb-8">🧠</div>
           <h1 className="text-6xl font-bold mb-4">Orchestrator</h1>
-          <p className="text-xl mb-8">Your Personal AI Command Center</p>
+          <p className="text-xl text-zinc-400 mb-12">Your Personal AI Command Center</p>
+          
           <button 
             onClick={signIn}
-            className="bg-white text-black px-8 py-4 rounded-xl text-xl font-medium hover:bg-zinc-200"
+            className="w-full bg-white text-black py-6 rounded-2xl text-2xl font-semibold hover:bg-zinc-200 transition"
           >
             Sign in with Google
           </button>
@@ -37,13 +39,21 @@ export default function Orchestrator() {
     <div className="min-h-screen bg-zinc-950 text-white p-8">
       <div className="max-w-4xl mx-auto">
         <div className="flex justify-between items-center mb-12">
-          <h1 className="text-5xl font-bold">Orchestrator</h1>
-          <button onClick={signOut} className="bg-red-600 px-6 py-3 rounded-xl">Sign Out</button>
+          <div>
+            <h1 className="text-6xl font-bold">Orchestrator</h1>
+            <p className="text-zinc-400 text-xl">Welcome back, {user.email}</p>
+          </div>
+          <button 
+            onClick={signOut}
+            className="bg-red-600 hover:bg-red-700 px-8 py-4 rounded-2xl text-lg"
+          >
+            Sign Out
+          </button>
         </div>
-        <div className="bg-zinc-900 p-12 rounded-3xl text-center">
-          <p className="text-2xl">Welcome back, {user.email}!</p>
-          <p className="mt-8 text-zinc-400">User accounts are now working.</p>
-          <p className="mt-4">Next: We'll add storage and subscriptions.</p>
+
+        <div className="bg-zinc-900 p-16 rounded-3xl text-center">
+          <p className="text-3xl mb-6">✅ User Authentication is Working!</p>
+          <p className="text-xl text-zinc-400">Next step: Add conversation storage</p>
         </div>
       </div>
     </div>
