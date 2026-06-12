@@ -24,6 +24,30 @@ Fill in:
 - Supabase keys (see below)
 - Stripe keys + price ID (see below)
 
+### 2. Run over HTTPS (Required for Real-time Vision / Camera Testing)
+
+The full test experience (especially **Real-time Vision**, **Physical World Integration**, **Emotional Awareness**, and **Personal Life OS Mode**) requires a secure context for browser camera access (`getUserMedia`).
+
+```bash
+npm run dev
+```
+
+This starts the app at **https://localhost:3000** (or the port shown) using the provided self-signed certificates in `/certificates/`.
+
+- Accept the browser security warning for the self-signed cert (or trust the cert in your OS keychain for a cleaner experience).
+- The main page at `/` is the complete test interface:
+  - Composer with all toggles (Model picker, Real-time Vision, Physical/Smart Home, Emotional Awareness, Life OS Mode)
+  - Live camera preview when Real-time Vision is enabled
+  - Live execution trace + full history
+  - One-shot and autonomous modes
+
+Alternative (plain HTTP, limited camera):
+```bash
+npm run dev:http
+```
+
+**Note on Windows**: You may need to run PowerShell as Administrator the first time or manually trust the localhost certs for no warnings. The camera features will still work on `localhost` even with warnings in most browsers.
+
 ### 2. Supabase Setup (Accounts)
 
 1. Create a new Supabase project at https://supabase.com
