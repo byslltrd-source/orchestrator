@@ -61,6 +61,7 @@ export default function OrchestratorPage() {
   const isPremium = isPremiumUser(profile);
   const [realtimeVisionEnabled, setRealtimeVisionEnabled] = useState(false);
   const [physicalWorldEnabled, setPhysicalWorldEnabled] = useState(false); // Requires realtimeVisionEnabled + premium. High risk/expensive.
+  const [physicalControllerUrl, setPhysicalControllerUrl] = useState(''); // per-run override for smart home / physical controller
   const [isCameraActive, setIsCameraActive] = useState(false);
   const [isPushingFrame, setIsPushingFrame] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -238,6 +239,7 @@ export default function OrchestratorPage() {
     formData.append("model", model);
     if (realtimeVisionEnabled && autonomous) formData.append("realtime_vision", "true");
     if (physicalWorldEnabled && realtimeVisionEnabled && autonomous) formData.append("physical_world", "true");
+    if (physicalControllerUrl && physicalWorldEnabled) formData.append("physical_controller_url", physicalControllerUrl);
     images.forEach((file) => formData.append("images", file));
 
     try {
@@ -575,6 +577,8 @@ export default function OrchestratorPage() {
               setRealtimeVisionEnabled={setRealtimeVisionEnabled}
               physicalWorldEnabled={physicalWorldEnabled}
               setPhysicalWorldEnabled={setPhysicalWorldEnabled}
+              physicalControllerUrl={physicalControllerUrl}
+              setPhysicalControllerUrl={setPhysicalControllerUrl}
               isCameraActive={isCameraActive}
               onStartCamera={startCamera}
               onStopCamera={stopCamera}

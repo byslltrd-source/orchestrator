@@ -13,6 +13,7 @@ import {
   PHYSICAL_DEFAULT_CONTROLLER_URL,
   PHYSICAL_ACTION_TIMEOUT_MS,
   PHYSICAL_MAX_ACTIONS_PER_RUN,
+  SMART_HOME_DOMAINS,
 } from '@/lib/constants';
 
 const tavilyClient = process.env.TAVILY_API_KEY ? tavily({ apiKey: process.env.TAVILY_API_KEY }) : null;
@@ -224,108 +225,130 @@ export const tools: ToolDefinition[] = [
     },
   },
 
-  // 7. PHYSICAL WORLD INTEGRATION (Premium + Real-time Vision opt-in ONLY. HIGH RISK + EXPENSIVE)
-  // The agent can now not only SEE the physical world (via live camera) but also SENSE and ACT on it.
-  // Examples: read temperature/humidity/distance sensors, control lights/locks/robots/printers, trigger physical processes.
-  // All actions go through a configurable Physical Controller (webhook / Home Assistant / custom IoT endpoint).
-  // SAFETY: Always ground actions in live vision. Prefer dry-run / confirmation patterns. Irreversible actions can cause real damage.
+  // 7. PHYSICAL WORLD INTEGRATION + SMART HOME (Premium + Real-time Vision opt-in ONLY)
+  // This is the bridge between DIGITAL (web data, calendar, AI reasoning, memory, APIs) and PHYSICAL (sensors, lights, locks, climate, robots, etc.).
+  // Primary application: Smart Home (Home Assistant, Matter, Zigbee, etc.) — but supports "AND ALL" physical systems.
+  // The agent uses live camera as its eyes + these tools as its hands.
+  // SAFETY: Every physical action must be justified with live vision + reason. Use dry_run. Irreversible actions (unlocking doors, starting machines) are extremely dangerous.
   {
     name: 'read_physical_sensor',
-    description: 'Read a value from a physical sensor or IoT device in the real world (temperature, distance, motion, weight, door state, battery level, etc.). Use live vision context to decide which sensor makes sense. Only available when customer has opted into Physical World Integration (Premium).',
+    description: 'Read real-world sensor or smart home device state (temperature, humidity, motion, door/window open, power usage, light level, robot position, etc.). Use together with live camera vision for grounding. Only for customers who opted into Physical World Integration.',
     parameters: {
       type: 'object',
       properties: {
-        sensor_type: { type: 'string', description: 'Type of sensor (e.g. temperature, distance, motion, door_state, power_usage)' },
-        location: { type: 'string', description: 'Physical location or device name (e.g. "desk", "front_door", "robot_arm_1")' },
-        reason: { type: 'string', description: 'Why you need this reading right now (helps with logging and safety)' },
+        sensor_type: { type: 'string', description: 'e.g. temperature, motion, door_state, illuminance, battery, robot_joint_angle' },
+        location_or_entity: { type: 'string', description: 'Device name, room, or entity id (e.g. "living_room", "front_door", "light.kitchen")' },
+        reason: { type: 'string', description: 'Why this reading is needed right now (for safety audit log)' },
       },
       required: ['sensor_type', 'reason'],
     },
-    async execute(userId, { sensor_type, location = 'unknown', reason }) {
+    async execute(userId, { sensor_type, location_or_entity = 'unknown', reason }) {
       const controllerUrl = PHYSICAL_DEFAULT_CONTROLLER_URL;
       const payload = {
         type: 'sensor_read',
+        domain: 'sensor',
         sensor_type,
-        location,
+        entity: location_or_entity,
         reason,
         timestamp: new Date().toISOString(),
       };
 
       if (!controllerUrl) {
-        // Safe simulation mode for development / testing physical logic without hardware
         const simMap: Record<string, string> = {
-          temperature: '22.4 C',
-          distance: '47 cm',
-          motion: 'detected',
+          temperature: '23.1°C',
+          motion: 'clear',
           door_state: 'closed',
-          power_usage: '124 W',
+          illuminance: '340 lux',
+          battery: '87%',
         };
-        const simulated = simMap[sensor_type.toLowerCase()] || `${(Math.random() * 100).toFixed(1)} (simulated)`;
-
-        return `PHYSICAL SENSOR (SIMULATED - no PHYSICAL_CONTROLLER_URL set): ${sensor_type}@${location} = ${simulated}. Reason: ${reason}. In production, connect a real controller.`;
+        const simulated = simMap[sensor_type.toLowerCase()] || '42 (simulated value)';
+        return `PHYSICAL/SMART HOME SENSOR (SIMULATED): ${sensor_type} at ${location_or_entity} = ${simulated}. Reason: ${reason}. Configure PHYSICAL_CONTROLLER_URL for real hardware (Home Assistant, etc.).`;
       }
 
       try {
-        const controllerRes = await fetch(controllerUrl, {
+        const res = await fetch(controllerUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),
           signal: AbortSignal.timeout(PHYSICAL_ACTION_TIMEOUT_MS),
         });
-        const data = await controllerRes.text();
-        return `Physical sensor read successful: ${sensor_type}@${location} → ${data}. Reason: ${reason}`;
-      } catch (err: any) {
-        return `Physical sensor read failed for ${sensor_type}@${location}: ${err.message}. Falling back to vision-based inference if available.`;
+        return `Sensor read: ${sensor_type}@${location_or_entity} → ${await res.text()}`;
+      } catch (e: any) {
+        return `Sensor read failed: ${e.message}. You can still reason using live camera vision.`;
       }
     },
   },
 
   {
-    name: 'execute_physical_action',
-    description: 'Execute a real-world physical action via connected hardware/IoT/robotics (turn on light, move robot arm to position, lock door, start 3D print, dispense item, trigger relay, etc.). CRITICAL SAFETY: Only use when you have fresh live camera vision confirming the scene. Double-check location and parameters. This has real physical consequences and is expensive. Customer must have opted into Physical World Integration.',
+    name: 'execute_smart_home_action',
+    description: 'Control smart home devices and scenes. This is the main bridge tool for DIGITAL ↔ PHYSICAL. Examples: turn lights on/off/color, set thermostat, lock/unlock doors, run scenes, control media, open/close covers. MUST be grounded in the latest live camera vision frame. Customer must have Physical World Integration + Real-time Vision opted in.',
     parameters: {
       type: 'object',
       properties: {
-        action: { type: 'string', description: 'The physical action to perform (e.g. "turn_on_light", "move_arm", "lock_door", "start_printer", "open_valve")' },
-        location: { type: 'string', description: 'Target device or location (e.g. "desk_lamp", "assembly_robot", "front_door")' },
-        params: { type: 'object', description: 'Action-specific parameters (e.g. { position: {x:10, y:20}, duration: 5, intensity: 80 })' },
-        reason: { type: 'string', description: 'Detailed justification and safety reasoning for this physical action' },
-        dry_run: { type: 'boolean', description: 'If true, simulate only and do not actually execute (recommended for first attempts)' },
+        domain: { type: 'string', description: `Smart home domain. Common: ${SMART_HOME_DOMAINS.join(', ')}` },
+        action: { type: 'string', description: 'Service/action (e.g. turn_on, turn_off, set_temperature, lock, set_scene)' },
+        target: { type: 'string', description: 'Entity ID or friendly name (e.g. light.living_room, climate.main, lock.front_door)' },
+        params: { type: 'object', description: 'Parameters for the action (e.g. {brightness: 80, color_temp: 300}, {temperature: 21})' },
+        reason: { type: 'string', description: 'Detailed reasoning + safety justification. Reference what you see in the current live camera feed.' },
+        dry_run: { type: 'boolean', description: 'True = simulate only (highly recommended first time)' },
       },
-      required: ['action', 'location', 'reason'],
+      required: ['domain', 'action', 'target', 'reason'],
     },
-    async execute(userId, { action, location, params = {}, reason, dry_run = false }) {
+    async execute(userId, { domain, action, target, params = {}, reason, dry_run = false }) {
       const controllerUrl = PHYSICAL_DEFAULT_CONTROLLER_URL;
 
       const payload = {
-        type: 'physical_action',
+        type: 'smart_home_action',
+        domain,
         action,
-        location,
+        target,
         params,
         reason,
         dry_run,
         timestamp: new Date().toISOString(),
+        // The agent should have injected the latest vision summary into context before calling this
       };
 
-      const baseLog = `PHYSICAL ACTION: ${action} @ ${location} | params=${JSON.stringify(params)} | reason=${reason} | dry_run=${dry_run}`;
+      const log = `SMART HOME / PHYSICAL ACTION: ${domain}.${action} on ${target} | params=${JSON.stringify(params)} | reason=${reason} | dry_run=${dry_run}`;
 
       if (!controllerUrl || dry_run) {
-        return `${baseLog} → ${dry_run ? 'DRY RUN (no execution)' : 'SIMULATED (no PHYSICAL_CONTROLLER_URL configured)'}. In a real deployment this would affect physical hardware.`;
+        return `${log} → ${dry_run ? 'DRY RUN — no physical change' : 'SIMULATED (no controller configured)'}. This would have affected real devices in the physical world.`;
       }
 
       try {
-        const controllerRes = await fetch(controllerUrl, {
+        const res = await fetch(controllerUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),
           signal: AbortSignal.timeout(PHYSICAL_ACTION_TIMEOUT_MS),
         });
-
-        const result = await controllerRes.text();
-        return `${baseLog} → EXECUTED on physical controller. Response: ${result}`;
-      } catch (err: any) {
-        return `${baseLog} → FAILED: ${err.message}. Physical state unknown — use live vision to verify before retrying.`;
+        return `${log} → SUCCESS: ${await res.text()}`;
+      } catch (e: any) {
+        return `${log} → FAILED: ${e.message}. Verify current state using live camera vision before retrying.`;
       }
+    },
+  },
+
+  {
+    name: 'bridge_digital_to_physical',
+    description: 'High-level bridge tool. Use digital information (calendar, weather APIs via web_search, memory, emails, news) + current physical sensors + live camera vision to decide and execute safe physical/smart home actions. Example: "If my calendar shows I am in a meeting and motion sensor detects someone at the door → turn on porch light and send notification." This tool helps the agent reason across the digital-physical boundary.',
+    parameters: {
+      type: 'object',
+      properties: {
+        digital_context: { type: 'string', description: 'Summary of relevant digital information (calendar, weather, reminders, etc.)' },
+        physical_observation: { type: 'string', description: 'What you currently observe from live camera + recent sensor readings' },
+        desired_outcome: { type: 'string', description: 'What physical state you want to achieve' },
+        proposed_actions: { type: 'array', description: 'List of specific smart home / physical actions you plan to take' },
+        reason: { type: 'string', description: 'Full safety + logic reasoning for bridging digital info to physical action' },
+        dry_run: { type: 'boolean', description: 'Simulate the bridge decision without executing' },
+      },
+      required: ['digital_context', 'physical_observation', 'desired_outcome', 'reason'],
+    },
+    async execute(userId, args) {
+      // This tool is mostly for the agent to structure its thinking. It can then call execute_smart_home_action for the actual changes.
+      // In a full implementation this could call the controller with a "plan" payload.
+      const { digital_context, physical_observation, desired_outcome, reason, dry_run = false } = args;
+      return `DIGITAL ↔ PHYSICAL BRIDGE PLAN:\nDigital: ${digital_context}\nPhysical observation (from camera + sensors): ${physical_observation}\nDesired: ${desired_outcome}\nReasoning: ${reason}\n${dry_run ? 'DRY RUN — no actions executed' : 'Next step: call execute_smart_home_action for each proposed change.'}`;
     },
   },
 ];

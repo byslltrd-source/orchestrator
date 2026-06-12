@@ -79,6 +79,7 @@ export async function POST(request: NextRequest) {
     const requestedModel = ((formData.get('model') as string) || '').trim() || null;
     const realtimeVision = formData.get('realtime_vision') === 'true';
     const physicalWorld = realtimeVision && formData.get('physical_world') === 'true'; // Physical requires real-time vision opt-in
+    const physicalControllerUrl = (formData.get('physical_controller_url') as string) || null;
 
     // We no longer hard-require OPENAI_API_KEY at the top — multiple providers are supported.
     // The resolver below will surface a clear error if no usable key is configured for the chosen model.
@@ -199,7 +200,7 @@ export async function POST(request: NextRequest) {
                   images: storedAssets.length > 0 ? storedAssets : [],
                   metadata: {
                     ...(realtimeVision ? { realtime_vision: true } : {}),
-                    ...(physicalWorld ? { physical_world: true } : {}),
+                    ...(physicalWorld ? { physical_world: true, physical_controller_url: physicalControllerUrl } : {}),
                   },
                 })
                 .select('id')
@@ -215,7 +216,7 @@ export async function POST(request: NextRequest) {
                   status: 'running',
                   metadata: {
                     ...(realtimeVision ? { realtime_vision: true } : {}),
-                    ...(physicalWorld ? { physical_world: true } : {}),
+                    ...(physicalWorld ? { physical_world: true, physical_controller_url: physicalControllerUrl } : {}),
                   },
                 })
                 .select('id')

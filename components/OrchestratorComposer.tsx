@@ -43,6 +43,8 @@ interface OrchestratorComposerProps {
   // Physical World Integration (builds on real-time vision: AI can now SEE + ACT in the real world)
   physicalWorldEnabled: boolean;
   setPhysicalWorldEnabled: (v: boolean) => void;
+  physicalControllerUrl: string;
+  setPhysicalControllerUrl: (v: string) => void;
   isCameraActive: boolean;
   onStartCamera?: () => void | Promise<void>;
   onStopCamera?: () => void;
@@ -78,6 +80,8 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
     setRealtimeVisionEnabled,
     physicalWorldEnabled,
     setPhysicalWorldEnabled,
+    physicalControllerUrl,
+    setPhysicalControllerUrl,
     isCameraActive,
     onStartCamera,
     onStopCamera,
@@ -292,9 +296,9 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
                     ⚠️ Real-time vision consumes a lot of tokens. Send frames sparingly. Auto mode is for light monitoring only.
                   </div>
 
-                  {/* PHYSICAL WORLD INTEGRATION - only when realtime vision is opted in (builds directly on camera feed) */}
+                  {/* PHYSICAL WORLD + SMART HOME BRIDGE — the full digital ↔ physical bridge */}
                   {realtimeVisionEnabled && (
-                    <div className="mt-3 pt-3 border-t border-rose-500/30">
+                    <div className="mt-3 pt-3 border-t border-orange-500/30 bg-orange-950/20 rounded p-2">
                       <label className="flex items-start gap-2">
                         <input
                           type="checkbox"
@@ -303,17 +307,37 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
                           disabled={loading || !isPremium}
                           className="mt-0.5 h-4 w-4 accent-orange-500"
                         />
-                        <div className="text-xs leading-tight">
-                          <span className="font-semibold text-orange-300">Enable Physical World Integration</span>
-                          <span className="ml-1 text-[10px] uppercase tracking-widest bg-orange-500/20 px-1 rounded text-orange-200">EXTREMELY EXPENSIVE + RISKY</span>
-                          <div className="text-orange-200/80 mt-0.5">
-                            The AI will be able to <strong>act</strong> on the physical world (sensors, lights, robots, locks, printers, relays, etc.) using live camera as its eyes.
-                            <br />• Real hardware consequences possible (damage, safety issues).
-                            <br />• Actions are rate-limited and heavily logged.
-                            <br />• Requires a Physical Controller (webhook/Home Assistant/custom IoT bridge) to be configured by you.
+                        <div className="text-xs leading-tight flex-1">
+                          <span className="font-semibold text-orange-300">Enable Physical World Integration + Smart Home</span>
+                          <span className="ml-1 text-[10px] uppercase tracking-widest bg-orange-500/30 px-1 rounded text-orange-200">EXTREMELY EXPENSIVE + RISKY</span>
+                          <div className="text-orange-200/80 mt-1 text-[10px]">
+                            The AI bridges <strong>digital</strong> (calendar, weather, web, memory) and <strong>physical</strong> (sensors, lights, locks, thermostats, robots, scenes...).
+                            It uses the live camera as its eyes and can execute real actions via your controller (Home Assistant recommended).
                           </div>
                         </div>
                       </label>
+
+                      {physicalWorldEnabled && (
+                        <div className="mt-2 pl-6 text-[10px] text-orange-300/90 space-y-1">
+                          <div>Smart Home examples: lights, climate, locks, media players, scenes, covers, alarms.</div>
+                          <div className="text-orange-400">⚠️ Real hardware changes. Use dry-run. Ground every action in live camera view.</div>
+
+                          <div className="mt-1">
+                            <div className="text-[9px] text-orange-300/70 mb-0.5">Per-run Controller URL (optional override)</div>
+                            <input
+                              type="text"
+                              value={physicalControllerUrl}
+                              onChange={(e) => setPhysicalControllerUrl(e.target.value)}
+                              placeholder="https://home-assistant.local/api/services (or leave blank for global PHYSICAL_CONTROLLER_URL)"
+                              className="w-full text-[10px] bg-black/60 border border-orange-500/40 rounded px-2 py-1 font-mono"
+                              disabled={loading}
+                            />
+                          </div>
+                          <div className="text-[9px] text-orange-300/70">
+                            Home Assistant, custom webhook, or any bridge that accepts POST with {`{domain, action, target, params}`}.
+                          </div>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>

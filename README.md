@@ -159,20 +159,22 @@ Premium subscribers can opt-in per autonomous run to let the agent see live came
 
 **Warning**: This feature is deliberately expensive (high-detail vision tokens + context bloat). It is opt-in only, rate-limited on the server, and comes with prominent cost warnings in the UI. The system prompt informs the agent about live vision updates when the customer opts in.
 
-**Physical World Integration (Premium + Real-time Vision opt-in, EXTREMELY expensive + risky):**
-Builds directly on real-time vision. When the customer also enables "Physical World Integration", the agent gains the ability to **act** in the real world, not just see it:
-- `read_physical_sensor` — read real sensors (temperature, distance, door state, power, motion...).
-- `execute_physical_action` — control hardware (lights, robot arms, locks, printers, relays, valves, etc.).
+**Physical World Integration + Smart Home Bridge (Premium + Real-time Vision opt-in, EXTREMELY expensive + risky):**
+This is the full **digital ↔ physical bridge**.
 
-All physical calls go through a customer-configured controller (webhook, Home Assistant, custom IoT bridge, Raspberry Pi, etc.). Set `PHYSICAL_CONTROLLER_URL`.
+The agent has:
+- Eyes → Real-time live camera (Premium opt-in)
+- Sensors + Hands → New tools:
+  - `read_physical_sensor`
+  - `execute_smart_home_action` (full smart home control — lights, locks, climate, scenes, media, alarms, etc. using Home Assistant-style domains)
+  - `bridge_digital_to_physical` (reason across digital sources like calendar/weather/memory + live camera + physical sensors → decide and safely execute real actions)
 
-**Critical warnings**:
-- Real physical consequences (damage, safety hazards, fire risk, etc.).
-- Agent is told to ground every action in the latest live camera frame.
-- Strong rate limits, dry-run support, heavy logging, and per-run opt-in required.
-- New agent tool `capture_live_view` allows the AI to actively request "show me the current physical state now".
+**Smart Home is the killer application** ("BRIDGES DIGITAL AND PHYSICAL, SMART HOME APPLICATION AND ALL"):
+- "Calendar says meeting. Camera + motion sensor sees someone at door → turn on porch light + lock side door."
+- "Outdoor temp sensor + web weather → close blinds and adjust AC via smart home."
+- Agent can use any combination of web tools, memory, and live vision to drive physical changes.
 
-Example use: "Watch the assembly line via camera and stop the robot if you see a jam."
+Controller: `PHYSICAL_CONTROLLER_URL` (Home Assistant REST API is excellent). Per-run override supported in UI. Works for smart home + "AND ALL" (robots, printers, industrial IoT, etc.).
 
-This turns the Orchestrator into a true **physical-world autonomous agent** for premium customers who explicitly opt in.
+**Critical warnings**: Real physical consequences. Agent is instructed to always ground actions in live camera. Heavy limits, dry_run, per-run explicit opt-in + Premium required.
 

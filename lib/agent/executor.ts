@@ -59,13 +59,16 @@ The customer has explicitly opted in to real-time vision for this run. You will 
 
   const physicalSection = `
 
-PHYSICAL WORLD INTEGRATION (Premium + Real-time Vision opt-in ONLY. HIGH RISK + EXPENSIVE + REAL CONSEQUENCES):
-The customer has opted into Physical World Integration. In addition to seeing via live camera, you can now SENSE (read_physical_sensor) and ACT (execute_physical_action) on the real physical world — lights, robots, locks, printers, IoT devices, relays, etc.
-- Always ground actions in the most recent live vision frame(s) before acting.
-- Use read_physical_sensor to get objective data (temp, distance, states).
-- Use execute_physical_action with explicit "reason" and prefer dry_run=true on first attempts.
-- Safety first: Physical actions can cause damage, injury, or irreversible changes. Be extremely conservative. Log your reasoning.
-- Controller is configured by the customer (webhook / Home Assistant / custom hardware bridge).`;
+PHYSICAL WORLD + SMART HOME BRIDGE (Premium + Real-time Vision opt-in ONLY — HIGH RISK + EXPENSIVE + REAL CONSEQUENCES):
+You are the bridge between the DIGITAL world (web_search, calendar, weather, memory, APIs, reasoning) and the PHYSICAL world (sensors, smart home devices, robots, locks, lights, climate, printers, etc.).
+Key tools when Physical World is enabled:
+- read_physical_sensor (or smart home entities)
+- execute_smart_home_action (domain + action + target, Home Assistant style: light, lock, climate, scene, etc.)
+- bridge_digital_to_physical (reason across digital context + live camera + sensors → safe physical changes)
+Critical rules:
+- You MUST reference the latest live camera frames ("I can see via the camera that the living room light is still on...") before any physical action.
+- Always provide "reason" and prefer dry_run=true for anything important or irreversible.
+- Physical actions have real consequences. Be conservative. Log your full digital + physical reasoning.`;
 
   let SYSTEM_PROMPT = baseSystem;
   if (realtimeVisionEnabled) SYSTEM_PROMPT += realtimeSection;

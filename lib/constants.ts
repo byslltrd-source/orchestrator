@@ -36,6 +36,12 @@ export const PHYSICAL_DEFAULT_CONTROLLER_URL = process.env.PHYSICAL_CONTROLLER_U
 export const PHYSICAL_ACTION_TIMEOUT_MS = 15000; // max time to wait for physical response
 export const PHYSICAL_MAX_ACTIONS_PER_RUN = 20; // safety cap per autonomous run
 
+// Smart Home focus for Physical World Integration
+// The bridge between digital (calendar, weather, AI reasoning, web data) and physical (lights, locks, climate, security, robots, sensors).
+// Primary killer app: Smart Home (Home Assistant, Matter, Zigbee, etc.)
+// "ALL" covers broader physical: robots, printers, industrial IoT, cars, etc.
+export const SMART_HOME_DOMAINS = ['light', 'switch', 'climate', 'lock', 'cover', 'fan', 'media_player', 'scene', 'automation', 'sensor', 'binary_sensor', 'alarm_control_panel'];
+
 export const PLANS = {
   FREE: 'free',
   PRO: 'pro',
