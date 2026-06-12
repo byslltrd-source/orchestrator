@@ -1,4 +1,4 @@
-import { type NextRequest } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { updateSession } from '@/lib/supabase/middleware';
 
 const requiredEnv = [
@@ -7,6 +7,12 @@ const requiredEnv = [
 ];
 
 export async function middleware(request: NextRequest) {
+  // Bypass for visual testing / UI development when Supabase not set up yet.
+  // Set NEXT_PUBLIC_BYPASS_SUPABASE_CHECK=true in .env.local to skip all checks and load the orchestrator page directly.
+  if (process.env.NEXT_PUBLIC_BYPASS_SUPABASE_CHECK === 'true') {
+    return NextResponse.next();
+  }
+
   // Fail fast with a clear message if critical env vars are missing.
   // This prevents cryptic ERR_EMPTY_RESPONSE in the browser.
   const missing = requiredEnv.filter((key) => !process.env[key]);

@@ -42,6 +42,9 @@ type Profile = UserProfile;
 export default function OrchestratorPage() {
   const supabase = createClient();
 
+  // Test mode bypass for visual UI testing (set NEXT_PUBLIC_BYPASS_SUPABASE_CHECK=true in .env.local)
+  const isTestMode = process.env.NEXT_PUBLIC_BYPASS_SUPABASE_CHECK === 'true';
+
   // Auth
   const [user, setUser] = useState<User | null>(null);
   const { profile, loadProfile: loadProfileHook, setProfile } = useProfile();
@@ -58,7 +61,7 @@ export default function OrchestratorPage() {
   const [error, setError] = useState<string | null>(null);
 
   // Premium Real-time Vision (live camera)
-  const isPremium = isPremiumUser(profile);
+  // isPremium overridden below for test mode support
   const [realtimeVisionEnabled, setRealtimeVisionEnabled] = useState(false);
   const [physicalWorldEnabled, setPhysicalWorldEnabled] = useState(false); // Requires realtimeVisionEnabled + premium. High risk/expensive.
   const [physicalControllerUrl, setPhysicalControllerUrl] = useState(''); // per-run override for smart home / physical controller
@@ -119,10 +122,29 @@ export default function OrchestratorPage() {
   const liveChannelRef = useRef<any>(null);
   const traceChannelRef = useRef<any>(null);
 
-  const isPro = isProUser(profile);
+  const isPro = isTestMode || isProUser(profile);
+  const isPremium = isTestMode || isProUser(profile);
 
   // Auth initialization (restored for HTTPS dev stability and to ensure user state loads)
   useEffect(() => {
+    if (isTestMode) {
+      // Mock premium user for visual testing of the full UI (composer toggles, camera preview, Life OS, etc.)
+      const mockUser = { id: 'test-user', email: 'test@local.dev' } as User;
+      const mockProfile = {
+        subscription_plan: 'premium',
+        subscription_status: 'active',
+        orchestrations_used: 0,
+        orchestrations_limit: 999999,
+      } as any;
+
+      setUser(mockUser);
+      setProfile(mockProfile);
+      // Pre-select some test states for easy visual inspection
+      setAutonomous(true);
+      // You can manually toggle Life OS / real-time vision / physical in the composer
+      return;
+    }
+
     // Initial session
     supabase.auth.getUser().then(({ data }: { data: { user: User | null } }) => {
       const u = data.user;
@@ -154,7 +176,7 @@ export default function OrchestratorPage() {
     return () => {
       listener.subscription.unsubscribe();
     };
-  }, []);
+  }, [isTestMode]);
 
   // Cleanup camera on unmount
   useEffect(() => {
@@ -556,6 +578,14 @@ export default function OrchestratorPage() {
             </div>
           )}
         </div>
+
+        {isTestMode && (
+          <div className="mb-4 rounded-lg border border-yellow-500/50 bg-yellow-900/20 p-3 text-sm text-yellow-300">
+            <strong>TEST MODE</strong> — Supabase bypassed (NEXT_PUBLIC_BYPASS_SUPABASE_CHECK=true).<br />
+            Full UI visible for visual testing of composer toggles, camera preview (real-time vision), Life OS, physical integration, emotional awareness, etc.
+            Auth/persistence disabled. Camera requires HTTPS + user permission.
+          </div>
+        )}
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
           {/* COMPOSER - extracted (next layer) */}
