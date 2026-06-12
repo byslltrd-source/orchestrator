@@ -128,7 +128,7 @@ export async function summarizeVisionFrame(imageUrl: string): Promise<string> {
           content: [
             {
               type: 'text',
-              text: 'Provide a concise, actionable description of this live camera frame for an autonomous AI agent. Include key visible objects, text, UI elements, actions, environment, lighting, and any important context or changes. Be specific and brief (under 80 words).',
+              text: 'Provide a concise, actionable description of this live camera frame for an autonomous AI agent. Include key visible objects, text, UI elements, actions, environment, lighting, and any important context or changes. Also note any observable emotional cues from people in the frame (facial expression, posture, energy level, apparent mood). Be specific and brief (under 80 words).',
             },
             {
               type: 'image_url',

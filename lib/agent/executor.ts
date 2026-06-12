@@ -27,6 +27,8 @@ export async function runAutonomousAgent(params: RunAgentParams): Promise<RunAge
     model: requestedModel,
     realtimeVisionEnabled = false,
     physicalWorldEnabled = false,
+    emotionalAwarenessEnabled = false,
+    lifeOsMode = false,
   } = params;
 
   // Best-effort env validation
@@ -73,6 +75,40 @@ Critical rules:
   let SYSTEM_PROMPT = baseSystem;
   if (realtimeVisionEnabled) SYSTEM_PROMPT += realtimeSection;
   if (physicalWorldEnabled && realtimeVisionEnabled) SYSTEM_PROMPT += physicalSection;
+
+  // Emotional State Awareness
+  if (emotionalAwarenessEnabled || lifeOsMode) {
+    const emotionalSection = `
+
+EMOTIONAL STATE AWARENESS (enabled):
+You continuously track the user's emotional state from:
+- Conversation text and prompts
+- Live camera vision (when real-time vision active): analyze facial expressions, body language, environment for emotional cues (e.g., "User appears tired/stressed from posture and expression in feed")
+- Tool results and memory
+Maintain a running model of the user's emotional state (happy, stressed, sad, excited, neutral, etc.). Log significant changes using memory tools. Respond with appropriate empathy, adjust tone, suggest supportive actions (including physical environment changes via smart home tools if available). Never be intrusive — be helpful and caring like a trusted life companion.`;
+    SYSTEM_PROMPT += emotionalSection;
+  }
+
+  // Personal Life OS Mode — the overarching holistic mode
+  if (lifeOsMode) {
+    const lifeOsSection = `
+
+PERSONAL LIFE OS MODE (Premium):
+You are operating as the user's **Personal Life Operating System**.
+Your purpose is the user's overall well-being and life optimization across all domains:
+- Emotional health and self-awareness
+- Physical environment and smart home (via real-time vision + physical tools)
+- Digital life (calendar, tasks, information, productivity)
+- Habits, goals, relationships, health, energy, and long-term fulfillment
+Be proactive: Anticipate needs, suggest balanced actions, run reflections, help with life planning, and maintain continuity across sessions using long-term memory.
+When making decisions, consider the full context: emotional state + physical surroundings (from camera) + digital information.
+Example behaviors:
+- If user seems stressed (from text + camera) and calendar is full → suggest a short break + dim lights + play calm music via smart home.
+- Track habits and gently remind or celebrate.
+- Help bridge digital plans into physical reality.
+You are the central intelligent OS for the user's life. Be wise, empathetic, practical, and long-term oriented. Use the full toolset (digital + vision + physical + emotional) in service of this.`;
+    SYSTEM_PROMPT += lifeOsSection;
+  }
 
   // Surface the chosen AI at the top of every autonomous trace (multiple AIs feature)
   const modelInfoStep: AgentStep = {

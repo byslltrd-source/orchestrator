@@ -80,6 +80,8 @@ export async function POST(request: NextRequest) {
     const realtimeVision = formData.get('realtime_vision') === 'true';
     const physicalWorld = realtimeVision && formData.get('physical_world') === 'true'; // Physical requires real-time vision opt-in
     const physicalControllerUrl = (formData.get('physical_controller_url') as string) || null;
+    const emotionalAwareness = formData.get('emotional_awareness') === 'true' || formData.get('life_os_mode') === 'true';
+    const lifeOsMode = formData.get('life_os_mode') === 'true';
 
     // We no longer hard-require OPENAI_API_KEY at the top — multiple providers are supported.
     // The resolver below will surface a clear error if no usable key is configured for the chosen model.
@@ -201,6 +203,8 @@ export async function POST(request: NextRequest) {
                   metadata: {
                     ...(realtimeVision ? { realtime_vision: true } : {}),
                     ...(physicalWorld ? { physical_world: true, physical_controller_url: physicalControllerUrl } : {}),
+                    ...(emotionalAwareness ? { emotional_awareness: true } : {}),
+                    ...(lifeOsMode ? { life_os_mode: true } : {}),
                   },
                 })
                 .select('id')
@@ -217,6 +221,8 @@ export async function POST(request: NextRequest) {
                   metadata: {
                     ...(realtimeVision ? { realtime_vision: true } : {}),
                     ...(physicalWorld ? { physical_world: true, physical_controller_url: physicalControllerUrl } : {}),
+                    ...(emotionalAwareness ? { emotional_awareness: true } : {}),
+                    ...(lifeOsMode ? { life_os_mode: true } : {}),
                   },
                 })
                 .select('id')
@@ -239,6 +245,8 @@ export async function POST(request: NextRequest) {
                 model: requestedModel,
                 realtimeVisionEnabled: realtimeVision,
                 physicalWorldEnabled: physicalWorld,
+                emotionalAwarenessEnabled: emotionalAwareness,
+                lifeOsMode: lifeOsMode,
                 onStep: async (step: AgentStep) => {
                   persistedSteps.push(step);
                   if (runId) {

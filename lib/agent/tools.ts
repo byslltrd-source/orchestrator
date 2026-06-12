@@ -351,6 +351,120 @@ export const tools: ToolDefinition[] = [
       return `DIGITAL ↔ PHYSICAL BRIDGE PLAN:\nDigital: ${digital_context}\nPhysical observation (from camera + sensors): ${physical_observation}\nDesired: ${desired_outcome}\nReasoning: ${reason}\n${dry_run ? 'DRY RUN — no actions executed' : 'Next step: call execute_smart_home_action for each proposed change.'}`;
     },
   },
+
+  // 8. EMOTIONAL STATE AWARENESS (Premium feature)
+  {
+    name: 'analyze_emotional_state',
+    description: 'Analyze the current emotional state of the user from recent conversation, provided text, or (when real-time vision is active) from visual cues in the latest camera frame description. Returns a structured emotional assessment. Use this proactively in Personal Life OS mode or when emotional awareness is enabled.',
+    parameters: {
+      type: 'object',
+      properties: {
+        context: { type: 'string', description: 'Recent conversation snippet, user message, or vision description to analyze' },
+        source: { type: 'string', description: 'Where this context came from: text, vision, memory, or combined' },
+      },
+      required: ['context'],
+    },
+    async execute(userId, { context, source = 'text' }) {
+      // Use a cheap model for analysis to keep cost reasonable
+      const { client: analyzer } = resolveToolLLM();
+      const res = await analyzer.chat.completions.create({
+        model: 'gpt-4o-mini',
+        messages: [
+          {
+            role: 'system',
+            content: 'You are an expert at detecting human emotional states from text and visual descriptions. Output in this exact format:\nEMOTION: [primary emotion]\nINTENSITY: [low|medium|high]\nCONTEXT: [brief 1-sentence explanation]\nSUGGESTED_RESPONSE: [empathetic, supportive suggestion for the AI agent]',
+          },
+          {
+            role: 'user',
+            content: `Source: ${source}\n\nAnalyze this for emotional state:\n${context}`,
+          },
+        ],
+        max_tokens: 200,
+      });
+      return res.choices[0]?.message?.content || 'Unable to analyze emotional state.';
+    },
+  },
+
+  {
+    name: 'log_emotional_state',
+    description: 'Permanently log the user\'s current emotional state to long-term memory for future awareness in Personal Life OS. Include triggers and any physical environment notes if available.',
+    parameters: {
+      type: 'object',
+      properties: {
+        emotion: { type: 'string', description: 'Detected primary emotion (e.g. stressed, joyful, anxious, calm)' },
+        intensity: { type: 'string', description: 'low, medium, or high' },
+        notes: { type: 'string', description: 'What triggered this state, context from conversation or vision, and any suggested actions' },
+      },
+      required: ['emotion', 'notes'],
+    },
+    async execute(userId, { emotion, intensity = 'medium', notes }) {
+      // Save to long-term memory using existing memory tools pattern
+      const content = `Emotional state: ${emotion} (intensity: ${intensity}). ${notes}`;
+      // Reuse the save_memory logic by calling the existing tool or direct insert
+      // For simplicity, we directly use the memory insert pattern here
+      const svc = createServiceClient() as TypedServiceClient;
+      try {
+        // Generate embedding for the emotional log
+        const { client: embedder } = getEmbedder();
+        const embeddingRes = await embedder.embeddings.create({
+          model: 'text-embedding-3-small',
+          input: content,
+        });
+        const embedding = embeddingRes.data[0].embedding;
+
+        await (svc.from('memories') as any).insert({
+          user_id: userId,
+          content,
+          embedding,
+          metadata: { 
+            type: 'emotional_state', 
+            emotion, 
+            intensity, 
+            source: 'agent_analysis',
+            timestamp: new Date().toISOString() 
+          },
+        });
+        return `Emotional state "${emotion}" logged to long-term memory.`;
+      } catch (e) {
+        return `Failed to log emotional state: ${e}`;
+      }
+    },
+  },
+
+  // 9. PERSONAL LIFE OS MODE tools
+  {
+    name: 'personal_life_reflection',
+    description: 'Run a structured reflection on the user\'s life across emotional, physical, digital, and goal dimensions. Use in Personal Life OS mode to maintain awareness and provide insights. Considers recent memory, emotional logs, physical environment (if vision active), and tasks.',
+    parameters: {
+      type: 'object',
+      properties: {
+        focus_areas: { type: 'array', items: { type: 'string' }, description: 'Areas to reflect on: emotional, physical_environment, digital_life, habits, goals, relationships' },
+        time_period: { type: 'string', description: 'e.g. "last 7 days", "today", "this month"' },
+      },
+      required: ['focus_areas'],
+    },
+    async execute(userId, { focus_areas = ['emotional'], time_period = 'recent' }) {
+      // In a full impl this would query memories, agent_steps, etc.
+      // For now, provide structured guidance back to the agent
+      return `Life OS Reflection requested for areas: ${focus_areas.join(', ')} over ${time_period}.\n\nYou should now:\n1. Recall relevant emotional states and physical observations from memory/vision.\n2. Review digital context (tasks, calendar if accessible).\n3. Identify patterns, wins, concerns.\n4. Suggest 1-3 balanced actions that consider emotional + physical + practical needs.\nOutput the reflection clearly for the user.`;
+    },
+  },
+
+  {
+    name: 'suggest_life_os_action',
+    description: 'Propose a holistic action that improves the user\'s life across emotional, physical, and practical dimensions. Use when in Personal Life OS mode after gathering context from vision, sensors, memory, and digital tools.',
+    parameters: {
+      type: 'object',
+      properties: {
+        current_context: { type: 'string', description: 'Summary of current emotional state, physical environment from camera/sensors, and digital situation' },
+        goal: { type: 'string', description: 'What the user ultimately wants to achieve or feel' },
+      },
+      required: ['current_context', 'goal'],
+    },
+    async execute(userId, { current_context, goal }) {
+      return `Life OS suggested action based on:\nContext: ${current_context}\nGoal: ${goal}\n\nConsider a balanced action that addresses emotion (e.g. reduce stress), physical environment (via smart home if available), and digital next step. Present 2-3 options to the user with reasoning.`;
+    },
+  },
 ];
 
 // Helper to get OpenAI tools format

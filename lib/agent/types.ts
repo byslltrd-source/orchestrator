@@ -30,6 +30,10 @@ export type RunAgentParams = {
   realtimeVisionEnabled?: boolean;
   /** Physical World Integration (see + act on real hardware/IoT/robots). Requires Premium + realtimeVisionEnabled + explicit opt-in. High risk. */
   physicalWorldEnabled?: boolean;
+  /** Emotional State Awareness: Agent tracks, logs, and responds to user's emotional state from text, conversation, and (if available) live vision. */
+  emotionalAwarenessEnabled?: boolean;
+  /** Personal Life OS Mode: Holistic mode where the agent acts as the user's Personal Life Operating System — managing tasks, emotions, physical environment, habits, goals, relationships, and proactively bridging digital + physical + emotional worlds. */
+  lifeOsMode?: boolean;
 };
 
 export type RunAgentResult = {

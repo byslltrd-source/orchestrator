@@ -45,6 +45,10 @@ interface OrchestratorComposerProps {
   setPhysicalWorldEnabled: (v: boolean) => void;
   physicalControllerUrl: string;
   setPhysicalControllerUrl: (v: string) => void;
+  emotionalAwarenessEnabled: boolean;
+  setEmotionalAwarenessEnabled: (v: boolean) => void;
+  lifeOsModeEnabled: boolean;
+  setLifeOsModeEnabled: (v: boolean) => void;
   isCameraActive: boolean;
   onStartCamera?: () => void | Promise<void>;
   onStopCamera?: () => void;
@@ -82,6 +86,10 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
     setPhysicalWorldEnabled,
     physicalControllerUrl,
     setPhysicalControllerUrl,
+    emotionalAwarenessEnabled,
+    setEmotionalAwarenessEnabled,
+    lifeOsModeEnabled,
+    setLifeOsModeEnabled,
     isCameraActive,
     onStartCamera,
     onStopCamera,
@@ -338,6 +346,53 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
                           </div>
                         </div>
                       )}
+                    </div>
+                  )}
+
+                  {/* EMOTIONAL STATE AWARENESS + PERSONAL LIFE OS MODE (Premium) */}
+                  {isPremium && (
+                    <div className="mt-3 pt-3 border-t border-purple-500/30 bg-purple-950/20 rounded p-2">
+                      <div className="text-xs font-semibold text-purple-300 mb-1">Personal Life OS Features</div>
+                      
+                      <label className="flex items-start gap-2 mb-2">
+                        <input
+                          type="checkbox"
+                          checked={emotionalAwarenessEnabled}
+                          onChange={(e) => setEmotionalAwarenessEnabled(e.target.checked)}
+                          disabled={loading}
+                          className="mt-0.5 h-4 w-4 accent-purple-500"
+                        />
+                        <div className="text-xs">
+                          <span className="font-medium text-purple-200">Emotional State Awareness</span>
+                          <div className="text-purple-300/70 text-[10px]">
+                            Agent tracks your emotional state from conversation and live camera (facial/body language cues). Logs to memory, responds with empathy, and can suggest supportive actions (including physical environment changes).
+                          </div>
+                        </div>
+                      </label>
+
+                      <label className="flex items-start gap-2">
+                        <input
+                          type="checkbox"
+                          checked={lifeOsModeEnabled}
+                          onChange={(e) => {
+                            const next = e.target.checked;
+                            setLifeOsModeEnabled(next);
+                            if (next) {
+                              // Life OS implies emotional awareness
+                              setEmotionalAwarenessEnabled(true);
+                            }
+                          }}
+                          disabled={loading}
+                          className="mt-0.5 h-4 w-4 accent-purple-500"
+                        />
+                        <div className="text-xs">
+                          <span className="font-medium text-purple-200">Personal Life OS Mode</span>
+                          <span className="ml-1 text-[10px] uppercase tracking-widest bg-purple-500/20 px-1 rounded text-purple-200">PREMIUM</span>
+                          <div className="text-purple-300/70 text-[10px]">
+                            The agent becomes your full Personal Life Operating System. Holistic management of emotions, physical world (smart home + sensors), digital life, habits, goals, and well-being. Proactive, long-term, and deeply personalized using memory.
+                          </div>
+                        </div>
+                      </label>
                     </div>
                   )}
                 </div>

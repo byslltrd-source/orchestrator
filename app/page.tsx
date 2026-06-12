@@ -62,6 +62,8 @@ export default function OrchestratorPage() {
   const [realtimeVisionEnabled, setRealtimeVisionEnabled] = useState(false);
   const [physicalWorldEnabled, setPhysicalWorldEnabled] = useState(false); // Requires realtimeVisionEnabled + premium. High risk/expensive.
   const [physicalControllerUrl, setPhysicalControllerUrl] = useState(''); // per-run override for smart home / physical controller
+  const [emotionalAwarenessEnabled, setEmotionalAwarenessEnabled] = useState(false);
+  const [lifeOsModeEnabled, setLifeOsModeEnabled] = useState(false); // Personal Life OS Mode — holistic emotional + physical + digital life management
   const [isCameraActive, setIsCameraActive] = useState(false);
   const [isPushingFrame, setIsPushingFrame] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -240,6 +242,8 @@ export default function OrchestratorPage() {
     if (realtimeVisionEnabled && autonomous) formData.append("realtime_vision", "true");
     if (physicalWorldEnabled && realtimeVisionEnabled && autonomous) formData.append("physical_world", "true");
     if (physicalControllerUrl && physicalWorldEnabled) formData.append("physical_controller_url", physicalControllerUrl);
+    if (emotionalAwarenessEnabled && autonomous) formData.append("emotional_awareness", "true");
+    if (lifeOsModeEnabled && autonomous) formData.append("life_os_mode", "true");
     images.forEach((file) => formData.append("images", file));
 
     try {
@@ -456,6 +460,9 @@ export default function OrchestratorPage() {
     // Premium realtime camera cleanup
     stopCamera();
     setRealtimeVisionEnabled(false);
+    setPhysicalWorldEnabled(false);
+    setEmotionalAwarenessEnabled(false);
+    setLifeOsModeEnabled(false);
   }
 
   function attachTraceRealtime(runId: string) {
@@ -579,6 +586,10 @@ export default function OrchestratorPage() {
               setPhysicalWorldEnabled={setPhysicalWorldEnabled}
               physicalControllerUrl={physicalControllerUrl}
               setPhysicalControllerUrl={setPhysicalControllerUrl}
+              emotionalAwarenessEnabled={emotionalAwarenessEnabled}
+              setEmotionalAwarenessEnabled={setEmotionalAwarenessEnabled}
+              lifeOsModeEnabled={lifeOsModeEnabled}
+              setLifeOsModeEnabled={setLifeOsModeEnabled}
               isCameraActive={isCameraActive}
               onStartCamera={startCamera}
               onStopCamera={stopCamera}

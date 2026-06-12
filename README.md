@@ -178,3 +178,15 @@ Controller: `PHYSICAL_CONTROLLER_URL` (Home Assistant REST API is excellent). Pe
 
 **Critical warnings**: Real physical consequences. Agent is instructed to always ground actions in live camera. Heavy limits, dry_run, per-run explicit opt-in + Premium required.
 
+**Emotional State Awareness (Premium):**
+Agent tracks emotional state from conversation text and live camera (expressions, posture, energy via vision summarizer). Logs to memory with `analyze_emotional_state` and `log_emotional_state`. Responds with appropriate empathy and can trigger supportive physical actions (e.g. lighting, music).
+
+**Personal Life OS Mode (Premium):**
+The agent operates as your full **Personal Life Operating System**. Holistic, proactive management of emotions, physical environment (smart home + sensors), digital life, habits, goals, and overall well-being.
+
+Special tools: `personal_life_reflection`, `suggest_life_os_action`, `bridge_digital_to_physical`.
+
+Example behavior: Notices stress from camera + full calendar → suggests physical environment adjustment + a realistic plan that respects your energy and emotional state.
+
+All of the above (multiple AIs, real-time vision, physical/smart home, emotional awareness, Life OS) can be combined in a single autonomous run. The more premium features you opt into, the more capable and context-aware your personal AI becomes.
+
