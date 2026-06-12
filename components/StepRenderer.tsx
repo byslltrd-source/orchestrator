@@ -6,6 +6,10 @@ import {
   Play,
   CheckCircle2,
   Camera,
+  User,
+  AlertTriangle,
+  Scale,
+  Eye,
 } from "lucide-react";
 import type { AgentStep, StepRow } from "@/lib/agent/types";
 
@@ -49,6 +53,54 @@ export function StepRenderer({ step, index }: StepRendererProps) {
             <div className="mt-1 text-xs text-rose-200/70">{url}</div>
           )}
         </div>
+      </div>
+    );
+  }
+
+  // === Magical Life OS Differentiators (from unique-features.html) ===
+  if (t === "memory" && step.content?.includes("🧬 Current Biographical")) {
+    return (
+      <div key={index} className="rounded-lg border border-indigo-500/30 bg-indigo-950/40 p-4 text-sm">
+        <div className="flex items-center gap-2 font-medium text-indigo-300 mb-2">
+          <User className="h-4 w-4" /> Biographical Self-Model
+        </div>
+        <div className="text-indigo-200/90 whitespace-pre-wrap text-xs">{step.content}</div>
+        <div className="text-[10px] text-indigo-400 mt-2">This model powers “What would you do?” simulations</div>
+      </div>
+    );
+  }
+
+  if (t === "memory" && step.content?.includes("👤 Shadow Agent")) {
+    return (
+      <div key={index} className="rounded-lg border border-emerald-500/30 bg-emerald-950/30 p-4 text-sm">
+        <div className="flex items-center gap-2 font-medium text-emerald-300 mb-2">
+          <Eye className="h-4 w-4" /> Shadow Agent Insight
+        </div>
+        <div className="text-emerald-200/90 italic">{step.content.replace('👤 Shadow Agent: ', '')}</div>
+        <div className="text-[10px] text-emerald-400 mt-1">Quietly observed • Only surfaced because it mattered</div>
+      </div>
+    );
+  }
+
+  if (t === "memory" && step.content?.includes("🔄 Regret Minimization")) {
+    return (
+      <div key={index} className="rounded-lg border border-amber-500/30 bg-amber-950/30 p-4 text-sm">
+        <div className="flex items-center gap-2 font-medium text-amber-300 mb-2">
+          <AlertTriangle className="h-4 w-4" /> Regret Minimization Engine
+        </div>
+        <div className="text-amber-200/90 text-xs whitespace-pre-wrap">{step.content}</div>
+      </div>
+    );
+  }
+
+  if (t === "memory" && step.content?.includes("🪞 Ethical Mirror")) {
+    return (
+      <div key={index} className="rounded-lg border border-violet-500/30 bg-violet-950/30 p-4 text-sm">
+        <div className="flex items-center gap-2 font-medium text-violet-300 mb-2">
+          <Scale className="h-4 w-4" /> Ethical Mirror
+        </div>
+        <div className="text-violet-200/90 text-xs whitespace-pre-wrap">{step.content}</div>
+        <div className="text-[10px] text-violet-400 mt-1">Future self &amp; loved ones perspective</div>
       </div>
     );
   }

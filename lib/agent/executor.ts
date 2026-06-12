@@ -11,6 +11,44 @@ import { validateEnv } from '@/lib/utils';
 import type { TypedServiceClient } from '@/lib/supabase/service';
 import { getVisionUrl } from '@/lib/supabase/storage';
 import { resolveOrchestratorLLM, getEmbedder, summarizeVisionFrame } from '@/lib/ai/client';
+
+// === Magical Helper: Shadow Agent insight generator ===
+async function generateShadowInsight(
+  userId: string, 
+  lastAction: string, 
+  result: string, 
+  recentContext: any[]
+): Promise<string | null> {
+  try {
+    const { client: shadow } = resolveOrchestratorLLM();
+    
+    const contextText = recentContext
+      .slice(-4)
+      .map(m => `${m.role}: ${typeof m.content === 'string' ? m.content.slice(0, 300) : '[multimodal]'}`)
+      .join('\n');
+
+    const res = await shadow.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [
+        {
+          role: 'system',
+          content: `You are a silent Shadow Agent. You observe the user's life quietly and only speak when you see something genuinely high-value: an opportunity, a risk, a pattern the main agent missed, or a beautiful connection across digital/physical/emotional domains. Be concise, insightful, and slightly mysterious. Never be obvious.`,
+        },
+        {
+          role: 'user',
+          content: `The user just did: ${lastAction}\nResult: ${result}\n\nRecent context:\n${contextText}\n\nWhat subtle, high-value observation should the main agent know right now?`,
+        },
+      ],
+      max_tokens: 160,
+      temperature: 0.7,
+    });
+
+    const insight = res.choices[0]?.message?.content?.trim();
+    return insight && insight.length > 20 ? insight : null;
+  } catch {
+    return null;
+  }
+}
 // Supabase service client (typed via our manual database.types)
 const getService = (): TypedServiceClient => createServiceClient() as TypedServiceClient;
 
@@ -125,6 +163,35 @@ You are the central intelligent OS for the user's life. Be wise, empathetic, pra
   };
   steps.push(modelInfoStep);
   await onStep?.(modelInfoStep);
+
+  // === Magical Life OS Setup: Biographical Self-Modeling ===
+  if (lifeOsMode) {
+    // At the very start of a Life OS run, surface the biographical model to make it feel alive and personal
+    try {
+      const { data: bioMemories } = await (getService().from('memories') as any)
+        .select('content, metadata')
+        .eq('user_id', userId)
+        .eq('metadata->>type', 'biographical_model')
+        .order('created_at', { ascending: false })
+        .limit(5);
+
+      if (bioMemories && bioMemories.length > 0) {
+        const bioSummary = bioMemories.map((m: any) => m.content).join('\n- ');
+        const bioStep: AgentStep = {
+          type: 'memory',
+          content: `🧬 Current Biographical Self-Model (what I know about you):\n${bioSummary}`,
+        };
+        steps.push(bioStep);
+        await onStep?.(bioStep);
+
+        // Inject into context so the agent reasons with it from the beginning
+        currentMessages.push({
+          role: 'system',
+          content: `You have a rich biographical model of the user. Use it for all decisions: ${bioSummary}`,
+        });
+      }
+    } catch {}
+  }
   let usedSteps = 0;
 
   // Prepare initial user content supporting vision (text + 0-N images).
@@ -301,6 +368,31 @@ You are the central intelligent OS for the user's life. Be wise, empathetic, pra
             };
             steps.push(visStep);
             await onStep?.(visStep);
+
+            // === Magical: Auto-feed emotional + biographical insights from vision in Life OS ===
+            if (lifeOsMode && emotionalAwarenessEnabled && frameDescription) {
+              try {
+                const emotionalInsight = await executeTool(userId, 'analyze_emotional_state', {
+                  context: frameDescription,
+                  source: 'live_vision',
+                });
+                
+                if (emotionalInsight && emotionalInsight.includes('EMOTION:')) {
+                  const emoStep: AgentStep = {
+                    type: 'memory',
+                    content: `💫 From your eyes (live camera): ${emotionalInsight}`,
+                  };
+                  steps.push(emoStep);
+                  await onStep?.(emoStep);
+
+                  // Auto-update biographical model with sensory/emotional data
+                  await executeTool(userId, 'update_biographical_model', {
+                    observation: `From live camera: ${emotionalInsight}`,
+                    category: 'emotional_pattern',
+                  });
+                }
+              } catch {}
+            }
           }
         }
       } catch (e) {
@@ -363,12 +455,61 @@ You are the central intelligent OS for the user's life. Be wise, empathetic, pra
           content: result,
         });
 
+        // === Magical Life OS behaviors ===
+        if (lifeOsMode) {
+          // Auto-update biographical model from significant tool results
+          if (['execute_smart_home_action', 'execute_physical_action', 'personal_life_reflection', 'bridge_digital_to_physical'].includes(name)) {
+            try {
+              await executeTool(userId, 'update_biographical_model', {
+                observation: `After ${name}: ${result}`,
+                category: 'life_pattern',
+              });
+            } catch {}
+          }
+
+          // Shadow Agent behavior: silently look for high-value insights after important actions
+          if (Math.random() < 0.35) {  // ~35% chance per major tool call - feels magical without being spammy
+            const shadowInsight = await generateShadowInsight(userId, name, result, currentMessages.slice(-6));
+            if (shadowInsight && shadowInsight.length > 30) {
+              const shadowStep: AgentStep = {
+                type: 'memory',
+                content: `👤 Shadow Agent: ${shadowInsight}`,
+              };
+              steps.push(shadowStep);
+              await onStep?.(shadowStep);
+              currentMessages.push({ role: 'system', content: `Shadow observation: ${shadowInsight}` });
+            }
+          }
+        }
+
         // Special handling for final_answer tool
         if (name === 'final_answer' && typeof result === 'string' && result.startsWith('FINAL_ANSWER:')) {
           finalResult = result.replace('FINAL_ANSWER:', '');
           const finalStep: AgentStep = { type: 'final', content: finalResult };
           steps.push(finalStep);
           await onStep?.(finalStep);
+
+          // Magical: Run regret minimization + ethical mirror automatically on final answers in Life OS
+          if (lifeOsMode) {
+            try {
+              const regret = await executeTool(userId, 'run_regret_minimization', {
+                actual_outcome: finalResult,
+                decision_made: message.content || 'recent actions',
+              });
+              const regretStep: AgentStep = { type: 'memory', content: `🔄 Regret Minimization:\n${regret}` };
+              steps.push(regretStep);
+              await onStep?.(regretStep);
+
+              const ethical = await executeTool(userId, 'ethical_mirror', {
+                proposed_action: message.content || 'the plan above',
+                context: `Final outcome: ${finalResult}`,
+              });
+              const ethicalStep: AgentStep = { type: 'memory', content: `🪞 Ethical Mirror:\n${ethical}` };
+              steps.push(ethicalStep);
+              await onStep?.(ethicalStep);
+            } catch {}
+          }
+
           return { finalResult, steps, usedSteps };
         }
       }
@@ -380,6 +521,24 @@ You are the central intelligent OS for the user's life. Be wise, empathetic, pra
         const finalStep: AgentStep = { type: 'final', content: finalResult };
         steps.push(finalStep);
         await onStep?.(finalStep);
+
+        if (lifeOsMode) {
+          try {
+            const regret = await executeTool(userId, 'run_regret_minimization', {
+              actual_outcome: finalResult,
+              decision_made: message.content || 'the plan',
+            });
+            steps.push({ type: 'memory', content: `🔄 Regret Minimization:\n${regret}` });
+            await onStep?.({ type: 'memory', content: `🔄 Regret Minimization:\n${regret}` } as any);
+
+            const ethical = await executeTool(userId, 'ethical_mirror', {
+              proposed_action: message.content || 'completed plan',
+              context: finalResult,
+            });
+            steps.push({ type: 'memory', content: `🪞 Ethical Mirror:\n${ethical}` });
+            await onStep?.({ type: 'memory', content: `🪞 Ethical Mirror:\n${ethical}` } as any);
+          } catch {}
+        }
         return { finalResult, steps, usedSteps };
       }
     }
