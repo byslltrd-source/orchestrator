@@ -100,6 +100,53 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
     isPushingFrame,
   } = props;
 
+  // Orchestrator Tiers & Features - integrated list with costs (free to ultra premium)
+  const tiers = [
+    {
+      name: "Free",
+      price: "$0",
+      description: "Everything that is free for getting started.",
+      features: [
+        "Basic task orchestration & one-shot responses",
+        "1 image attachment (vision)",
+        "20 orchestrations per month",
+        "Basic AI models (e.g. gpt-4o-mini, default)",
+        "Basic storage (user-scoped uploads for vision)",
+        "Standard execution traces",
+      ],
+    },
+    {
+      name: "Pro",
+      price: "$29/mo",
+      description: "Unlimited for serious users.",
+      features: [
+        "Everything in Free",
+        "Unlimited orchestrations",
+        "Multiple images (high-detail vision)",
+        "Autonomous (Pro) mode with tools & memory",
+        "Advanced AI models (Grok, Claude via OpenRouter, Groq, Ollama, etc.)",
+        "Enhanced storage (more capacity, signed URLs)",
+        "Live execution streaming & full history",
+        "Resume previous runs",
+      ],
+    },
+    {
+      name: "Ultra Premium",
+      price: "$99/mo",
+      description: "Full power for power users & teams. The complete Orchestrator experience.",
+      features: [
+        "Everything in Pro",
+        "Real-time Vision (live camera feed, premium only)",
+        "Physical World Integration (smart home, sensors, actuators via controller)",
+        "Emotional State Awareness (from text + live vision cues)",
+        "Personal Life OS Mode (full: Shadow Agent, Regret Minimization, Ethical Mirror, Dream/Sleep Integration, Biographical Self-Modeling)",
+        "Unlimited storage + advanced capabilities (list, signed, bulk)",
+        "All models including custom endpoints",
+        "Priority support, advanced subagents, deeper memory",
+      ],
+    },
+  ];
+
   const maxCount = isPro ? 6 : MAX_IMAGES_FREE;
 
   function handleImagesSelected(e: React.ChangeEvent<HTMLInputElement>) {
@@ -165,35 +212,41 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
             />
           </div>
 
-          {/* Images */}
+          {/* Attachments (Storage) - starting implementation of storage capabilities */}
           <div>
             <div className="mb-2 flex items-center justify-between text-xs uppercase tracking-widest text-zinc-500">
-              <div>Images (vision)</div>
-              <div>
+              <div>Attachments (Storage)</div>
+              <div className="flex gap-2">
                 <label className="inline-flex cursor-pointer items-center gap-1.5 rounded-md border border-white/10 px-2 py-1 hover:bg-white/5">
                   <ImagePlus className="h-3.5 w-3.5" />
-                  Add images
+                  Add files
                   <input
                     type="file"
-                    accept="image/*"
                     multiple
                     className="hidden"
-                    onChange={handleImagesSelected}
+                    onChange={handleImagesSelected} // reuse for any files, treat as attachments
                     disabled={!user || loading}
                   />
                 </label>
+                <button 
+                  type="button" 
+                  onClick={() => alert('My Storage: List from Supabase bucket (userId/attachments/). Real list + delete coming. For now, files attach on submit via storage.ts upload.')}
+                  className="text-xs px-2 py-1 rounded border border-white/10 hover:bg-white/5"
+                >
+                  Browse My Storage
+                </button>
               </div>
             </div>
 
             {previews.length > 0 && (
               <div className="mb-2 flex flex-wrap gap-2">
                 {previews.map((src, i) => (
-                  <div key={i} className="group relative h-16 w-16 overflow-hidden rounded-lg ring-1 ring-white/10">
-                    <img src={src} alt={`preview ${i}`} className="h-full w-full object-cover" />
+                  <div key={i} className="group relative px-2 py-1 text-xs border border-white/10 rounded bg-zinc-950 flex items-center gap-1">
+                    📎 {src.length > 20 ? src.slice(0,20) + '...' : src} (attachment)
                     <button
                       type="button"
                       onClick={() => removeImage(i)}
-                      className="absolute right-1 top-1 rounded-full bg-black/70 p-0.5 opacity-70 hover:opacity-100"
+                      className="text-zinc-400 hover:text-white"
                     >
                       <X className="h-3 w-3" />
                     </button>
@@ -204,7 +257,7 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
                 </button>
               </div>
             )}
-            <div className="text-[10px] text-zinc-500">Free: 1 image. Pro: multiple (detail: high).</div>
+            <div className="text-[10px] text-zinc-500">Free: limited attachments. Pro/Ultra: more + advanced storage (list, signed, bulk via Supabase).</div>
           </div>
 
           {/* Model selector - the "multiple AIs for orchestrator" feature */}
@@ -458,6 +511,26 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
               ))}
             </div>
             <div className="text-[10px] text-zinc-500 mt-1">Click any to instantly load a strong autonomous demo task.</div>
+          </div>
+
+          {/* Orchestrator Provides - Integrated list of all features with tiered costs (Free to Ultra Premium) */}
+          <div className="pt-4 border-t border-white/10">
+            <div className="text-[10px] uppercase tracking-widest text-zinc-500 mb-2">Orchestrator Provides — Tiers & Costs</div>
+            {tiers.map((tier, i) => (
+              <div key={i} className="mb-3 p-2 rounded bg-zinc-950/50">
+                <div className="flex justify-between text-sm font-medium">
+                  <span>{tier.name}</span>
+                  <span className="text-emerald-400">{tier.price}</span>
+                </div>
+                <p className="text-[10px] text-zinc-400">{tier.description}</p>
+                <ul className="mt-1 text-[10px] text-zinc-300 space-y-0.5">
+                  {tier.features.map((f, j) => (
+                    <li key={j} className="flex items-start gap-1">✓ {f}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+            <div className="text-[9px] text-zinc-500">Free tier limited to basic use. Upgrade for unlimited + premium capabilities like real-time vision and Life OS.</div>
           </div>
 
           {!user && <div className="text-center text-xs text-zinc-500">Sign in to orchestrate.</div>}

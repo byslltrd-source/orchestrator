@@ -23,6 +23,9 @@ export function AuthModal({ isOpen, onClose, onAuthSuccess }: AuthModalProps) {
 
   if (!isOpen) return null;
 
+  // Branded as real Orchestrator auth page (not Vercel or external)
+  // Sign up uses Supabase directly, stays within Orchestrator branding and redirects to app.
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -71,7 +74,9 @@ export function AuthModal({ isOpen, onClose, onAuthSuccess }: AuthModalProps) {
       <div className="w-full max-w-md rounded-2xl border border-white/10 bg-zinc-900 p-6 shadow-xl">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <div className="text-2xl font-semibold tracking-tighter">Orchestrator</div>
+            <div className="text-2xl font-semibold tracking-tighter flex items-center gap-2">
+              <span>dY�</span> Orchestrator
+            </div>
             <div className="text-sm text-zinc-400">
               {mode === "signup" ? "Create your free account" : "Welcome back"}
             </div>
