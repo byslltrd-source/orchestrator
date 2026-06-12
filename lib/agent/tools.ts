@@ -465,6 +465,98 @@ export const tools: ToolDefinition[] = [
       return `Life OS suggested action based on:\nContext: ${current_context}\nGoal: ${goal}\n\nConsider a balanced action that addresses emotion (e.g. reduce stress), physical environment (via smart home if available), and digital next step. Present 2-3 options to the user with reasoning.`;
     },
   },
+
+  // === Unique Differentiators from unique-features.html ===
+
+  {
+    name: 'update_biographical_model',
+    description: 'Updates or refines the living biographical / psychological model of the user. This is the core of "Biographical Self-Modeling". Call this whenever you learn something significant about the user\'s values, decision patterns, personality, preferences, or life philosophy. This model is used for "What would the user do?" simulations.',
+    parameters: {
+      type: 'object',
+      properties: {
+        observation: { type: 'string', description: 'Specific new insight about the user (values, patterns, triggers, philosophy, etc.)' },
+        category: { type: 'string', description: 'Category: values, decision_style, personality, triggers, life_philosophy, relationships, work_style' },
+      },
+      required: ['observation', 'category'],
+    },
+    async execute(userId, { observation, category }) {
+      const content = `[Biographical Model Update - ${category}] ${observation}`;
+      const svc = createServiceClient() as TypedServiceClient;
+
+      try {
+        const { client: embedder } = getEmbedder();
+        const embeddingRes = await embedder.embeddings.create({
+          model: 'text-embedding-3-small',
+          input: content,
+        });
+        const embedding = embeddingRes.data[0].embedding;
+
+        await (svc.from('memories') as any).insert({
+          user_id: userId,
+          content,
+          embedding,
+          metadata: { 
+            type: 'biographical_model', 
+            category,
+            timestamp: new Date().toISOString() 
+          },
+        });
+        return `Biographical model updated with new ${category} insight.`;
+      } catch (e) {
+        return `Failed to update biographical model: ${e}`;
+      }
+    },
+  },
+
+  {
+    name: 'simulate_user_decision',
+    description: 'Runs a "What would the user do?" simulation using the accumulated biographical self-model. This is the heart of Biographical Self-Modeling. Use before recommending important actions in Life OS mode.',
+    parameters: {
+      type: 'object',
+      properties: {
+        decision_context: { type: 'string', description: 'The decision or situation the user is facing' },
+        options: { type: 'array', items: { type: 'string' }, description: 'Possible courses of action being considered' },
+      },
+      required: ['decision_context'],
+    },
+    async execute(userId, { decision_context, options = [] }) {
+      // In a real implementation this would retrieve biographical_model memories and synthesize.
+      // For now we give the agent structured guidance + let it pull from memory.
+      return `Biographical Self-Modeling simulation requested.\n\nContext: ${decision_context}\n\nYou should now:\n1. Recall key biographical_model memories (values, decision_style, personality, triggers).\n2. Simulate "What would this specific user actually do?"\n3. Score each option against the user's known patterns.\n4. Output the most authentic recommendation + your confidence.\n\nOptions considered: ${options.length ? options.join(' | ') : 'Not explicitly listed.'}`;
+    },
+  },
+
+  {
+    name: 'run_regret_minimization',
+    description: 'Runs the Regret Minimization Engine. After a decision or action, simulates counterfactuals ("What if we had done X instead?") and extracts learnings. Use after important Life OS actions or at the end of significant runs.',
+    parameters: {
+      type: 'object',
+      properties: {
+        actual_outcome: { type: 'string', description: 'What actually happened after the decision' },
+        decision_made: { type: 'string', description: 'The decision or action that was taken' },
+      },
+      required: ['actual_outcome', 'decision_made'],
+    },
+    async execute(userId, { actual_outcome, decision_made }) {
+      return `Regret Minimization analysis:\n\nDecision made: ${decision_made}\nActual outcome: ${actual_outcome}\n\nYou should now:\n- Run 2-3 strong counterfactuals ("What if we had done Y instead?")\n- Identify what would likely have been better/worse\n- Extract 1-2 clear learnings to store in biographical_model or long-term memory\n- Note any patterns in the user's decision making.`;
+    },
+  },
+
+  {
+    name: 'ethical_mirror',
+    description: 'Activates Ethical Mirror Mode before sensitive or high-impact actions (especially physical world actions). Simulates how the user\'s future self, partner, or people they respect would judge the action. Returns a short ethical reflection.',
+    parameters: {
+      type: 'object',
+      properties: {
+        proposed_action: { type: 'string', description: 'The action being considered' },
+        context: { type: 'string', description: 'Relevant context (why the action is being considered, potential consequences)' },
+      },
+      required: ['proposed_action', 'context'],
+    },
+    async execute(userId, { proposed_action, context }) {
+      return `Ethical Mirror reflection requested.\n\nProposed action: ${proposed_action}\nContext: ${context}\n\nYou must now generate a short, honest reflection from the perspective of:\n- The user's future self (1 year from now)\n- Someone the user deeply respects (partner, mentor, etc.)\n\nOutput both perspectives + a final recommendation on whether to proceed, modify, or abandon the action.`;
+    },
+  },
 ];
 
 // Helper to get OpenAI tools format
