@@ -48,6 +48,26 @@ npm run dev:http
 
 **Note on Windows**: You may need to run PowerShell as Administrator the first time or manually trust the localhost certs for no warnings. The camera features will still work on `localhost` even with warnings in most browsers.
 
+### Testing Error Pages (500)
+
+To test the custom 500 error page (the design from 500-error.html):
+
+1. Run the app over HTTPS:
+   ```bash
+   npm run dev
+   ```
+   Open https://localhost:3000
+
+2. To trigger a middleware-level 500 (MIDDLEWARE_INVOCATION_FAILED style):
+   - Temporarily rename or empty your `.env.local` Supabase keys.
+   - Refresh any page. You should see the nice branded error box.
+
+3. To trigger a React/runtime 500 (caught by global-error.tsx):
+   - Visit https://localhost:3000/api/test-500
+   - Or, in Life OS Mode / Physical Integration with bad config, force an error during a run.
+
+The error pages are dark-themed to match the rest of the Orchestrator UI and include the error code + a unique ID for debugging.
+
 ### 2. Supabase Setup (Accounts)
 
 1. Create a new Supabase project at https://supabase.com
