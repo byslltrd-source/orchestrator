@@ -191,7 +191,9 @@ See the integration UI mockup in `versel-supabase-integration.html` for what the
   - Personal Life OS Mode, Emotional Awareness, etc. (all server-side features just work).
 - Preview deployments get their own Supabase project if you configure it.
 
-See the `versel-supabase-integration.html` file in your Downloads for a visual of the connection UI.
+See the `versel-supabase-integration.html` file in your Downloads for a visual of the connection UI (including the project card, "TEAM" badge, "Manage" button, connection status in the last section showing "byslltrd@gmail.com... orchestrator Connected X minutes ago", etc.).
+
+After connecting, your Vercel project will automatically receive the Supabase environment variables on every deploy and preview. This keeps everything in sync and avoids the Supabase 500 errors during middleware checks.
 
 #### Alternative: Manual env var setup (not recommended)
 
