@@ -3,19 +3,42 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any -- LLM message parts, tool args, Supabase responses without generated types, and OpenAI SDK shapes are intentionally loose here */
 
-import OpenAI from 'openai';
 import { createServiceClient } from '@/lib/supabase/service';
 import { executeTool, getOpenAITools } from './tools';
 import type { AgentStep, RunAgentParams, RunAgentResult } from './types';
-import { DEFAULT_MODEL, MAX_STEPS_DEFAULT } from '@/lib/constants';
+import { MAX_STEPS_DEFAULT } from '@/lib/constants';
 import { validateEnv } from '@/lib/utils';
 import type { TypedServiceClient } from '@/lib/supabase/service';
-
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! });
+import { getVisionUrl } from '@/lib/supabase/storage';
+import { resolveOrchestratorLLM, getEmbedder, summarizeVisionFrame } from '@/lib/ai/client';
 // Supabase service client (typed via our manual database.types)
 const getService = (): TypedServiceClient => createServiceClient() as TypedServiceClient;
 
-const SYSTEM_PROMPT = `You are Orchestrator, a highly autonomous AI agent that runs itself to achieve user goals with minimal supervision.
+
+
+export async function runAutonomousAgent(params: RunAgentParams): Promise<RunAgentResult> {
+  const {
+    goal,
+    userId,
+    images = [],
+    maxSteps = MAX_STEPS_DEFAULT,
+    taskId,
+    onStep,
+    model: requestedModel,
+    realtimeVisionEnabled = false,
+  } = params;
+
+  // Best-effort env validation
+  validateEnv();
+
+  // Resolve the chosen AI (or default). This is the key "multiple AIs for orchestrator" point.
+  const { client: llm, model: activeModel, label: modelLabel } = resolveOrchestratorLLM(requestedModel);
+  const { client: embedder, model: embedModel } = getEmbedder();
+
+  const steps: AgentStep[] = [];
+
+  // Build system prompt. Include the expensive real-time vision instructions ONLY if customer opted in.
+  const baseSystem = `You are Orchestrator, a highly autonomous AI agent that runs itself to achieve user goals with minimal supervision.
 
 Core principles:
 - You have long-term memory. Always search your memories first when starting or when relevant context might exist.
@@ -28,20 +51,20 @@ Core principles:
 
 You can use multiple tools in parallel by calling them together in one response. Always think step by step before calling tools. Prefer the final_answer tool to terminate.`;
 
-export async function runAutonomousAgent(params: RunAgentParams): Promise<RunAgentResult> {
-  const {
-    goal,
-    userId,
-    images = [],
-    maxSteps = MAX_STEPS_DEFAULT,
-    taskId,
-    onStep,
-  } = params;
+  const realtimeSection = `
 
-  // Best-effort env validation (the OpenAI client construction will surface real problems)
-  validateEnv();
+REAL-TIME VISION (Premium opt-in feature — this is expensive for the customer):
+The customer has explicitly opted in to real-time vision for this run. You will receive "[Real-time camera update]" messages containing live camera frames (high-detail images) from their device. Use them to observe the physical world, a screen, an object, a process, or environment in real time. New frames can arrive between your turns. When relevant, reference what you see ("I can see in the live feed that...").`;
 
-  const steps: AgentStep[] = [];
+  const SYSTEM_PROMPT = realtimeVisionEnabled ? baseSystem + realtimeSection : baseSystem;
+
+  // Surface the chosen AI at the top of every autonomous trace (multiple AIs feature)
+  const modelInfoStep: AgentStep = {
+    type: 'memory',
+    content: `Orchestrator model: ${modelLabel} (${activeModel})`,
+  };
+  steps.push(modelInfoStep);
+  await onStep?.(modelInfoStep);
   let usedSteps = 0;
 
   // Prepare initial user content supporting vision (text + 0-N images).
@@ -56,8 +79,13 @@ export async function runAutonomousAgent(params: RunAgentParams): Promise<RunAge
       if (typeof img === 'string') {
         parts.push({ type: 'image_url', image_url: { url: img, detail: 'high' as const } });
       } else if (img && typeof (img as any).url === 'string') {
-        // StoredAsset { url, path, name, ... } or similar
-        parts.push({ type: 'image_url', image_url: { url: (img as any).url, detail: 'high' as const } });
+        // StoredAsset - get fresh URL for vision (supports private buckets + long-running agents)
+        try {
+          const freshUrl = await getVisionUrl(img as any);
+          parts.push({ type: 'image_url', image_url: { url: freshUrl, detail: 'high' as const } });
+        } catch {
+          parts.push({ type: 'image_url', image_url: { url: (img as any).url, detail: 'high' as const } });
+        }
       } else if (img && (typeof (img as any).arrayBuffer === 'function')) {
         try {
           const bytes = await (img as any).arrayBuffer();
@@ -83,8 +111,8 @@ export async function runAutonomousAgent(params: RunAgentParams): Promise<RunAge
 
   // Inject relevant long-term memories at the start (this is key for "run itself" over time)
   try {
-    const embeddingRes = await openai.embeddings.create({
-      model: 'text-embedding-3-small',
+    const embeddingRes = await embedder.embeddings.create({
+      model: embedModel,
       input: goal,
     });
     const embedding = embeddingRes.data[0].embedding;
@@ -157,6 +185,9 @@ export async function runAutonomousAgent(params: RunAgentParams): Promise<RunAge
   const startTime = Date.now();
   const MAX_AGENT_MS = 4 * 60 * 1000; // safety timeout so a runaway agent doesn't run forever
 
+  // For Premium Real-time Vision: track which vision_frame steps we've already injected into context
+  const injectedVisionStepIds = new Set<string>();
+
   for (let step = 0; step < maxSteps; step++) {
     if (Date.now() - startTime > MAX_AGENT_MS) {
       finalResult = 'The agent timed out after several minutes. Review the trace for partial progress.';
@@ -165,8 +196,60 @@ export async function runAutonomousAgent(params: RunAgentParams): Promise<RunAge
 
     usedSteps = step + 1;
 
-    const completion = await openai.chat.completions.create({
-      model: process.env.OPENAI_MODEL || DEFAULT_MODEL,
+    // === Premium Real-time Vision injection (only when customer explicitly opted in + runId present) ===
+    // Expensive feature. We poll for newly pushed 'vision_frame' steps (from the /api/vision/push-frame endpoint).
+    // New frames are appended as fresh user messages containing the image so the model
+    // "sees" the live camera update on the next thinking turn.
+    if (params.runId && params.realtimeVisionEnabled) {
+      try {
+        const { data: visionFrames } = await (getService().from('agent_steps') as any)
+          .select('id, content, created_at')
+          .eq('run_id', params.runId)
+          .eq('type', 'vision_frame')
+          .order('created_at', { ascending: true });
+
+        if (visionFrames && visionFrames.length > 0) {
+          for (const vf of visionFrames) {
+            if (injectedVisionStepIds.has(vf.id)) continue;
+            injectedVisionStepIds.add(vf.id);
+
+            // Inject as a user message with image so the *next* model call can reason over the live view.
+            // We also surface it visibly in the trace.
+            const imageUrl = vf.content as string;
+
+            // Use cheap summarizer for the expensive real-time vision feature
+            // This gives the main model good text context immediately + the raw image so it can truly "see".
+            let frameDescription = '';
+            try {
+              frameDescription = await summarizeVisionFrame(imageUrl);
+            } catch {}
+
+            currentMessages.push({
+              role: 'user',
+              content: [
+                { 
+                  type: 'text', 
+                  text: `[Real-time camera update]${frameDescription ? ` Summary: ${frameDescription}` : ''}` 
+                },
+                { type: 'image_url', image_url: { url: imageUrl, detail: 'high' as const } },
+              ],
+            });
+
+            const visStep: AgentStep = {
+              type: 'vision_frame',
+              content: imageUrl,
+            };
+            steps.push(visStep);
+            await onStep?.(visStep);
+          }
+        }
+      } catch (e) {
+        // best effort — don't break the agent if vision polling fails
+      }
+    }
+
+    const completion = await llm.chat.completions.create({
+      model: activeModel,
       messages: currentMessages,
       tools: getOpenAITools(),
       tool_choice: 'auto',

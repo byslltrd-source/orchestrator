@@ -7,7 +7,7 @@ export type ToolCall = {
 };
 
 export type AgentStep = {
-  type: 'thought' | 'tool_call' | 'tool_result' | 'memory' | 'final';
+  type: 'thought' | 'tool_call' | 'tool_result' | 'memory' | 'final' | 'vision_frame';
   content?: string;
   toolName?: string;
   toolArgs?: Record<string, unknown> | unknown;
@@ -24,6 +24,10 @@ export type RunAgentParams = {
   taskId?: string;              // link to a persistent task
   runId?: string;               // if resuming
   onStep?: (step: AgentStep) => void | Promise<void>;
+  /** Model id from the orchestrator model catalog (e.g. "grok", "claude-sonnet", "groq"). Falls back to default. */
+  model?: string | null;
+  /** If the customer explicitly opted into real-time vision for this run (premium, expensive feature). */
+  realtimeVisionEnabled?: boolean;
 };
 
 export type RunAgentResult = {

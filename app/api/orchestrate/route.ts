@@ -6,11 +6,9 @@ import { createClient } from '@/lib/supabase/server';
 import { createServiceClient } from '@/lib/supabase/service';
 import { runAutonomousAgent } from '@/lib/agent/executor';
 import type { AgentStep } from '@/lib/agent/types';
-import OpenAI from 'openai';
 import { isProUser, type UserProfile, validateEnv } from '@/lib/utils';
 import {
   FREE_LIMIT,
-  DEFAULT_MODEL,
   MAX_TASK_LENGTH,
   MAX_AUTONOMOUS_STEPS,
   MAX_STEPS_DEFAULT,
@@ -21,6 +19,8 @@ import { OrchestrateInputSchema } from '@/lib/schemas';
 import type { Database } from '@/lib/supabase/database.types';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { uploadUserFile, type StoredAsset, STORAGE_BUCKET } from '@/lib/supabase/storage';
+import { OrchestratorError, ValidationError, QuotaError } from '@/lib/errors';
+import { resolveOrchestratorLLM } from '@/lib/ai/client';
 
 export async function POST(request: NextRequest) {
   try {
@@ -76,10 +76,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (!process.env.OPENAI_API_KEY) {
-      return NextResponse.json({ error: "OpenAI API key is not configured" }, { status: 500 });
-    }
+    const requestedModel = ((formData.get('model') as string) || '').trim() || null;
 
+    // We no longer hard-require OPENAI_API_KEY at the top — multiple providers are supported.
+    // The resolver below will surface a clear error if no usable key is configured for the chosen model.
     const envCheck = validateEnv();
     if (!envCheck.ok) {
       return NextResponse.json({ error: envCheck.message }, { status: 500 });
@@ -185,6 +185,8 @@ export async function POST(request: NextRequest) {
 
             try {
               // Create a persistent Task for this goal
+              const realtimeVision = formData.get('realtime_vision') === 'true';
+
               const { data: newTask } = await (service.from('tasks') as any)
                 .insert({
                   user_id: user.id,
@@ -193,6 +195,7 @@ export async function POST(request: NextRequest) {
                   status: 'active',
                   max_steps: MAX_AUTONOMOUS_STEPS,
                   images: storedAssets.length > 0 ? storedAssets : [],
+                  metadata: realtimeVision ? { realtime_vision: true } : {},
                 })
                 .select('id')
                 .single();
@@ -205,6 +208,7 @@ export async function POST(request: NextRequest) {
                   task_id: taskId,
                   user_id: user.id,
                   status: 'running',
+                  metadata: realtimeVision ? { realtime_vision: true } : {},
                 })
                 .select('id')
                 .single();
@@ -223,6 +227,8 @@ export async function POST(request: NextRequest) {
                 images: storedAssets.length > 0 ? storedAssets : undefined,
                 maxSteps: MAX_AUTONOMOUS_STEPS,
                 taskId,
+                model: requestedModel,
+                realtimeVisionEnabled: realtimeVision,
                 onStep: async (step: AgentStep) => {
                   persistedSteps.push(step);
                   if (runId) {
@@ -312,9 +318,9 @@ export async function POST(request: NextRequest) {
     // Still useful for quick questions. Free users are limited here.
     // =====================================================
 
-    // 6. OpenAI call setup (unified SDK)
-    const model = process.env.OPENAI_MODEL || DEFAULT_MODEL;
-    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! });
+    // Resolve chosen model for the one-shot (non-autonomous) path.
+    // This enables the same "multiple AIs" experience for quick orchestrations.
+    const { client: oneShotLlm, model: oneShotModel, label: oneShotModelLabel } = resolveOrchestratorLLM(requestedModel);
 
     // Build content array: task text first, then 0-N images (now using stored public URLs from Supabase Storage)
     type VisionContentPart =
@@ -350,8 +356,8 @@ export async function POST(request: NextRequest) {
       },
     ];
 
-    const completion = await openai.chat.completions.create({
-      model,
+    const completion = await oneShotLlm.chat.completions.create({
+      model: oneShotModel,
       // The messages array mixes system + user (with possible image parts) + tool responses.
       // Using any here is acceptable until we add stricter OpenAI message typing.
       messages: messages as any,
@@ -421,6 +427,8 @@ export async function POST(request: NextRequest) {
       meta: {
         used: reportedUsed,
         isPro,
+        model: oneShotModel,
+        modelLabel: oneShotModelLabel,
       },
     });
   } catch (error: any) {

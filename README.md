@@ -20,7 +20,7 @@ cp .env.example .env.local
 
 Fill in:
 
-- `OPENAI_API_KEY`
+- `OPENAI_API_KEY` (or provider-specific keys — see Multiple AIs below)
 - Supabase keys (see below)
 - Stripe keys + price ID (see below)
 
@@ -67,7 +67,7 @@ Sign up (free), try orchestrating with/without images, then click **Upgrade** to
 - React 19 + Tailwind
 - Supabase (Auth + Postgres + RLS)
 - Stripe (Checkout, Portal, Webhooks)
-- OpenAI (GPT-4o-mini with vision)
+- Multiple LLMs for the orchestrator (OpenAI, Grok/xAI, Claude via OpenRouter, Groq, Ollama, OpenRouter, custom OpenAI-compatible endpoints) — pick per run in the UI!
 
 ## Key Files
 
@@ -137,4 +137,27 @@ The "Recent Autonomous Runs" section in the UI lets users (and you via the DB) b
 - Set `TAVILY_API_KEY` for the agent to do real web research
 
 Free tier is limited to one-shot calls. Autonomous + tools + persistent memory/history is the main Pro value.
+
+## Multiple AIs for the Orchestrator + Real-time Vision (Premium)
+
+You can now power the agent with many different models, not just OpenAI:
+
+- Built-in presets: GPT-4o / 4o-mini, Grok (xAI), Claude 3.5 Sonnet / Opus (via OpenRouter), Groq (Llama 70B etc.), Ollama (local), OpenRouter (any), and a fully custom entry.
+- Choose the model in the UI dropdown for every orchestration (one-shot or autonomous).
+- The autonomous agent loop, tool calling, vision (when supported by the model), and internal helpers all respect your choice.
+- Add / tweak models in `lib/ai/models.ts` (very easy to extend with new base URLs and keys).
+- Use environment variables for keys:
+  - `XAI_API_KEY` for Grok presets
+  - `GROQ_API_KEY` for Groq
+  - `OPENROUTER_API_KEY` for Claude/Gemini/etc via OpenRouter
+  - `ORCHESTRATOR_API_KEY` + `ORCHESTRATOR_BASE_URL` + `ORCHESTRATOR_MODEL` for anything OpenAI-compatible (including self-hosted vLLM, LM Studio, LiteLLM proxy, corporate gateways, etc.)
+
+Embeddings for memory stay on a cheap OpenAI-compatible embedder by default (you can override with `EMBEDDING_*` vars).
+
+**Real-time Vision (Premium top-tier only, opt-in, expensive):**
+Premium subscribers can opt-in per autonomous run to let the agent see live camera frames from the user's device ("the AI that can see in real time"). Frames are pushed by the customer (manual or low-frequency auto) and injected into the agent's context between turns. 
+
+**Warning**: This feature is deliberately expensive (high-detail vision tokens + context bloat). It is opt-in only, rate-limited on the server, and comes with prominent cost warnings in the UI. The system prompt informs the agent about live vision updates when the customer opts in.
+
+This makes the Orchestrator a true multi-AI command center with optional live visual awareness.
 

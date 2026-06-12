@@ -32,7 +32,7 @@ export function Header({ onAuthClick, onUserChange }: HeaderProps) {
     try {
       const { data, error } = await supabase
         .from("profiles")
-        .select("subscription_plan, subscription_status, orchestrations_used, orchestrations_limit")
+        .select("subscription_plan, subscription_status, orchestrations_used, orchestrations_limit, realtime_vision_consent, realtime_vision_frames_used")
         .eq("id", userId)
         .single();
 

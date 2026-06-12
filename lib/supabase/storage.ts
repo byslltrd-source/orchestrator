@@ -41,19 +41,21 @@ export async function uploadUserFile(
   // For sensitive files, switch to getSignedUrl.
   const { data: urlData } = (service.storage.from(STORAGE_BUCKET) as any).getPublicUrl(uniquePath);
 
-  const publicUrl = urlData?.publicUrl;
-  if (!publicUrl) {
-    // Fallback: try signed URL (60 min)
+  let finalUrl = urlData?.publicUrl;
+
+  if (!finalUrl) {
+    // Private bucket or no public: generate fresh signed URL (1 hour, sufficient for LLM vision calls)
     const { data: signed } = await (service.storage.from(STORAGE_BUCKET) as any).createSignedUrl(uniquePath, 60 * 60);
-    if (!signed?.signedUrl) {
-      throw new Error('Could not generate accessible URL for stored file');
+    if (signed?.signedUrl) {
+      finalUrl = signed.signedUrl;
+    } else {
+      throw new Error('Could not generate accessible URL (public or signed) for stored file. Check bucket policies.');
     }
-    // Note: signed URLs expire. For long-lived vision, prefer public bucket or re-sign on use.
   }
 
   return {
     path: uniquePath,
-    url: publicUrl || '', // caller should handle if empty
+    url: finalUrl,
     name: safeName,
     size: (file as File).size || 0,
     mime: (file as File).type || 'application/octet-stream',
@@ -97,4 +99,53 @@ export async function getSignedAssetUrl(path: string, expiresInSeconds = 3600): 
     throw new Error(`Failed to create signed URL: ${error?.message}`);
   }
   return data.signedUrl;
+}
+
+/**
+ * Get a fresh, usable URL for vision (re-signs if the stored one is expired or for private buckets).
+ * Use this before passing images to LLM calls in long-running agents.
+ */
+export async function getVisionUrl(asset: StoredAsset | { path: string; url?: string }): Promise<string> {
+  if (asset.url && asset.url.includes('token=')) {
+    // Looks like a signed URL, generate fresh one for safety in long runs
+    return getSignedAssetUrl(asset.path);
+  }
+  // Assume public or still valid
+  if (asset.url) return asset.url;
+  return getSignedAssetUrl(asset.path);
+}
+
+/**
+ * Delete all assets for a user (e.g., on account deletion or bulk cleanup).
+ * Use with care.
+ */
+export async function deleteAllUserAssets(userId: string): Promise<void> {
+  const service = createServiceClient();
+  const prefix = `${userId}/`;
+  const { data: files } = await (service.storage.from(STORAGE_BUCKET) as any).list(prefix, { limit: 1000 });
+  if (files && files.length > 0) {
+    const paths = files.map((f: any) => `${prefix}${f.name}`);
+    await (service.storage.from(STORAGE_BUCKET) as any).remove(paths);
+  }
+}
+
+/**
+ * Cleanup old assets for a specific task (call when task is deleted or archived).
+ */
+export async function cleanupTaskAssets(taskImages: StoredAsset[] | string[] | null | undefined): Promise<void> {
+  if (!taskImages || !Array.isArray(taskImages) || taskImages.length === 0) return;
+  const service = createServiceClient();
+  const paths: string[] = [];
+  for (const img of taskImages) {
+    if (typeof img === 'string') {
+      // legacy url - can't easily delete without path, skip or parse
+      continue;
+    }
+    if (img && typeof img === 'object' && 'path' in img) {
+      paths.push((img as StoredAsset).path);
+    }
+  }
+  if (paths.length > 0) {
+    await (service.storage.from(STORAGE_BUCKET) as any).remove(paths);
+  }
 }

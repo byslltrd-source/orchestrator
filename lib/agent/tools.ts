@@ -4,14 +4,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- External lib responses (tavily, OpenAI, cheerio text), Supabase service casts, and tool JSON schema are dynamic */
 
 import { createServiceClient } from '@/lib/supabase/service';
-import OpenAI from 'openai';
 import * as cheerio from 'cheerio';
 import { tavily } from '@tavily/core';
-import { DEFAULT_MODEL } from '@/lib/constants';
 import type { TypedServiceClient } from '@/lib/supabase/service';
 import type { Database } from '@/lib/supabase/database.types';
+import { resolveToolLLM, getEmbedder } from '@/lib/ai/client';
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! });
 const tavilyClient = process.env.TAVILY_API_KEY ? tavily({ apiKey: process.env.TAVILY_API_KEY }) : null;
 
 export type ToolDefinition = {
@@ -73,9 +71,11 @@ export const tools: ToolDefinition[] = [
 
         if (!instructions) return text.slice(0, 4000);
 
-        // Use a cheap LLM call to follow the instructions (agent is already paying via the main call)
-        const summary = await openai.chat.completions.create({
-          model: DEFAULT_MODEL,
+        // Use the orchestrator's (or default fast) LLM to follow instructions.
+        // This keeps page summarization consistent with the agent's chosen model when possible.
+        const { client: toolLlm, model: toolModel } = resolveToolLLM();
+        const summary = await toolLlm.chat.completions.create({
+          model: toolModel,
           messages: [
             { role: 'system', content: 'Extract and summarize exactly what the user asked for from the page content. Be concise and quote key facts.' },
             { role: 'user', content: `Instructions: ${instructions}\n\nPage content:\n${text}` },
@@ -104,9 +104,10 @@ export const tools: ToolDefinition[] = [
       required: ['content'],
     },
     async execute(userId, { content, importance = 5, tags = [] }) {
-      // Generate embedding
-      const embeddingRes = await openai.embeddings.create({
-        model: 'text-embedding-3-small',
+      // Generate embedding (dedicated embedder, independent of main reasoning model)
+      const { client: embedder, model: embedModel } = getEmbedder();
+      const embeddingRes = await embedder.embeddings.create({
+        model: embedModel,
         input: content,
       });
       const embedding = embeddingRes.data[0].embedding;
@@ -134,8 +135,9 @@ export const tools: ToolDefinition[] = [
       required: ['query'],
     },
     async execute(userId, { query, max_results = 6 }) {
-      const embeddingRes = await openai.embeddings.create({
-        model: 'text-embedding-3-small',
+      const { client: embedder, model: embedModel } = getEmbedder();
+      const embeddingRes = await embedder.embeddings.create({
+        model: embedModel,
         input: query,
       });
       const embedding = embeddingRes.data[0].embedding;
@@ -197,6 +199,23 @@ export const tools: ToolDefinition[] = [
     async execute(userId, { answer }) {
       // Special marker - the executor will detect this and stop the loop
       return `FINAL_ANSWER:${answer}`;
+    },
+  },
+
+  // 6. Real-time Vision tool (Premium opt-in, expensive) - lets the agent actively request to "see" now
+  {
+    name: 'capture_live_view',
+    description: 'Request a fresh live camera frame from the user right now. Only useful if the customer has explicitly opted into Real-time Vision (Premium) and has their camera enabled for this run. Use this when you need current visual information about the physical world, screen, object, or environment (e.g. "I need to see what is on the desk right now" or "Show me the current state of the device").',
+    parameters: {
+      type: 'object',
+      properties: {
+        reason: { type: 'string', description: 'Why you need a live view at this moment (be specific so the user understands)' },
+      },
+      required: ['reason'],
+    },
+    async execute(userId, { reason }) {
+      // The client (when realtime + camera active) will auto-provide a frame when it sees this tool call in the trace.
+      return `Live camera view requested. Reason: ${reason || 'Agent needs visual update'}. A new real-time vision frame should arrive shortly if the user has opted in and camera is active.`;
     },
   },
 ];

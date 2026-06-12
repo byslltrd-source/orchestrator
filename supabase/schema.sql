@@ -21,6 +21,10 @@ create table if not exists public.profiles (
   subscription_plan text default 'free',
   current_period_end timestamptz,
 
+  -- Real-time Vision (expensive premium opt-in feature)
+  realtime_vision_consent boolean default false,
+  realtime_vision_frames_used integer default 0,
+
   orchestrations_used integer default 0,
   orchestrations_limit integer default 20,
   usage_reset_date timestamptz default (date_trunc('month', now()) + interval '1 month'),
@@ -119,6 +123,7 @@ create table if not exists public.tasks (
   status text default 'active',          -- active | paused | completed | failed
   max_steps integer default 12,
   images jsonb default '[]',             -- optional vision references: StoredAsset[] (see lib/supabase/storage.ts) or legacy strings
+  metadata jsonb default '{}',           -- e.g. { realtime_vision: true } for expensive opt-in features
   created_at timestamptz default now(),
   updated_at timestamptz default now()
 );
@@ -138,7 +143,8 @@ create table if not exists public.agent_runs (
   final_result text,
   error text,
   started_at timestamptz default now(),
-  completed_at timestamptz
+  completed_at timestamptz,
+  metadata jsonb default '{}'            -- e.g. { realtime_vision: true }
 );
 
 alter table public.agent_runs enable row level security;
@@ -151,7 +157,7 @@ create table if not exists public.agent_steps (
   id uuid primary key default uuid_generate_v4(),
   run_id uuid not null references public.agent_runs(id) on delete cascade,
   step_number integer not null,
-  type text not null,                    -- 'thought' | 'tool_call' | 'tool_result' | 'memory_recall' | 'final'
+  type text not null,                    -- 'thought' | 'tool_call' | 'tool_result' | 'memory' | 'final' | 'vision_frame' (Premium real-time)
   content text,
   tool_name text,
   tool_args jsonb,

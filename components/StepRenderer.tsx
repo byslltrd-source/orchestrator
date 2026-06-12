@@ -5,6 +5,7 @@ import {
   Zap,
   Play,
   CheckCircle2,
+  Camera,
 } from "lucide-react";
 import type { AgentStep, StepRow } from "@/lib/agent/types";
 
@@ -24,6 +25,29 @@ export function StepRenderer({ step, index }: StepRendererProps) {
         <div className="flex-1">
           <div className="font-medium text-sky-300">Memory #{num}</div>
           <div className="mt-1 text-sky-200/90">{step.content}</div>
+        </div>
+      </div>
+    );
+  }
+
+  if (t === "vision_frame") {
+    const url = step.content;
+    const isImageUrl = typeof url === "string" && (url.startsWith("http") || url.startsWith("data:"));
+    return (
+      <div key={index} className="flex gap-3 rounded-lg border border-rose-500/20 bg-rose-500/5 p-3 text-sm">
+        <Camera className="mt-0.5 h-4 w-4 text-rose-400" />
+        <div className="flex-1">
+          <div className="font-medium text-rose-300">Live Vision #{num}</div>
+          <div className="mt-1 text-rose-200/90 text-xs">Real-time camera frame (Premium)</div>
+          {isImageUrl ? (
+            <img
+              src={url}
+              alt="Live vision frame"
+              className="mt-2 max-h-40 rounded border border-rose-500/30 object-contain"
+            />
+          ) : (
+            <div className="mt-1 text-xs text-rose-200/70">{url}</div>
+          )}
         </div>
       </div>
     );

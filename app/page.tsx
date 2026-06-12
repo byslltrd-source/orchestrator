@@ -16,11 +16,15 @@ import { Textarea } from "@/components/ui/textarea";
 import { createClient } from "@/lib/supabase/client";
 import type { User } from "@supabase/supabase-js";
 import type { AgentStep, StepRow, LiveEvent, RecentRun } from "@/lib/agent/types";
-import { isProUser, type UserProfile } from "@/lib/utils";
+import { isProUser, isPremiumUser, type UserProfile } from "@/lib/utils";
 import { MAX_IMAGE_UPLOAD_BYTES, MAX_IMAGES_FREE } from "@/lib/constants";
-import { StepRenderer } from "@/components/StepRenderer";
 import { OrchestratorComposer } from "@/components/OrchestratorComposer";
 import { LiveExecution } from "@/components/LiveExecution";
+import { TraceViewer } from "@/components/TraceViewer";
+import { RecentRunsList } from "@/components/RecentRunsList";
+import { UsageHistory } from "@/components/UsageHistory";
+import { useProfile } from "@/lib/hooks/useProfile";
+import { useRuns } from "@/lib/hooks/useRuns";
 import {
   Send,
   Loader2,
@@ -40,16 +44,27 @@ export default function OrchestratorPage() {
 
   // Auth
   const [user, setUser] = useState<User | null>(null);
-  const [profile, setProfile] = useState<Profile | null>(null);
+  const { profile, loadProfile: loadProfileHook, setProfile } = useProfile();
   const [isAuthOpen, setIsAuthOpen] = useState(false);
 
-  // Composer
+  // Composer state (kept here for form control, passed to component)
   const [task, setTask] = useState("");
   const [images, setImages] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
   const [autonomous, setAutonomous] = useState(false);
+  // Multiple AIs: which orchestrator model to use for this run
+  const [model, setModel] = useState<string>("default");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Premium Real-time Vision (live camera)
+  const isPremium = isPremiumUser(profile);
+  const [realtimeVisionEnabled, setRealtimeVisionEnabled] = useState(false);
+  const [isCameraActive, setIsCameraActive] = useState(false);
+  const [isPushingFrame, setIsPushingFrame] = useState(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const cameraStreamRef = useRef<MediaStream | null>(null);
+  const autoFrameIntervalRef = useRef<any>(null);
 
   // One-shot result
   const [oneShotResult, setOneShotResult] = useState<string | null>(null);
@@ -60,55 +75,28 @@ export default function OrchestratorPage() {
   const [isLiveRunning, setIsLiveRunning] = useState(false);
   const [liveFinal, setLiveFinal] = useState<string | null>(null);
 
-  // History + trace viewer
-  const [recentRuns, setRecentRuns] = useState<RecentRun[]>([]);
-  const [loadingRuns, setLoadingRuns] = useState(false);
-  const [selectedRun, setSelectedRun] = useState<RecentRun | null>(null);
-  const [traceSteps, setTraceSteps] = useState<StepRow[]>([]);
-  const [loadingTrace, setLoadingTrace] = useState(false);
-  const [isTraceLive, setIsTraceLive] = useState(false);
+  // Runs and trace via best-practice hook
+  const {
+    recentRuns,
+    loadingRuns,
+    loadRecentRuns: loadRecentRunsWithId,
+    selectedRun,
+    traceSteps,
+    loadingTrace,
+    loadTrace,
+    isTraceLive,
+    setIsTraceLive,
+    setTraceSteps,
+    setSelectedRun,
+    setRecentRuns,
+  } = useRuns();
 
-  // Usage history (next layer)
+  const loadRecentRuns = useCallback(() => {
+    if (user?.id) loadRecentRunsWithId(user.id);
+  }, [user?.id, loadRecentRunsWithId]);
+
+  // Usage history (full next layer)
   const [usageEvents, setUsageEvents] = useState<any[]>([]);
-
-  // Realtime channel refs for cleanup
-  const liveChannelRef = useRef<any>(null);
-  const traceChannelRef = useRef<any>(null);
-
-  const isPro = isProUser(profile);
-
-  // Load profile (for composer hints)
-  const loadProfile = useCallback(async (userId: string) => {
-    try {
-      const { data } = await supabase
-        .from("profiles")
-        .select("subscription_plan, subscription_status, orchestrations_used, orchestrations_limit")
-        .eq("id", userId)
-        .single();
-      if (data) setProfile(data as Profile);
-    } catch {}
-  }, [supabase]);
-
-  // Load recent autonomous runs for this user
-  const loadRecentRuns = useCallback(async () => {
-    if (!user) return;
-    setLoadingRuns(true);
-    try {
-      const { data, error } = await supabase
-        .from("agent_runs")
-        .select("id, status, started_at, completed_at, final_result, current_step, task_id, tasks(title, goal)")
-        .eq("user_id", user.id)
-        .order("started_at", { ascending: false })
-        .limit(8);
-      if (!error && data) {
-        setRecentRuns(data as RecentRun[]);
-      }
-    } catch {
-      // ignore
-    } finally {
-      setLoadingRuns(false);
-    }
-  }, [supabase, user]);
 
   const loadUsageEvents = useCallback(async () => {
     if (!user) return;
@@ -123,109 +111,90 @@ export default function OrchestratorPage() {
     } catch {}
   }, [supabase, user]);
 
-  // Load full trace for a past/current run from DB
-  async function loadTrace(run: RecentRun) {
-    setLoadingTrace(true);
-    setSelectedRun(run);
-    setTraceSteps([]);
-    setIsTraceLive(false);
+  // Realtime channel refs for cleanup
+  const liveChannelRef = useRef<any>(null);
+  const traceChannelRef = useRef<any>(null);
 
-    // cleanup previous trace sub
-    if (traceChannelRef.current) {
-      supabase.removeChannel(traceChannelRef.current);
-      traceChannelRef.current = null;
-    }
+  const isPro = isProUser(profile);
 
-    try {
-      const { data: steps, error } = await supabase
-        .from("agent_steps")
-        .select("id, step_number, type, content, tool_name, tool_args, tool_result, created_at")
-        .eq("run_id", run.id)
-        .order("step_number", { ascending: true });
-
-      if (!error && steps) {
-        setTraceSteps(steps as StepRow[]);
+  // Auth initialization (restored for HTTPS dev stability and to ensure user state loads)
+  useEffect(() => {
+    // Initial session
+    supabase.auth.getUser().then(({ data }: { data: { user: User | null } }) => {
+      const u = data.user;
+      setUser(u);
+      if (u) {
+        loadProfileHook(u.id);
+        if (u.id) loadRecentRunsWithId(u.id);
+        loadUsageEvents();
       }
-    } catch {}
+    });
 
-    setLoadingTrace(false);
+    // Listen for auth changes
+    const { data: listener } = supabase.auth.onAuthStateChange((_event: any, session: any) => {
+      const u = session?.user ?? null;
+      setUser(u);
+      if (u) {
+        loadProfileHook(u.id);
+        if (u.id) loadRecentRunsWithId(u.id);
+        loadUsageEvents();
+      } else {
+        setProfile(null);
+        setRecentRuns([]);
+        setUsageEvents([]);
+        clearLive();
+        clearTrace();
+      }
+    });
 
-    // If still running, attach realtime so you can literally watch it live
-    if (run.status === "running") {
-      attachTraceRealtime(run.id);
+    return () => {
+      listener.subscription.unsubscribe();
+    };
+  }, []);
+
+  // Cleanup camera on unmount
+  useEffect(() => {
+    return () => {
+      stopCamera();
+    };
+  }, []);
+
+  // When customer opts into real-time vision (expensive), set profile consent if not already set.
+  // This acts as a master "I understand this is expensive" switch at profile level.
+  useEffect(() => {
+    if (!realtimeVisionEnabled || !user || !isPremium || !profile) return;
+    if (profile.realtime_vision_consent) return;
+
+    (async () => {
+      try {
+        await supabase
+          .from('profiles')
+          .update({ realtime_vision_consent: true })
+          .eq('id', user.id);
+        // Refresh profile so UI updates immediately
+        loadProfileHook(user.id);
+      } catch (e) {
+        // non fatal
+      }
+    })();
+  }, [realtimeVisionEnabled, user, isPremium, profile, supabase]);
+
+  // Agent-driven real-time vision: if the agent calls the "capture_live_view" tool
+  // and the customer has camera active + realtime opted in, automatically provide a frame.
+  // This lets the AI "ask to see" in real time.
+  useEffect(() => {
+    if (!realtimeVisionEnabled || !isCameraActive || !liveRunId) return;
+
+    const latest = liveSteps[liveSteps.length - 1];
+    if (
+      latest &&
+      latest.type === 'tool_call' &&
+      (latest as any).toolName === 'capture_live_view'
+    ) {
+      // Auto-fulfill the agent's request
+      captureAndPushFrame();
     }
-  }
-
-  function attachTraceRealtime(runId: string) {
-    if (traceChannelRef.current) {
-      supabase.removeChannel(traceChannelRef.current);
-    }
-    setIsTraceLive(true);
-
-    const ch = supabase
-      .channel(`trace-steps-${runId}`)
-      .on(
-        "postgres_changes",
-        {
-          event: "INSERT",
-          schema: "public",
-          table: "agent_steps",
-          filter: `run_id=eq.${runId}`,
-        },
-        (payload: { new: StepRow }) => {
-          const newStep = payload.new;
-          setTraceSteps((prev) => {
-            // avoid dups
-            if (prev.some((s) => s.step_number === newStep.step_number)) return prev;
-            return [...prev, newStep].sort((a, b) => (a.step_number || 0) - (b.step_number || 0));
-          });
-        }
-      )
-      .subscribe();
-
-    traceChannelRef.current = ch;
-  }
-
-  // Attach optional realtime for the current live run (resilience + multi-tab)
-  function attachLiveRealtime(runId: string) {
-    if (liveChannelRef.current) {
-      supabase.removeChannel(liveChannelRef.current);
-    }
-    const ch = supabase
-      .channel(`live-run-${runId}`)
-      .on(
-        "postgres_changes",
-        { event: "INSERT", schema: "public", table: "agent_steps", filter: `run_id=eq.${runId}` },
-        (payload: { new: Record<string, unknown> }) => {
-          const s = payload.new;
-          const mapped: AgentStep & { step_number?: number } = {
-            type: (s.type as AgentStep['type']) || 'thought',
-            content: typeof s.content === 'string' ? s.content : undefined,
-            toolName: typeof s.tool_name === 'string' ? s.tool_name : undefined,
-            toolArgs: s.tool_args,
-            toolResult: typeof s.tool_result === 'string' ? s.tool_result : undefined,
-            step_number: typeof s.step_number === 'number' ? s.step_number : undefined,
-          };
-          setLiveSteps((prev) => {
-            if (prev.some((p) => p.step_number === mapped.step_number)) return prev;
-            return [...prev, mapped];
-          });
-        }
-      )
-      .subscribe();
-    liveChannelRef.current = ch;
-  }
-
-  function cleanupChannels() {
-    if (liveChannelRef.current) {
-      supabase.removeChannel(liveChannelRef.current);
-      liveChannelRef.current = null;
-    }
-    if (traceChannelRef.current) {
-      supabase.removeChannel(traceChannelRef.current);
-      traceChannelRef.current = null;
-    }
-  }
+  }, [liveSteps, realtimeVisionEnabled, isCameraActive, liveRunId]);
 
   // Image handling moved to OrchestratorComposer (next layer refactor)
 
@@ -258,6 +227,8 @@ export default function OrchestratorPage() {
     const formData = new FormData();
     formData.append("task", task.trim());
     if (autonomous) formData.append("autonomous", "true");
+    formData.append("model", model);
+    if (realtimeVisionEnabled && autonomous) formData.append("realtime_vision", "true");
     images.forEach((file) => formData.append("images", file));
 
     try {
@@ -306,7 +277,7 @@ export default function OrchestratorPage() {
                 setLiveFinal(evt.final_result);
                 setIsLiveRunning(false);
                 // refresh history so the new completed run appears
-                loadRecentRuns();
+                if (user?.id) loadRecentRunsWithId(user.id);
                 // optionally auto-open the trace for it
                 // (we keep the liveSteps visible; user can also click in Recent)
               } else if (evt.type === "error") {
@@ -338,6 +309,130 @@ export default function OrchestratorPage() {
     }
   }
 
+  // =====================
+  // Premium Real-time Vision helpers (live camera for top-tier)
+  // =====================
+  async function startCamera() {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: { ideal: "environment" }, width: { ideal: 640 }, height: { ideal: 480 } },
+      });
+      cameraStreamRef.current = stream;
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        await videoRef.current.play().catch(() => {});
+      }
+      setIsCameraActive(true);
+      setError(null);
+    } catch (e: any) {
+      setError("Could not access camera. Please grant permission and try again.");
+    }
+  }
+
+  function stopCamera() {
+    if (autoFrameIntervalRef.current) {
+      clearInterval(autoFrameIntervalRef.current);
+      autoFrameIntervalRef.current = null;
+    }
+    if (cameraStreamRef.current) {
+      cameraStreamRef.current.getTracks().forEach((t) => t.stop());
+      cameraStreamRef.current = null;
+    }
+    if (videoRef.current) {
+      videoRef.current.srcObject = null;
+    }
+    setIsCameraActive(false);
+  }
+
+  async function captureAndPushFrame() {
+    if (!liveRunId || !videoRef.current || !isPremium) return;
+
+    setIsPushingFrame(true);
+    try {
+      const video = videoRef.current;
+      const canvas = document.createElement("canvas");
+      canvas.width = video.videoWidth || 640;
+      canvas.height = video.videoHeight || 480;
+      const ctx = canvas.getContext("2d", { willReadFrequently: true });
+      if (!ctx) throw new Error("Canvas error");
+
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      const blob: Blob = await new Promise((resolve) =>
+        canvas.toBlob((b) => resolve(b || new Blob()), "image/jpeg", 0.82)
+      );
+      const file = new File([blob], `rt-vision-${Date.now()}.jpg`, { type: "image/jpeg" });
+
+      const fd = new FormData();
+      fd.append("runId", liveRunId);
+      fd.append("frame", file);
+
+      const res = await fetch("/api/vision/push-frame", { method: "POST", body: fd });
+      if (!res.ok) {
+        const j = await res.json().catch(() => ({}));
+        throw new Error(j.error || "Failed to send live frame");
+      }
+      const data = await res.json();
+
+      // Optimistic + immediate feedback in the live trace
+      if (data?.url) {
+        setLiveSteps((prev) => [
+          ...prev,
+          { type: "vision_frame", content: data.url, step_number: prev.length + 1 },
+        ]);
+      }
+    } catch (e: any) {
+      setError(e?.message || "Live vision frame failed");
+    } finally {
+      setIsPushingFrame(false);
+    }
+  }
+
+  function toggleAutoFrames() {
+    if (!liveRunId || !isCameraActive) return;
+
+    if (autoFrameIntervalRef.current) {
+      clearInterval(autoFrameIntervalRef.current);
+      autoFrameIntervalRef.current = null;
+      return;
+    }
+
+    // Auto capture roughly every 5.5s (server enforces min interval)
+    autoFrameIntervalRef.current = setInterval(() => {
+      captureAndPushFrame();
+    }, 5500);
+  }
+
+  // Realtime attach functions (kept for live streaming resilience - best practice)
+  function attachLiveRealtime(runId: string) {
+    if (liveChannelRef.current) {
+      supabase.removeChannel(liveChannelRef.current);
+    }
+    const ch = supabase
+      .channel(`live-run-${runId}`)
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "agent_steps", filter: `run_id=eq.${runId}` },
+        (payload: { new: Record<string, unknown> }) => {
+          const s = payload.new;
+          const mapped: AgentStep & { step_number?: number } = {
+            type: (s.type as AgentStep['type']) || 'thought',
+            content: typeof s.content === 'string' ? s.content : undefined,
+            toolName: typeof s.tool_name === 'string' ? s.tool_name : undefined,
+            toolArgs: s.tool_args,
+            toolResult: typeof s.tool_result === 'string' ? s.tool_result : undefined,
+            step_number: typeof s.step_number === 'number' ? s.step_number : undefined,
+          };
+          setLiveSteps((prev) => {
+            if (prev.some((p) => p.step_number === mapped.step_number)) return prev;
+            return [...prev, mapped];
+          });
+        }
+      )
+      .subscribe();
+    liveChannelRef.current = ch;
+  }
+
   function clearLive() {
     setLiveSteps([]);
     setLiveRunId(null);
@@ -346,6 +441,49 @@ export default function OrchestratorPage() {
     if (liveChannelRef.current) {
       supabase.removeChannel(liveChannelRef.current);
       liveChannelRef.current = null;
+    }
+    // Premium realtime camera cleanup
+    stopCamera();
+    setRealtimeVisionEnabled(false);
+  }
+
+  function attachTraceRealtime(runId: string) {
+    if (traceChannelRef.current) {
+      supabase.removeChannel(traceChannelRef.current);
+    }
+    setIsTraceLive(true);
+
+    const ch = supabase
+      .channel(`trace-steps-${runId}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "agent_steps",
+          filter: `run_id=eq.${runId}`,
+        },
+        (payload: { new: StepRow }) => {
+          const newStep = payload.new;
+          setTraceSteps((prev) => {
+            if (prev.some((s) => s.step_number === newStep.step_number)) return prev;
+            return [...prev, newStep].sort((a, b) => (a.step_number || 0) - (b.step_number || 0));
+          });
+        }
+      )
+      .subscribe();
+
+    traceChannelRef.current = ch;
+  }
+
+  function cleanupChannels() {
+    if (liveChannelRef.current) {
+      supabase.removeChannel(liveChannelRef.current);
+      liveChannelRef.current = null;
+    }
+    if (traceChannelRef.current) {
+      supabase.removeChannel(traceChannelRef.current);
+      traceChannelRef.current = null;
     }
   }
 
@@ -359,23 +497,8 @@ export default function OrchestratorPage() {
     }
   }
 
-  // When user changes (from Header), load data.
-  // load* are useCallback-wrapped; the dep on loadRecentRuns (which internally closes over user) is intentional here.
-  // The setProfile etc inside the called load functions are async (await + setState), so not a sync cascade.
-  useEffect(() => {
-    if (user) {
-      loadProfile(user.id);
-      loadRecentRuns();
-      loadUsageEvents();
-    } else {
-      setProfile(null);
-      setRecentRuns([]);
-      // clear any live state on signout
-      clearLive();
-      clearTrace();
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user?.id, loadProfile, loadRecentRuns]);
+  // Note: Auth listener above handles user changes and initial load.
+  // The previous user-id effect was removed to avoid duplication after restoring the full auth setup.
 
   // Cleanup channels on unmount
   useEffect(() => {
@@ -385,6 +508,9 @@ export default function OrchestratorPage() {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Safety: always ensure basic UI renders even if auth is slow
+  // (prevents "completely blank" feeling while waiting for Supabase)
 
   const canSubmit = !!user && task.trim().length > 0 && !loading;
 
@@ -433,7 +559,47 @@ export default function OrchestratorPage() {
               onSubmit={handleSubmit}
               isPro={isPro}
               canSubmit={canSubmit}
+              model={model}
+              setModel={setModel}
+              isPremium={isPremium}
+              realtimeVisionEnabled={realtimeVisionEnabled}
+              setRealtimeVisionEnabled={setRealtimeVisionEnabled}
+              isCameraActive={isCameraActive}
+              onStartCamera={startCamera}
+              onStopCamera={stopCamera}
+              onCaptureFrame={captureAndPushFrame}
+              onToggleAutoFrames={toggleAutoFrames}
+              liveRunId={liveRunId}
+              isLiveRunning={isLiveRunning}
+              isPushingFrame={isPushingFrame}
             />
+
+            {/* Premium Real-time Vision live preview.
+                The video element is mounted as soon as realtime is enabled so startCamera can attach the stream reliably. */}
+            {isPremium && realtimeVisionEnabled && (
+              <div className={`mt-2 rounded-lg border border-rose-500/30 bg-black/60 p-2 ${isCameraActive ? '' : 'opacity-60'}`}>
+                <div className="text-[10px] uppercase tracking-widest text-rose-400 mb-1 px-1 flex items-center gap-2">
+                  Live Camera (Premium)
+                  {isCameraActive && <span className="text-emerald-400">● LIVE</span>}
+                </div>
+                <video
+                  ref={videoRef}
+                  className="w-full max-w-[320px] rounded border border-rose-500/40"
+                  autoPlay
+                  muted
+                  playsInline
+                  style={{ display: isCameraActive ? 'block' : 'none' }}
+                />
+                {!isCameraActive && (
+                  <div className="h-20 flex items-center justify-center text-xs text-rose-300/70 border border-dashed border-rose-500/30 rounded">
+                    Camera preview will appear after you press “Start Camera”
+                  </div>
+                )}
+                <div className="text-[10px] text-rose-300/70 mt-1 px-1 font-medium">
+                  ⚠️ Expensive feature. Each frame costs significant vision tokens. The agent sees them in real time as visual context.
+                </div>
+              </div>
+            )}
 
             {/* One-shot result */}
             {oneShotResult && (
@@ -448,9 +614,8 @@ export default function OrchestratorPage() {
             )}
           </div>
 
-          {/* LIVE + TRACE VIEWER */}
+          {/* LIVE + TRACE VIEWER - extracted components for maintainability */}
           <div className="lg:col-span-3 space-y-4">
-            {/* LIVE EXECUTION - extracted component */}
             <LiveExecution
               isLiveRunning={isLiveRunning}
               liveSteps={liveSteps}
@@ -459,113 +624,25 @@ export default function OrchestratorPage() {
               clearLive={clearLive}
             />
 
-            {/* SELECTED TRACE VIEWER (history + live attach) */}
-            {selectedRun && (
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between pb-2">
-                  <div>
-                    <CardTitle className="text-base flex items-center gap-2">
-                      Trace for run <span className="font-mono text-xs text-zinc-500">{selectedRun.id.slice(0, 8)}</span>
-                      {isTraceLive && <span className="text-[10px] rounded bg-emerald-500/20 px-1.5 py-px text-emerald-400">LIVE</span>}
-                    </CardTitle>
-                    <CardDescription className="text-xs">
-                      {selectedRun.tasks?.goal || selectedRun.tasks?.title || "Goal"} · status: {selectedRun.status}
-                    </CardDescription>
-                  </div>
-                  <Button variant="ghost" size="sm" onClick={clearTrace}>
-                    Close
-                  </Button>
-                </CardHeader>
-                <CardContent>
-                  {loadingTrace && traceSteps.length === 0 ? (
-                    <div className="text-sm text-zinc-400">Loading trace…</div>
-                  ) : (
-                    <div className="space-y-3">
-                      {traceSteps.length === 0 && <div className="text-sm text-zinc-500">No steps recorded yet.</div>}
-                      {traceSteps.map((s, i) => <StepRenderer key={i} step={s} index={i} />)}
-                    </div>
-                  )}
-                  {selectedRun.status === "running" && !isTraceLive && (
-                    <div className="mt-3">
-                      <Button size="sm" variant="outline" onClick={() => attachTraceRealtime(selectedRun.id)}>
-                        Attach live updates
-                      </Button>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            )}
+            <TraceViewer
+              selectedRun={selectedRun}
+              traceSteps={traceSteps}
+              loadingTrace={loadingTrace}
+              isTraceLive={isTraceLive}
+              clearTrace={clearTrace}
+              attachTraceRealtime={attachTraceRealtime}
+            />
 
-            {/* RECENT AUTONOMOUS RUNS */}
-            <Card>
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle className="flex items-center gap-2 text-base">
-                    <History className="h-4 w-4" /> Recent Autonomous Runs
-                  </CardTitle>
-                  <Button variant="ghost" size="sm" onClick={loadRecentRuns} disabled={loadingRuns}>
-                    {loadingRuns ? "Refreshing..." : "Refresh"}
-                  </Button>
-                </div>
-                <CardDescription className="text-xs">Click View to see the full saved trace. Running ones can be watched live.</CardDescription>
-              </CardHeader>
-              <CardContent>
-                {!user ? (
-                  <div className="text-sm text-zinc-400">Sign in to see your autonomous run history.</div>
-                ) : recentRuns.length === 0 ? (
-                  <div className="text-sm text-zinc-400">No autonomous runs yet. Check the box and submit a Pro task.</div>
-                ) : (
-                  <div className="space-y-2">
-                    {recentRuns.map((r) => {
-                      const goal = r.tasks?.goal || r.tasks?.title || "(goal)";
-                      const isRunning = r.status === "running";
-                      return (
-                        <div
-                          key={r.id}
-                          className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 rounded-lg border border-white/10 bg-zinc-900/50 px-3 py-2 text-sm"
-                        >
-                          <div className="min-w-0 flex-1">
-                            <div className="flex items-center gap-2">
-                              <span className="font-mono text-[10px] text-zinc-500">{r.id.slice(0, 8)}</span>
-                              <span className={`inline-block rounded px-1.5 py-px text-[10px] ${isRunning ? "bg-emerald-500/20 text-emerald-400" : r.status === "completed" ? "bg-white/10 text-white/70" : "bg-red-500/20 text-red-400"}`}>
-                                {r.status}
-                              </span>
-                              {isRunning && <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" />}
-                            </div>
-                            <div className="truncate text-zinc-300 mt-0.5">{goal}</div>
-                            <div className="text-[10px] text-zinc-500 mt-0.5">
-                              {new Date(r.started_at).toLocaleString()} {r.completed_at ? "→ " + new Date(r.completed_at).toLocaleTimeString() : ""}
-                            </div>
-                          </div>
+            <RecentRunsList
+              user={user}
+              recentRuns={recentRuns}
+              loadingRuns={loadingRuns}
+              loadRecentRuns={loadRecentRuns}
+              loadTrace={loadTrace}
+              usageEventsCount={usageEvents.length}
+            />
 
-                          <div className="flex items-center gap-2 shrink-0">
-                            {r.final_result && (
-                              <div className="hidden max-w-[220px] truncate text-xs text-zinc-400 sm:block pr-2 border-r border-white/10">
-                                {r.final_result.slice(0, 90)}…
-                              </div>
-                            )}
-                            <Button size="sm" variant="outline" onClick={() => loadTrace(r)}>
-                              <Eye className="mr-1.5 h-3.5 w-3.5" /> View trace
-                            </Button>
-                            {isRunning && (
-                              <Button size="sm" onClick={() => loadTrace(r)}>
-                                Watch live
-                              </Button>
-                            )}
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-
-                {usageEvents.length > 0 && (
-                  <div className="mt-3 text-[10px] text-zinc-500">
-                    + {usageEvents.length} recent usage events logged (one-shot + autonomous).
-                  </div>
-                )}
-              </CardContent>
-            </Card>
+            <UsageHistory usageEvents={usageEvents} />
           </div>
         </div>
 

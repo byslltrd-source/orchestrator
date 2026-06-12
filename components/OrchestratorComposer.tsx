@@ -10,9 +10,11 @@ import {
   ImagePlus,
   X,
   Play,
+  Cpu,
 } from "lucide-react";
 import { isProUser, type UserProfile } from "@/lib/utils";
 import { MAX_IMAGES_FREE } from "@/lib/constants";
+import { getModelOptions, type OrchestratorModelId, DEFAULT_ORCHESTRATOR_MODEL_ID } from "@/lib/ai/models";
 
 interface OrchestratorComposerProps {
   user: any;
@@ -31,6 +33,21 @@ interface OrchestratorComposerProps {
   onSubmit: (e: React.FormEvent) => void;
   isPro: boolean;
   canSubmit: boolean;
+  // Multiple AI support
+  model: string;
+  setModel: (m: string) => void;
+  // Premium Real-time Vision (top tier only)
+  isPremium: boolean;
+  realtimeVisionEnabled: boolean;
+  setRealtimeVisionEnabled: (v: boolean) => void;
+  isCameraActive: boolean;
+  onStartCamera?: () => void | Promise<void>;
+  onStopCamera?: () => void;
+  onCaptureFrame?: () => void | Promise<void>;
+  onToggleAutoFrames?: () => void;
+  liveRunId: string | null;
+  isLiveRunning: boolean;
+  isPushingFrame: boolean;
 }
 
 export function OrchestratorComposer(props: OrchestratorComposerProps) {
@@ -51,6 +68,19 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
     onSubmit,
     isPro,
     canSubmit,
+    model,
+    setModel,
+    isPremium,
+    realtimeVisionEnabled,
+    setRealtimeVisionEnabled,
+    isCameraActive,
+    onStartCamera,
+    onStopCamera,
+    onCaptureFrame,
+    onToggleAutoFrames,
+    liveRunId,
+    isLiveRunning,
+    isPushingFrame,
   } = props;
 
   const maxCount = isPro ? 6 : MAX_IMAGES_FREE;
@@ -160,6 +190,107 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
             <div className="text-[10px] text-zinc-500">Free: 1 image. Pro: multiple (detail: high).</div>
           </div>
 
+          {/* Model selector - the "multiple AIs for orchestrator" feature */}
+          <div>
+            <div className="mb-2 flex items-center gap-2 text-xs uppercase tracking-widest text-zinc-500">
+              <Cpu className="h-3.5 w-3.5" />
+              <div>AI Model (for this orchestration)</div>
+            </div>
+            <select
+              value={model}
+              onChange={(e) => setModel(e.target.value)}
+              disabled={!user || loading}
+              className="w-full rounded-md border border-white/10 bg-black/40 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-white/30"
+            >
+              {getModelOptions().map((opt) => (
+                <option key={opt.id} value={opt.id}>
+                  {opt.label}
+                  {opt.supportsVision ? ' · vision' : ''}
+                  {opt.speed ? ` · ${opt.speed}` : ''}
+                </option>
+              ))}
+            </select>
+            <div className="mt-1 text-[10px] text-zinc-500">
+              {getModelOptions().find((o) => o.id === model)?.notes || 'Select a model to power the orchestrator agent.'}
+            </div>
+          </div>
+
+          {/* Premium Real-time Vision (live camera feed) - explicit expensive opt-in */}
+          {isPremium && (
+            <div className="rounded-lg border border-rose-500/30 bg-rose-500/5 p-3">
+              <label className="flex items-start gap-3">
+                <input
+                  type="checkbox"
+                  checked={realtimeVisionEnabled}
+                  onChange={(e) => {
+                    const next = e.target.checked;
+                    setRealtimeVisionEnabled(next);
+                    if (!next && onStopCamera) onStopCamera();
+                  }}
+                  disabled={!user || loading}
+                  className="mt-1 h-4 w-4 accent-rose-400"
+                />
+                <div className="flex-1 text-sm">
+                  <div className="font-medium text-rose-300 flex items-center gap-2">
+                    <span>Real-time Vision — Opt-in (Premium)</span>
+                    <span className="text-[10px] uppercase tracking-widest bg-rose-500/20 px-1.5 py-px rounded">EXPENSIVE</span>
+                  </div>
+                  <div className="text-xs text-rose-200/80">
+                    The AI agent will receive live camera frames you send. <span className="font-semibold">This is expensive</span> (high-detail vision tokens per frame + many LLM calls). Only opt in if you need the agent to literally "see" in real time (e.g. watch a screen, physical object, environment, demo, etc.). Use low frequency.
+                  </div>
+                </div>
+              </label>
+
+              {realtimeVisionEnabled && autonomous && (
+                <div className="mt-3 pl-7 space-y-2">
+                  <div className="flex items-center gap-2">
+                    {!isCameraActive ? (
+                      <button
+                        type="button"
+                        onClick={() => onStartCamera?.()}
+                        disabled={loading || isLiveRunning && !liveRunId}
+                        className="text-xs px-3 py-1.5 rounded border border-rose-400/50 hover:bg-rose-500/10 text-rose-200"
+                      >
+                        Start Camera
+                      </button>
+                    ) : (
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => onStopCamera?.()}
+                          className="text-xs px-3 py-1.5 rounded border border-rose-400/50 hover:bg-rose-500/10 text-rose-200"
+                        >
+                          Stop Camera
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => onCaptureFrame?.()}
+                          disabled={isPushingFrame || !liveRunId}
+                          className="text-xs px-3 py-1.5 rounded bg-rose-500/90 hover:bg-rose-500 text-white disabled:opacity-60"
+                        >
+                          {isPushingFrame ? "Sending..." : "Send Current Frame"}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => onToggleAutoFrames?.()}
+                          disabled={!liveRunId}
+                          className="text-xs px-3 py-1.5 rounded border border-rose-400/50 hover:bg-rose-500/10 text-rose-200"
+                        >
+                          { /* simple indicator - parent manages interval */ }
+                          Auto
+                        </button>
+                      </>
+                    )}
+                  </div>
+
+                  <div className="text-[10px] text-rose-300/70 font-medium">
+                    ⚠️ Real-time vision consumes a lot of tokens. Send frames sparingly. Auto mode is for light monitoring only.
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
           {/* Autonomous toggle */}
           <label className="flex items-start gap-3 rounded-lg border border-white/10 p-3 text-sm hover:bg-white/5">
             <input
@@ -172,7 +303,8 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
             <div className="leading-tight">
               <div className="font-medium">Run autonomously (Pro)</div>
               <div className="text-xs text-zinc-400">
-                Agent plans, uses web search + browse + memory, loops until done. Full trace saved. You watch live.
+                Agent plans, uses tools + memory, loops until done. Full trace saved. You watch live.
+                {isPremium && " Premium users can also opt-in to real-time camera vision (expensive)."}
               </div>
             </div>
           </label>

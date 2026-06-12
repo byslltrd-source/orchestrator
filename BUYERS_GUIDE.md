@@ -12,7 +12,7 @@ Thank you for purchasing Orchestrator.
 
 ## Quick Start
 1. Copy `.env.example` to `.env.local`
-2. Fill in your keys (OpenAI, Supabase, Stripe, Tavily)
+2. Fill in your keys (OpenAI or other providers via the multi-AI presets, Supabase, Stripe, Tavily)
 3. Run `npm install`
 4. Run `npm run dev`
 5. Run the Supabase schema (supabase/schema.sql) in your project
