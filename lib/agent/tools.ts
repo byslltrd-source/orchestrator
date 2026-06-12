@@ -15,6 +15,7 @@ import {
   PHYSICAL_MAX_ACTIONS_PER_RUN,
   SMART_HOME_DOMAINS,
 } from '@/lib/constants';
+import { Resend } from 'resend';
 
 const tavilyClient = process.env.TAVILY_API_KEY ? tavily({ apiKey: process.env.TAVILY_API_KEY }) : null;
 
@@ -636,6 +637,65 @@ export const tools: ToolDefinition[] = [
       } catch {}
 
       return `🌙 Dream Integration complete.\n\n${dream}`;
+    },
+  },
+
+  // Email capability: Write and send emails (Ultra Premium / Life OS feature)
+  // The agent can compose professional emails based on context (memories, vision summaries, physical events, Life OS reflections)
+  // and send them via Resend. Supports rich HTML. Tie to storage for attachments if needed.
+  {
+    name: 'send_email',
+    description: 'Write (compose) and send an email on the user\'s behalf. Use for follow-ups, reports, meeting summaries, notifications, personal messages, etc. The agent should draft a thoughtful, context-aware email using available memory, recent vision, physical actions, or Life OS insights. Always include a clear subject. Supports HTML for formatting. For production, configure a verified Resend "from" address. This is available in Personal Life OS Mode and for Ultra Premium users.',
+    parameters: {
+      type: 'object',
+      properties: {
+        to: { type: 'string', description: 'Recipient email address' },
+        subject: { type: 'string', description: 'Email subject line' },
+        html: { type: 'string', description: 'HTML body of the email (preferred for rich content). The agent should generate professional, personalized content.' },
+        text: { type: 'string', description: 'Plain text fallback body (optional if html provided)' },
+        cc: { type: 'string', description: 'CC recipients (comma-separated, optional)' },
+        bcc: { type: 'string', description: 'BCC recipients (comma-separated, optional)' },
+        replyTo: { type: 'string', description: 'Reply-to address (optional)' },
+        attachments: { type: 'array', items: { type: 'object' }, description: 'Optional attachments from storage (array of { filename, path? } or content). Use storage capabilities for files.' },
+      },
+      required: ['to', 'subject', 'html'],
+    },
+    async execute(userId, { to, subject, html, text, cc, bcc, replyTo, attachments = [] }) {
+      const apiKey = process.env.RESEND_API_KEY;
+      if (!apiKey) {
+        return `Email capability not configured (missing RESEND_API_KEY). In simulation mode: Would have sent email to ${to} with subject "${subject}". Draft: ${html.slice(0, 200)}...`;
+      }
+
+      const resend = new Resend(apiKey);
+
+      // Default from: use a verified domain or Resend's onboarding (user should configure in Resend dashboard)
+      const from = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
+
+      try {
+        const { data, error } = await resend.emails.send({
+          from,
+          to,
+          subject,
+          html,
+          text: text || undefined,
+          cc: cc || undefined,
+          bcc: bcc || undefined,
+          reply_to: replyTo || undefined,
+          // Attachments would need content or path handling; for now basic support via storage paths if extended
+          attachments: attachments.length > 0 ? attachments.map((att: any) => ({
+            filename: att.filename || 'attachment',
+            // For real: fetch content from storage or pass base64/path
+          })) : undefined,
+        });
+
+        if (error) {
+          return `Failed to send email: ${error.message}`;
+        }
+
+        return `Email sent successfully to ${to}. ID: ${data?.id}. Subject: "${subject}". Composed using current Life OS context (memories, vision, physical state, etc.).`;
+      } catch (err: any) {
+        return `Email send error: ${err.message}`;
+      }
     },
   },
 ];

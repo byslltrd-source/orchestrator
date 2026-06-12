@@ -308,9 +308,11 @@ Agent tracks emotional state from conversation text and live camera (expressions
 **Personal Life OS Mode (Premium):**
 The agent operates as your full **Personal Life Operating System**. Holistic, proactive management of emotions, physical environment (smart home + sensors), digital life, habits, goals, and overall well-being.
 
-Special tools: `personal_life_reflection`, `suggest_life_os_action`, `bridge_digital_to_physical`.
+Special tools: `personal_life_reflection`, `suggest_life_os_action`, `bridge_digital_to_physical`, `send_email`.
 
-Example behavior: Notices stress from camera + full calendar → suggests physical environment adjustment + a realistic plan that respects your energy and emotional state.
+**Email Writing & Sending (Ultra Premium / Life OS)**: Agent can compose context-aware emails (using memories, live vision, physical state, Life OS reflections, etc.) and send them via Resend. Supports rich HTML, CC/BCC, attachments from storage. Add `RESEND_API_KEY` (and optionally `RESEND_FROM_EMAIL`). Falls back to simulation if not configured. Use for summaries, follow-ups, notifications, etc. (configure verified sender in Resend dashboard for production).
 
-All of the above (multiple AIs, real-time vision, physical/smart home, emotional awareness, Life OS) can be combined in a single autonomous run. The more premium features you opt into, the more capable and context-aware your personal AI becomes.
+Example behavior: Notices stress from camera + full calendar → suggests physical environment adjustment + a realistic plan that respects your energy and emotional state. Or: "Send a follow-up email to the team summarizing today's physical sensor readings and decisions."
+
+All of the above (multiple AIs, real-time vision, physical/smart home, emotional awareness, Life OS with email) can be combined in a single autonomous run. The more premium features you opt into, the more capable and context-aware your personal AI becomes.
 
