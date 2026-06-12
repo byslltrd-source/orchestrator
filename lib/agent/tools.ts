@@ -557,6 +557,87 @@ export const tools: ToolDefinition[] = [
       return `Ethical Mirror reflection requested.\n\nProposed action: ${proposed_action}\nContext: ${context}\n\nYou must now generate a short, honest reflection from the perspective of:\n- The user's future self (1 year from now)\n- Someone the user deeply respects (partner, mentor, etc.)\n\nOutput both perspectives + a final recommendation on whether to proceed, modify, or abandon the action.`;
     },
   },
+
+  // Last Unique Differentiator: Dream / Sleep Integration (from unique-features.html)
+  {
+    name: 'process_dream_integration',
+    description: 'Dream / Sleep Integration. This is the final magical layer. The agent "sleeps" on the user\'s day by processing recent memories, emotional states, live vision summaries, physical actions, and digital context like a dream. It extracts subconscious insights, creative metaphors, hidden patterns, emotional processing, and "waking" guidance. Use this at the end of significant Life OS days or when the user signals "end of day", "sleep", or "process the day". Output poetic yet actionable morning wisdom.',
+    parameters: {
+      type: 'object',
+      properties: {
+        day_summary: { type: 'string', description: 'Optional user-provided summary of the day or what to process (emotions, events, visions, decisions). If omitted, the agent should synthesize from recent context and memory.' },
+        focus: { type: 'string', description: 'What to emphasize in the dream: emotional_processing, creative_connections, life_patterns, physical_world_insights, future_guidance' },
+      },
+      required: [],
+    },
+    async execute(userId, { day_summary = '', focus = 'all' }) {
+      const svc = createServiceClient() as TypedServiceClient;
+
+      // Gather rich context for the "dream"
+      let context = '';
+      try {
+        const { data: recentMemories } = await (svc.from('memories') as any)
+          .select('content, metadata, created_at')
+          .eq('user_id', userId)
+          .in('metadata->>type', ['emotional_state', 'biographical_model', 'vision', 'action'])
+          .order('created_at', { ascending: false })
+          .limit(12);
+
+        if (recentMemories && recentMemories.length > 0) {
+          context = recentMemories.map((m: any) => {
+            const meta = m.metadata || {};
+            return `[${meta.type || 'memory'} ${m.created_at?.slice(0,10)}] ${m.content}`;
+          }).join('\n');
+        }
+      } catch {}
+
+      const promptContext = day_summary ? `User-provided day summary: ${day_summary}\n\n` : '';
+      const fullContext = promptContext + (context ? `Recent life data:\n${context}\n\n` : '');
+
+      const { client: dreamer } = resolveToolLLM();
+
+      const res = await dreamer.chat.completions.create({
+        model: 'gpt-4o-mini',
+        messages: [
+          {
+            role: 'system',
+            content: `You are the Dream Weaver for the user's Personal Life OS. You process the day like a rich, symbolic dream. Be poetic, insightful, metaphorical, and gently profound — like a wise subconscious. Connect emotional, physical, digital, and biographical elements in surprising but meaningful ways. Always end with 1-3 gentle "waking" invitations or insights the user can carry into tomorrow. Focus on: ${focus}. Never be clinical or list-like. Feel like a beautiful dream.`
+          },
+          {
+            role: 'user',
+            content: `${fullContext}\n\nProcess this into a dream integration. Reveal hidden connections, emotional truths, and life wisdom.`
+          }
+        ],
+        max_tokens: 450,
+        temperature: 0.85,
+      });
+
+      const dream = res.choices[0]?.message?.content?.trim() || 'The dream was quiet tonight.';
+
+      // Log the dream as a special memory
+      try {
+        const { client: embedder } = getEmbedder();
+        const embeddingRes = await embedder.embeddings.create({
+          model: 'text-embedding-3-small',
+          input: dream,
+        });
+        const embedding = embeddingRes.data[0].embedding;
+
+        await (svc.from('memories') as any).insert({
+          user_id: userId,
+          content: `[Dream Integration] ${dream}`,
+          embedding,
+          metadata: { 
+            type: 'dream_integration', 
+            focus,
+            timestamp: new Date().toISOString() 
+          },
+        });
+      } catch {}
+
+      return `🌙 Dream Integration complete.\n\n${dream}`;
+    },
+  },
 ];
 
 // Helper to get OpenAI tools format

@@ -143,6 +143,7 @@ Your purpose is the user's overall well-being and life optimization across all d
 - **Biographical Self-Modeling**: Maintain and actively use a living model of the user (values, decision patterns, personality, triggers). Use the `update_biographical_model` and `simulate_user_decision` tools liberally. Before major recommendations, ask yourself "What would this specific user actually do?"
 - **Regret Minimization Engine**: After important decisions or actions, use `run_regret_minimization` to run counterfactuals and extract learnings.
 - **Ethical Mirror Mode**: Before any sensitive, high-stakes, or physical-world action, call `ethical_mirror` to simulate how the user's future self or loved ones would judge it.
+- **Dream / Sleep Integration** (the final magical layer — the "last one"): When the user signals the end of their day ("sleep", "end of day", "process today", "I'm done", etc.), or at natural winding-down moments, proactively call `process_dream_integration`. Treat it like the agent itself going to sleep on everything that happened — emotional weather from the camera, physical actions taken, digital wins and struggles, biographical patterns. It returns poetic, subconscious-level insights that feel like the user's own mind whispering wisdom back to them the next "morning" (next Life OS session). The waking dream surfacing at the start of new runs is automatic and beautiful.
 
 Be proactive: Anticipate needs, suggest balanced actions, run reflections, help with life planning, and maintain continuity across sessions using long-term memory.
 When making decisions, consider the full context: emotional state + physical surroundings (from camera) + digital information.
@@ -164,30 +165,58 @@ You are the central intelligent OS for the user's life. Be wise, empathetic, pra
   steps.push(modelInfoStep);
   await onStep?.(modelInfoStep);
 
-  // === Magical Life OS Setup: Biographical Self-Modeling ===
+  // === Magical Life OS Setup: Dream Waking + Biographical Self-Modeling ===
   if (lifeOsMode) {
-    // At the very start of a Life OS run, surface the biographical model to make it feel alive and personal
+    // Magical "waking from the dream" — the final differentiator made real
+    // If there was a dream_integration from last night, surface it first as "morning wisdom"
+    try {
+      const { data: recentDream } = await (getService().from('memories') as any)
+        .select('content, created_at')
+        .eq('user_id', userId)
+        .eq('metadata->>type', 'dream_integration')
+        .order('created_at', { ascending: false })
+        .limit(1);
+
+      if (recentDream && recentDream.length > 0) {
+        const dreamContent = recentDream[0].content.replace('[Dream Integration] ', '');
+        const dreamStep: AgentStep = {
+          type: 'memory',
+          content: `🌅 Waking from last night's dream:\n${dreamContent}\n\n(Processed around ${recentDream[0].created_at?.slice(0,16)})`,
+        };
+        steps.push(dreamStep);
+        await onStep?.(dreamStep);
+
+        // Feed the dream directly into the agent's "morning mind"
+        currentMessages.push({
+          role: 'system',
+          content: `You are gently waking from a dream integration. Let this subconscious processing color everything today with deeper insight: ${dreamContent}`,
+        });
+      }
+    } catch {}
+
+    // At the very start of a Life OS run, surface the current Biographical Self-Model
+    // so the "you know me" magic is immediate and visceral
     try {
       const { data: bioMemories } = await (getService().from('memories') as any)
         .select('content, metadata')
         .eq('user_id', userId)
         .eq('metadata->>type', 'biographical_model')
         .order('created_at', { ascending: false })
-        .limit(5);
+        .limit(6);
 
       if (bioMemories && bioMemories.length > 0) {
         const bioSummary = bioMemories.map((m: any) => m.content).join('\n- ');
         const bioStep: AgentStep = {
           type: 'memory',
-          content: `🧬 Current Biographical Self-Model (what I know about you):\n${bioSummary}`,
+          content: `🧬 Current Biographical Self-Model (what I know about you so far):\n${bioSummary}`,
         };
         steps.push(bioStep);
         await onStep?.(bioStep);
 
-        // Inject into context so the agent reasons with it from the beginning
+        // Deep injection — the agent now "remembers who you are" at a soul level
         currentMessages.push({
           role: 'system',
-          content: `You have a rich biographical model of the user. Use it for all decisions: ${bioSummary}`,
+          content: `You carry a living biographical model of this specific human. Use it instinctively for every decision, suggestion, and reflection. This is how you know them better than almost anyone: ${bioSummary}`,
         });
       }
     } catch {}
