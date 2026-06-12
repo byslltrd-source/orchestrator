@@ -60,6 +60,7 @@ export default function OrchestratorPage() {
   // Premium Real-time Vision (live camera)
   const isPremium = isPremiumUser(profile);
   const [realtimeVisionEnabled, setRealtimeVisionEnabled] = useState(false);
+  const [physicalWorldEnabled, setPhysicalWorldEnabled] = useState(false); // Requires realtimeVisionEnabled + premium. High risk/expensive.
   const [isCameraActive, setIsCameraActive] = useState(false);
   const [isPushingFrame, setIsPushingFrame] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -179,6 +180,13 @@ export default function OrchestratorPage() {
     })();
   }, [realtimeVisionEnabled, user, isPremium, profile, supabase]);
 
+  // If realtime vision is disabled, physical world must also be disabled (it depends on live camera)
+  useEffect(() => {
+    if (!realtimeVisionEnabled && physicalWorldEnabled) {
+      setPhysicalWorldEnabled(false);
+    }
+  }, [realtimeVisionEnabled, physicalWorldEnabled]);
+
   // Agent-driven real-time vision: if the agent calls the "capture_live_view" tool
   // and the customer has camera active + realtime opted in, automatically provide a frame.
   // This lets the AI "ask to see" in real time.
@@ -229,6 +237,7 @@ export default function OrchestratorPage() {
     if (autonomous) formData.append("autonomous", "true");
     formData.append("model", model);
     if (realtimeVisionEnabled && autonomous) formData.append("realtime_vision", "true");
+    if (physicalWorldEnabled && realtimeVisionEnabled && autonomous) formData.append("physical_world", "true");
     images.forEach((file) => formData.append("images", file));
 
     try {
@@ -564,6 +573,8 @@ export default function OrchestratorPage() {
               isPremium={isPremium}
               realtimeVisionEnabled={realtimeVisionEnabled}
               setRealtimeVisionEnabled={setRealtimeVisionEnabled}
+              physicalWorldEnabled={physicalWorldEnabled}
+              setPhysicalWorldEnabled={setPhysicalWorldEnabled}
               isCameraActive={isCameraActive}
               onStartCamera={startCamera}
               onStopCamera={stopCamera}

@@ -26,6 +26,7 @@ export async function runAutonomousAgent(params: RunAgentParams): Promise<RunAge
     onStep,
     model: requestedModel,
     realtimeVisionEnabled = false,
+    physicalWorldEnabled = false,
   } = params;
 
   // Best-effort env validation
@@ -56,7 +57,19 @@ You can use multiple tools in parallel by calling them together in one response.
 REAL-TIME VISION (Premium opt-in feature — this is expensive for the customer):
 The customer has explicitly opted in to real-time vision for this run. You will receive "[Real-time camera update]" messages containing live camera frames (high-detail images) from their device. Use them to observe the physical world, a screen, an object, a process, or environment in real time. New frames can arrive between your turns. When relevant, reference what you see ("I can see in the live feed that...").`;
 
-  const SYSTEM_PROMPT = realtimeVisionEnabled ? baseSystem + realtimeSection : baseSystem;
+  const physicalSection = `
+
+PHYSICAL WORLD INTEGRATION (Premium + Real-time Vision opt-in ONLY. HIGH RISK + EXPENSIVE + REAL CONSEQUENCES):
+The customer has opted into Physical World Integration. In addition to seeing via live camera, you can now SENSE (read_physical_sensor) and ACT (execute_physical_action) on the real physical world — lights, robots, locks, printers, IoT devices, relays, etc.
+- Always ground actions in the most recent live vision frame(s) before acting.
+- Use read_physical_sensor to get objective data (temp, distance, states).
+- Use execute_physical_action with explicit "reason" and prefer dry_run=true on first attempts.
+- Safety first: Physical actions can cause damage, injury, or irreversible changes. Be extremely conservative. Log your reasoning.
+- Controller is configured by the customer (webhook / Home Assistant / custom hardware bridge).`;
+
+  let SYSTEM_PROMPT = baseSystem;
+  if (realtimeVisionEnabled) SYSTEM_PROMPT += realtimeSection;
+  if (physicalWorldEnabled && realtimeVisionEnabled) SYSTEM_PROMPT += physicalSection;
 
   // Surface the chosen AI at the top of every autonomous trace (multiple AIs feature)
   const modelInfoStep: AgentStep = {

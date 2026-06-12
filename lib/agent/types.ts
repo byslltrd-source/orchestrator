@@ -28,6 +28,8 @@ export type RunAgentParams = {
   model?: string | null;
   /** If the customer explicitly opted into real-time vision for this run (premium, expensive feature). */
   realtimeVisionEnabled?: boolean;
+  /** Physical World Integration (see + act on real hardware/IoT/robots). Requires Premium + realtimeVisionEnabled + explicit opt-in. High risk. */
+  physicalWorldEnabled?: boolean;
 };
 
 export type RunAgentResult = {

@@ -27,6 +27,15 @@ export const REALTIME_VISION_MAX_FRAMES_PER_RUN = 60; // generous but bounded fo
 // This helps control costs for the "real time vision" feature while still providing the raw image when needed.
 export const VISION_SUMMARIZER_MODEL = 'gpt-4o-mini';
 
+// Physical World Integration (Premium + Real-time Vision opt-in only)
+// Allows the agent to not only SEE the physical world (via live camera) but also ACT on it (sensors + actuators).
+// This is deliberately high-risk and expensive (real-world consequences, potential hardware costs, safety issues).
+// Customers must explicitly opt in. All physical actions are logged and can be dry-run.
+export const PHYSICAL_INTEGRATION_ENABLED = true;
+export const PHYSICAL_DEFAULT_CONTROLLER_URL = process.env.PHYSICAL_CONTROLLER_URL || ''; // e.g. https://your-home-assistant.local/api or your custom webhook
+export const PHYSICAL_ACTION_TIMEOUT_MS = 15000; // max time to wait for physical response
+export const PHYSICAL_MAX_ACTIONS_PER_RUN = 20; // safety cap per autonomous run
+
 export const PLANS = {
   FREE: 'free',
   PRO: 'pro',

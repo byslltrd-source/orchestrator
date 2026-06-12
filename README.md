@@ -159,5 +159,20 @@ Premium subscribers can opt-in per autonomous run to let the agent see live came
 
 **Warning**: This feature is deliberately expensive (high-detail vision tokens + context bloat). It is opt-in only, rate-limited on the server, and comes with prominent cost warnings in the UI. The system prompt informs the agent about live vision updates when the customer opts in.
 
-This makes the Orchestrator a true multi-AI command center with optional live visual awareness.
+**Physical World Integration (Premium + Real-time Vision opt-in, EXTREMELY expensive + risky):**
+Builds directly on real-time vision. When the customer also enables "Physical World Integration", the agent gains the ability to **act** in the real world, not just see it:
+- `read_physical_sensor` — read real sensors (temperature, distance, door state, power, motion...).
+- `execute_physical_action` — control hardware (lights, robot arms, locks, printers, relays, valves, etc.).
+
+All physical calls go through a customer-configured controller (webhook, Home Assistant, custom IoT bridge, Raspberry Pi, etc.). Set `PHYSICAL_CONTROLLER_URL`.
+
+**Critical warnings**:
+- Real physical consequences (damage, safety hazards, fire risk, etc.).
+- Agent is told to ground every action in the latest live camera frame.
+- Strong rate limits, dry-run support, heavy logging, and per-run opt-in required.
+- New agent tool `capture_live_view` allows the AI to actively request "show me the current physical state now".
+
+Example use: "Watch the assembly line via camera and stop the robot if you see a jam."
+
+This turns the Orchestrator into a true **physical-world autonomous agent** for premium customers who explicitly opt in.
 

@@ -9,6 +9,11 @@ import { tavily } from '@tavily/core';
 import type { TypedServiceClient } from '@/lib/supabase/service';
 import type { Database } from '@/lib/supabase/database.types';
 import { resolveToolLLM, getEmbedder } from '@/lib/ai/client';
+import {
+  PHYSICAL_DEFAULT_CONTROLLER_URL,
+  PHYSICAL_ACTION_TIMEOUT_MS,
+  PHYSICAL_MAX_ACTIONS_PER_RUN,
+} from '@/lib/constants';
 
 const tavilyClient = process.env.TAVILY_API_KEY ? tavily({ apiKey: process.env.TAVILY_API_KEY }) : null;
 
@@ -216,6 +221,111 @@ export const tools: ToolDefinition[] = [
     async execute(userId, { reason }) {
       // The client (when realtime + camera active) will auto-provide a frame when it sees this tool call in the trace.
       return `Live camera view requested. Reason: ${reason || 'Agent needs visual update'}. A new real-time vision frame should arrive shortly if the user has opted in and camera is active.`;
+    },
+  },
+
+  // 7. PHYSICAL WORLD INTEGRATION (Premium + Real-time Vision opt-in ONLY. HIGH RISK + EXPENSIVE)
+  // The agent can now not only SEE the physical world (via live camera) but also SENSE and ACT on it.
+  // Examples: read temperature/humidity/distance sensors, control lights/locks/robots/printers, trigger physical processes.
+  // All actions go through a configurable Physical Controller (webhook / Home Assistant / custom IoT endpoint).
+  // SAFETY: Always ground actions in live vision. Prefer dry-run / confirmation patterns. Irreversible actions can cause real damage.
+  {
+    name: 'read_physical_sensor',
+    description: 'Read a value from a physical sensor or IoT device in the real world (temperature, distance, motion, weight, door state, battery level, etc.). Use live vision context to decide which sensor makes sense. Only available when customer has opted into Physical World Integration (Premium).',
+    parameters: {
+      type: 'object',
+      properties: {
+        sensor_type: { type: 'string', description: 'Type of sensor (e.g. temperature, distance, motion, door_state, power_usage)' },
+        location: { type: 'string', description: 'Physical location or device name (e.g. "desk", "front_door", "robot_arm_1")' },
+        reason: { type: 'string', description: 'Why you need this reading right now (helps with logging and safety)' },
+      },
+      required: ['sensor_type', 'reason'],
+    },
+    async execute(userId, { sensor_type, location = 'unknown', reason }) {
+      const controllerUrl = PHYSICAL_DEFAULT_CONTROLLER_URL;
+      const payload = {
+        type: 'sensor_read',
+        sensor_type,
+        location,
+        reason,
+        timestamp: new Date().toISOString(),
+      };
+
+      if (!controllerUrl) {
+        // Safe simulation mode for development / testing physical logic without hardware
+        const simMap: Record<string, string> = {
+          temperature: '22.4 C',
+          distance: '47 cm',
+          motion: 'detected',
+          door_state: 'closed',
+          power_usage: '124 W',
+        };
+        const simulated = simMap[sensor_type.toLowerCase()] || `${(Math.random() * 100).toFixed(1)} (simulated)`;
+
+        return `PHYSICAL SENSOR (SIMULATED - no PHYSICAL_CONTROLLER_URL set): ${sensor_type}@${location} = ${simulated}. Reason: ${reason}. In production, connect a real controller.`;
+      }
+
+      try {
+        const controllerRes = await fetch(controllerUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+          signal: AbortSignal.timeout(PHYSICAL_ACTION_TIMEOUT_MS),
+        });
+        const data = await controllerRes.text();
+        return `Physical sensor read successful: ${sensor_type}@${location} → ${data}. Reason: ${reason}`;
+      } catch (err: any) {
+        return `Physical sensor read failed for ${sensor_type}@${location}: ${err.message}. Falling back to vision-based inference if available.`;
+      }
+    },
+  },
+
+  {
+    name: 'execute_physical_action',
+    description: 'Execute a real-world physical action via connected hardware/IoT/robotics (turn on light, move robot arm to position, lock door, start 3D print, dispense item, trigger relay, etc.). CRITICAL SAFETY: Only use when you have fresh live camera vision confirming the scene. Double-check location and parameters. This has real physical consequences and is expensive. Customer must have opted into Physical World Integration.',
+    parameters: {
+      type: 'object',
+      properties: {
+        action: { type: 'string', description: 'The physical action to perform (e.g. "turn_on_light", "move_arm", "lock_door", "start_printer", "open_valve")' },
+        location: { type: 'string', description: 'Target device or location (e.g. "desk_lamp", "assembly_robot", "front_door")' },
+        params: { type: 'object', description: 'Action-specific parameters (e.g. { position: {x:10, y:20}, duration: 5, intensity: 80 })' },
+        reason: { type: 'string', description: 'Detailed justification and safety reasoning for this physical action' },
+        dry_run: { type: 'boolean', description: 'If true, simulate only and do not actually execute (recommended for first attempts)' },
+      },
+      required: ['action', 'location', 'reason'],
+    },
+    async execute(userId, { action, location, params = {}, reason, dry_run = false }) {
+      const controllerUrl = PHYSICAL_DEFAULT_CONTROLLER_URL;
+
+      const payload = {
+        type: 'physical_action',
+        action,
+        location,
+        params,
+        reason,
+        dry_run,
+        timestamp: new Date().toISOString(),
+      };
+
+      const baseLog = `PHYSICAL ACTION: ${action} @ ${location} | params=${JSON.stringify(params)} | reason=${reason} | dry_run=${dry_run}`;
+
+      if (!controllerUrl || dry_run) {
+        return `${baseLog} → ${dry_run ? 'DRY RUN (no execution)' : 'SIMULATED (no PHYSICAL_CONTROLLER_URL configured)'}. In a real deployment this would affect physical hardware.`;
+      }
+
+      try {
+        const controllerRes = await fetch(controllerUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+          signal: AbortSignal.timeout(PHYSICAL_ACTION_TIMEOUT_MS),
+        });
+
+        const result = await controllerRes.text();
+        return `${baseLog} → EXECUTED on physical controller. Response: ${result}`;
+      } catch (err: any) {
+        return `${baseLog} → FAILED: ${err.message}. Physical state unknown — use live vision to verify before retrying.`;
+      }
     },
   },
 ];

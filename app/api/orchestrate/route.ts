@@ -77,6 +77,8 @@ export async function POST(request: NextRequest) {
     }
 
     const requestedModel = ((formData.get('model') as string) || '').trim() || null;
+    const realtimeVision = formData.get('realtime_vision') === 'true';
+    const physicalWorld = realtimeVision && formData.get('physical_world') === 'true'; // Physical requires real-time vision opt-in
 
     // We no longer hard-require OPENAI_API_KEY at the top — multiple providers are supported.
     // The resolver below will surface a clear error if no usable key is configured for the chosen model.
@@ -195,7 +197,10 @@ export async function POST(request: NextRequest) {
                   status: 'active',
                   max_steps: MAX_AUTONOMOUS_STEPS,
                   images: storedAssets.length > 0 ? storedAssets : [],
-                  metadata: realtimeVision ? { realtime_vision: true } : {},
+                  metadata: {
+                    ...(realtimeVision ? { realtime_vision: true } : {}),
+                    ...(physicalWorld ? { physical_world: true } : {}),
+                  },
                 })
                 .select('id')
                 .single();
@@ -208,7 +213,10 @@ export async function POST(request: NextRequest) {
                   task_id: taskId,
                   user_id: user.id,
                   status: 'running',
-                  metadata: realtimeVision ? { realtime_vision: true } : {},
+                  metadata: {
+                    ...(realtimeVision ? { realtime_vision: true } : {}),
+                    ...(physicalWorld ? { physical_world: true } : {}),
+                  },
                 })
                 .select('id')
                 .single();
@@ -229,6 +237,7 @@ export async function POST(request: NextRequest) {
                 taskId,
                 model: requestedModel,
                 realtimeVisionEnabled: realtimeVision,
+                physicalWorldEnabled: physicalWorld,
                 onStep: async (step: AgentStep) => {
                   persistedSteps.push(step);
                   if (runId) {

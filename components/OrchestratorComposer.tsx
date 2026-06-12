@@ -40,6 +40,9 @@ interface OrchestratorComposerProps {
   isPremium: boolean;
   realtimeVisionEnabled: boolean;
   setRealtimeVisionEnabled: (v: boolean) => void;
+  // Physical World Integration (builds on real-time vision: AI can now SEE + ACT in the real world)
+  physicalWorldEnabled: boolean;
+  setPhysicalWorldEnabled: (v: boolean) => void;
   isCameraActive: boolean;
   onStartCamera?: () => void | Promise<void>;
   onStopCamera?: () => void;
@@ -73,6 +76,8 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
     isPremium,
     realtimeVisionEnabled,
     setRealtimeVisionEnabled,
+    physicalWorldEnabled,
+    setPhysicalWorldEnabled,
     isCameraActive,
     onStartCamera,
     onStopCamera,
@@ -286,6 +291,31 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
                   <div className="text-[10px] text-rose-300/70 font-medium">
                     ⚠️ Real-time vision consumes a lot of tokens. Send frames sparingly. Auto mode is for light monitoring only.
                   </div>
+
+                  {/* PHYSICAL WORLD INTEGRATION - only when realtime vision is opted in (builds directly on camera feed) */}
+                  {realtimeVisionEnabled && (
+                    <div className="mt-3 pt-3 border-t border-rose-500/30">
+                      <label className="flex items-start gap-2">
+                        <input
+                          type="checkbox"
+                          checked={physicalWorldEnabled}
+                          onChange={(e) => setPhysicalWorldEnabled(e.target.checked)}
+                          disabled={loading || !isPremium}
+                          className="mt-0.5 h-4 w-4 accent-orange-500"
+                        />
+                        <div className="text-xs leading-tight">
+                          <span className="font-semibold text-orange-300">Enable Physical World Integration</span>
+                          <span className="ml-1 text-[10px] uppercase tracking-widest bg-orange-500/20 px-1 rounded text-orange-200">EXTREMELY EXPENSIVE + RISKY</span>
+                          <div className="text-orange-200/80 mt-0.5">
+                            The AI will be able to <strong>act</strong> on the physical world (sensors, lights, robots, locks, printers, relays, etc.) using live camera as its eyes.
+                            <br />• Real hardware consequences possible (damage, safety issues).
+                            <br />• Actions are rate-limited and heavily logged.
+                            <br />• Requires a Physical Controller (webhook/Home Assistant/custom IoT bridge) to be configured by you.
+                          </div>
+                        </div>
+                      </label>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
