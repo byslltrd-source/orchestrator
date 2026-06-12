@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --experimental-https --experimental-https-key ./certificates/localhost-key.pem --experimental-https-cert ./certificates/localhost.pem",
+    "dev": "node --no-warnings -e \"console.log('\\n🚀 Starting Orchestrator Dev Server (HTTPS enabled for real-time vision & premium features)...\\n')\" && node --no-warnings ./node_modules/next/dist/bin/next dev --experimental-https --experimental-https-key ./certificates/localhost-key.pem --experimental-https-cert ./certificates/localhost.pem",
     "dev:http": "next dev",
     "build": "next build",
     "start": "next start",
