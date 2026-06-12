@@ -245,6 +245,7 @@ export async function POST(request: NextRequest) {
                 model: requestedModel,
                 realtimeVisionEnabled: realtimeVision,
                 physicalWorldEnabled: physicalWorld,
+                physicalControllerUrl: physicalControllerUrl,
                 emotionalAwarenessEnabled: emotionalAwareness,
                 lifeOsMode: lifeOsMode,
                 onStep: async (step: AgentStep) => {
