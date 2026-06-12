@@ -1,36 +1,140 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+﻿# Orchestrator
+
+Your Personal AI Command Center with vision, user accounts, and subscription-based access.
+
+## Features
+
+- **User accounts** — Email + password sign up / log in (powered by Supabase Auth)
+- **Subscription based** — Free tier (20 orchestrations/month, single image) vs Pro (unlimited + multi-image vision)
+- **Vision** — Attach one or more images. Task + images are sent together to the model using `detail: high`
+- **Usage tracking & enforcement** — Server-side quota checks + automatic monthly reset for free users
+- **Stripe billing** — Checkout + Customer Portal + webhook sync
 
 ## Getting Started
 
-First, run the development server:
+### 1. Environment
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cp .env.example .env.local
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Fill in:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `OPENAI_API_KEY`
+- Supabase keys (see below)
+- Stripe keys + price ID (see below)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 2. Supabase Setup (Accounts)
 
-## Learn More
+1. Create a new Supabase project at https://supabase.com
+2. Go to **SQL Editor** and run the entire contents of `supabase/schema.sql`
+3. Copy:
+   - Project URL → `NEXT_PUBLIC_SUPABASE_URL`
+   - `anon` public key → `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   - `service_role` key (keep secret!) → `SUPABASE_SERVICE_ROLE_KEY`
+4. (Dev only) Authentication → Providers → Email → turn **off** "Confirm email" so you can sign up instantly.
 
-To learn more about Next.js, take a look at the following resources:
+### 3. Stripe Setup (Subscriptions)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Create a product in Stripe called **"Orchestrator Pro"** (recurring monthly).
+2. Copy the **Price ID** (starts with `price_...`) into `STRIPE_PRICE_PRO`.
+3. Add your `STRIPE_SECRET_KEY` (test or live).
+4. Create a webhook in Stripe pointing to:
+   `https://your-domain.com/api/stripe/webhooks`
+   - Events to listen for: `checkout.session.completed`, `customer.subscription.*`, `invoice.payment_succeeded`
+   - Copy the **Signing secret** (`whsec_...`) into `STRIPE_WEBHOOK_SECRET`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+For local development you can use the Stripe CLI:
+```bash
+stripe login
+stripe listen --forward-to localhost:3000/api/stripe/webhooks
+```
 
-## Deploy on Vercel
+### 4. Run
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm install
+npm run dev
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Open http://localhost:3000
+
+Sign up (free), try orchestrating with/without images, then click **Upgrade** to test the full Pro flow.
+
+## Tech Stack
+
+- Next.js 16 + App Router + Turbopack
+- React 19 + Tailwind
+- Supabase (Auth + Postgres + RLS)
+- Stripe (Checkout, Portal, Webhooks)
+- OpenAI (GPT-4o-mini with vision)
+
+## Key Files
+
+- `app/api/orchestrate/route.ts` — protected, usage-gated, multi-image vision endpoint
+- `app/api/stripe/*` — checkout, portal, webhook handler
+- `lib/supabase/*` — server, browser, service-role, and middleware clients
+- `middleware.ts` — session refresh for SSR auth
+- `components/{Header,AuthModal}.tsx`
+- `supabase/schema.sql` — profiles table + trigger + RLS
+
+## Notes / Future Ideas
+
+- Multi-image vision is currently a Pro-only feature (enforced on client + server).
+- The "orchestrator" can be extended with tools, memory, multi-step planning, different models per tier, etc.
+- Add usage history table if you want a full audit log of every call.
+
+## Deployment
+
+- Vercel (recommended)
+- Add all the same env vars in Vercel dashboard
+- Set `NEXT_PUBLIC_SITE_URL` to your production domain
+- Stripe webhook URL must be your production domain + `/api/stripe/webhooks`
+
+## Next Layer Improvements (Implemented)
+- Zod schemas + validation for inputs and tool args.
+- Full manual `Database` types for Supabase (stronger typing, reduced `any`).
+- Component extraction (OrchestratorComposer, StepRenderer) + moved types out of giant page.
+- Enhanced storage layer (lib/supabase/storage.ts): user-scoped uploads to configurable bucket (default 'orchestrator-images'), rich StoredAsset metadata (path, url, name, size, mime), support for public + signed URLs, helpers for upload/delete/list. Used for vision inputs (replaces base64). Create the bucket in Supabase dashboard.
+- Agent resume support (loads previous steps, reconstructs conversation for continuation).
+- Usage/audit history table (`usage_events`) + logging on every call.
+- Basic rate limiting in API.
+- Tests setup (Vitest) + example schema tests.
+- See supabase/schema.sql for new table; run it to apply.
+
+## Copyright & License
+
+© 2026 [Your Name or Company]. All rights reserved.
+
+This project contains proprietary code. When purchasing or receiving a licensed copy (e.g. as a starter kit), you are granted rights only under the accompanying Commercial License Agreement.
+
+See the `LICENSE` file in the root of the repository for the full copyright notice and license terms.
+
+Do not redistribute the source code without a valid license.
+
+---
+
+See previous vision work in `app/api/orchestrate/route.ts` and the multi-image UI in `app/page.tsx`.
+
+## Autonomous Mode (New)
+
+Users (on Pro) can check "Run autonomously". The agent will:
+- Use tools (web search via Tavily, page browsing, memory recall/save, self-planning)
+- Run a multi-step loop until it decides it's done
+- Return + persist a full execution trace (thoughts + every tool call + results)
+
+All autonomous executions are saved as:
+- `tasks` (the goal)
+- `agent_runs` (one execution)
+- `agent_steps` (detailed log)
+
+This is how **you watch** what the agents are doing across your users, and how users come back to review what their agent did.
+
+The "Recent Autonomous Runs" section in the UI lets users (and you via the DB) browse and re-view traces.
+
+**Required**:
+- Run the latest `supabase/schema.sql`
+- Set `TAVILY_API_KEY` for the agent to do real web research
+
+Free tier is limited to one-shot calls. Autonomous + tools + persistent memory/history is the main Pro value.
+
