@@ -53,8 +53,8 @@ export const config = {
 };
 
 /**
- * Generates the branded 500 error page HTML.
- * Matches the design in 500-error.html, adapted for dynamic messages.
+ * Generates the branded 500 Supabase error page HTML.
+ * Matches the design in 500-supabase-error.html exactly.
  */
 function get500Html(code: string, message: string): string {
   return `<!DOCTYPE html>
@@ -62,17 +62,17 @@ function get500Html(code: string, message: string): string {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>500 Internal Server Error | Orchestrator</title>
+  <title>500 Internal Server Error</title>
   <style>
     body {
       margin: 0;
       height: 100vh;
       background: #0f172a;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: #e2e8f0;
+      font-family: system-ui, -apple-system, sans-serif;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #e2e8f0;
     }
     .error-box {
       background: #1e2937;
@@ -80,35 +80,37 @@ function get500Html(code: string, message: string): string {
       border-radius: 12px;
       padding: 40px 50px;
       max-width: 520px;
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-      text-align: left;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
     }
     .error-code {
       font-size: 28px;
       font-weight: 700;
       color: #f87171;
-      margin-bottom: 12px;
+      margin-bottom: 16px;
     }
     .message {
       font-size: 17px;
-      color: #cbd5e1;
-      margin-bottom: 20px;
+      margin-bottom: 12px;
     }
-    .details {
+    .subtext {
+      color: #94a3b8;
+      font-size: 15px;
+      margin-bottom: 24px;
+    }
+    .id-box {
       background: #0f172a;
-      padding: 14px;
+      padding: 12px 16px;
       border-radius: 8px;
-      font-family: ui-monospace, monospace;
+      font-family: monospace;
       font-size: 14px;
-      color: #64748b;
-      margin-top: 20px;
-      word-break: break-all;
+      color: #cbd5e1;
+      margin: 20px 0;
     }
-    .brand {
-      font-size: 13px;
+    .footer {
+      margin-top: 30px;
       color: #64748b;
-      margin-top: 24px;
-      text-align: center;
+      font-size: 14px;
     }
   </style>
 </head>
@@ -118,13 +120,15 @@ function get500Html(code: string, message: string): string {
     <div class="message">
       Code: <strong>${code}</strong>
     </div>
-    <div class="message" style="font-size: 15px; margin-top: -8px; color: #94a3b8;">
+    <div class="subtext">
       ${message}
     </div>
-    <div class="details">
+    <div class="id-box">
       ID: ${Date.now()}-${Math.random().toString(36).substring(2, 15)}
     </div>
-    <div class="brand">Orchestrator — Personal AI Command Center</div>
+    <div class="footer">
+      Orchestrator — Personal AI Command Center
+    </div>
   </div>
 </body>
 </html>`;

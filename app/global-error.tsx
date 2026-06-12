@@ -21,11 +21,11 @@ export default function GlobalError({
           margin: 0,
           height: '100vh',
           background: '#0f172a',
+          color: '#e2e8f0',
           fontFamily: 'system-ui, -apple-system, sans-serif',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          color: '#e2e8f0',
         }}
       >
         <div
@@ -34,9 +34,9 @@ export default function GlobalError({
             border: '1px solid #334155',
             borderRadius: 12,
             padding: '40px 50px',
-            maxWidth: 520,
-            boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.3)',
-            textAlign: 'left',
+            max-width: 520,
+            textAlign: 'center',
+            boxShadow: '0 10px 30px rgba(0, 0, 0, 0.4)',
           }}
         >
           <div
@@ -44,7 +44,7 @@ export default function GlobalError({
               fontSize: 28,
               fontWeight: 700,
               color: '#f87171',
-              marginBottom: 12,
+              marginBottom: 16,
             }}
           >
             500: INTERNAL_SERVER_ERROR
@@ -52,27 +52,36 @@ export default function GlobalError({
           <div
             style={{
               fontSize: 17,
-              color: '#cbd5e1',
-              marginBottom: 20,
+              marginBottom: 12,
             }}
           >
-            Something went wrong on our end.
+            Code: <strong>RUNTIME_ERROR</strong>
           </div>
           <div
             style={{
-              background: '#0f172a',
-              padding: 14,
-              borderRadius: 8,
-              fontFamily: 'ui-monospace, monospace',
-              fontSize: 14,
-              color: '#64748b',
-              marginTop: 20,
-              wordBreak: 'break-all',
+              color: '#94a3b8',
+              fontSize: 15,
+              marginBottom: 24,
             }}
           >
-            {error.digest ? `Digest: ${error.digest}` : error.message || 'Unknown error'}
+            {error.message || 'An unexpected error occurred. See terminal for details.'}
           </div>
-          <div style={{ marginTop: 28, textAlign: 'center' }}>
+          {error.digest && (
+            <div
+              style={{
+                background: '#0f172a',
+                padding: '12px 16px',
+                borderRadius: 8,
+                fontFamily: 'monospace',
+                fontSize: 14,
+                color: '#cbd5e1',
+                margin: '20px 0',
+              }}
+            >
+              ID: {error.digest}
+            </div>
+          )}
+          <div style={{ marginTop: 30 }}>
             <button
               onClick={() => reset()}
               style={{
@@ -91,10 +100,9 @@ export default function GlobalError({
           </div>
           <div
             style={{
-              fontSize: 13,
+              marginTop: 30,
               color: '#64748b',
-              marginTop: 24,
-              textAlign: 'center',
+              fontSize: 14,
             }}
           >
             Orchestrator — Personal AI Command Center

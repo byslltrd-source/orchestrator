@@ -14,23 +14,92 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="min-h-[60vh] flex items-center justify-center p-6">
-      <div className="max-w-md w-full rounded-2xl border border-white/10 bg-zinc-900/60 p-8 text-center">
-        <div className="text-3xl font-semibold text-red-400 mb-3">Something went wrong</div>
-        <p className="text-zinc-400 mb-6">
+    <div
+      style={{
+        minHeight: '60vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '24px',
+        background: '#0f172a',
+        color: '#e2e8f0',
+        fontFamily: 'system-ui, -apple-system, sans-serif',
+      }}
+    >
+      <div
+        style={{
+          background: '#1e2937',
+          border: '1px solid #334155',
+          borderRadius: 12,
+          padding: '40px 50px',
+          maxWidth: 520,
+          textAlign: 'center',
+          boxShadow: '0 10px 30px rgba(0, 0, 0, 0.4)',
+        }}
+      >
+        <div
+          style={{
+            fontSize: 28,
+            fontWeight: 700,
+            color: '#f87171',
+            marginBottom: 16,
+          }}
+        >
+          500: INTERNAL_SERVER_ERROR
+        </div>
+        <div style={{ fontSize: 17, marginBottom: 12 }}>
+          Code: <strong>RUNTIME_ERROR</strong>
+        </div>
+        <div
+          style={{
+            color: '#94a3b8',
+            fontSize: 15,
+            marginBottom: 24,
+          }}
+        >
           An unexpected error occurred while loading this section.
-        </p>
+        </div>
         {error.digest && (
-          <div className="mb-6 rounded bg-black/40 p-3 font-mono text-xs text-zinc-500">
-            Error ID: {error.digest}
+          <div
+            style={{
+              background: '#0f172a',
+              padding: '12px 16px',
+              borderRadius: 8,
+              fontFamily: 'monospace',
+              fontSize: 14,
+              color: '#cbd5e1',
+              margin: '20px 0',
+            }}
+          >
+            ID: {error.digest}
           </div>
         )}
-        <button
-          onClick={() => reset()}
-          className="rounded-lg bg-white px-5 py-2 text-sm font-medium text-black hover:bg-zinc-200 transition"
+        <div style={{ marginTop: 30 }}>
+          <button
+            onClick={() => reset()}
+            style={{
+              background: '#3b82f6',
+              color: 'white',
+              border: 'none',
+              padding: '10px 20px',
+              borderRadius: 8,
+              fontSize: 14,
+              cursor: 'pointer',
+              fontWeight: 500,
+            }}
+          >
+            Try again
+          </button>
+        </div>
+        <div
+          style={{
+            marginTop: 30,
+            color: '#64748b',
+            fontSize: 14,
+          }}
         >
-          Try again
-        </button>
+          Orchestrator — Personal AI Command Center
+        </div>
       </div>
     </div>
   );
