@@ -130,10 +130,88 @@ Sign up (free), try orchestrating with/without images, then click **Upgrade** to
 
 ## Deployment
 
-- Vercel (recommended)
-- Add all the same env vars in Vercel dashboard
-- Set `NEXT_PUBLIC_SITE_URL` to your production domain
-- Stripe webhook URL must be your production domain + `/api/stripe/webhooks`
+### Vercel + Supabase Integration (Recommended)
+
+The easiest and most reliable way to deploy Orchestrator is to **Vercel** combined with the **official Supabase Vercel Integration**. This automatically keeps your Supabase environment variables (URL, anon key, etc.) in sync across your Vercel projects and previews — no manual copying needed.
+
+See the integration UI mockup in `versel-supabase-integration.html` for what the connection screen looks like in the Vercel dashboard.
+
+#### Step-by-step
+
+1. **Push your code** to GitHub (or GitLab/Bitbucket).
+
+2. **Import to Vercel**:
+   - Go to [vercel.com/new](https://vercel.com/new)
+   - Import your repository.
+   - Vercel will auto-detect it's a Next.js app.
+
+3. **Add the Supabase Vercel Integration** (this is the magic):
+   - In your Vercel project dashboard → **Integrations** tab.
+   - Search for and install **Supabase**.
+   - Connect your Supabase organization.
+   - Select your Supabase project (the one you used for local development).
+   - Link your Vercel project (and optionally other Vercel projects/teams to the same Supabase project).
+   - The integration will automatically inject:
+     - `NEXT_PUBLIC_SUPABASE_URL`
+     - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   - (You will still need to manually add the secret `SUPABASE_SERVICE_ROLE_KEY` in Vercel → Settings → Environment Variables, as it's not exposed by the integration for security.)
+
+4. **Add remaining environment variables** in Vercel (Settings → Environment Variables). Copy from your `.env.local` / `.env.example`:
+   - `OPENAI_API_KEY` (or `XAI_API_KEY`, `GROQ_API_KEY`, `OPENROUTER_API_KEY`, etc. for the multiple LLM support)
+   - `TAVILY_API_KEY` (for web_search tool)
+   - `STRIPE_SECRET_KEY`
+   - `STRIPE_WEBHOOK_SECRET`
+   - `STRIPE_PRICE_PRO`
+   - `NEXT_PUBLIC_SITE_URL` → your production Vercel domain (e.g. `https://orchestrator.vercel.app`)
+   - Any other custom ones (e.g. `PHYSICAL_CONTROLLER_URL` for the physical world / smart home integration)
+
+   **Important for previews**: Use "Preview" environment for branch deploys. The Supabase integration can automatically create preview projects/databases if you enable that in Supabase.
+
+5. **Deploy**:
+   - Vercel will build and deploy.
+   - Your production URL will be something like `https://your-project.vercel.app` (or your custom domain).
+
+6. **Stripe Webhooks** (production):
+   - In Stripe Dashboard → Developers → Webhooks, add endpoint:
+     `https://your-production-domain.com/api/stripe/webhooks`
+   - Events: `checkout.session.completed`, `customer.subscription.*`, `invoice.payment_succeeded`
+   - Copy the signing secret into `STRIPE_WEBHOOK_SECRET` in Vercel.
+
+7. **Custom Domain (optional)**:
+   - In Vercel project → Settings → Domains.
+   - Add your domain and follow the DNS instructions.
+   - Update `NEXT_PUBLIC_SITE_URL` and Stripe webhook to use the custom domain.
+
+#### Why this integration is great for Orchestrator
+
+- Automatic env var sync → no more "missing Supabase keys" 500 errors in production.
+- Works perfectly with the new features:
+  - Multiple LLM support (add your OpenAI/Grok/Claude/etc. keys once in Vercel).
+  - Real-time vision + Physical World Integration (HTTPS is automatic on Vercel; add your `PHYSICAL_CONTROLLER_URL`).
+  - Personal Life OS Mode, Emotional Awareness, etc. (all server-side features just work).
+- Preview deployments get their own Supabase project if you configure it.
+
+See the `versel-supabase-integration.html` file in your Downloads for a visual of the connection UI.
+
+#### Alternative: Manual env var setup (not recommended)
+
+If you don't use the integration:
+- Go to Vercel project → Settings → Environment Variables
+- Add every variable from `.env.example` (production + preview environments)
+- Still set `NEXT_PUBLIC_SITE_URL` and Stripe webhook.
+
+This is error-prone and doesn't auto-update when you rotate Supabase keys.
+
+### Local Development (HTTPS for Real-time Vision)
+
+See the earlier "Run over HTTPS" section. Use the custom certificates for local camera testing of Real-time Vision + Physical features. The bypass for Supabase (`NEXT_PUBLIC_BYPASS_SUPABASE_CHECK=true`) is great for pure UI visual testing without a full local Supabase instance.
+
+### Other Deployment Notes
+
+- **Vercel** is the easiest because of the native Supabase integration + automatic HTTPS + preview deployments.
+- Set `NEXT_PUBLIC_SITE_URL` correctly so Stripe redirects and other absolute URLs work.
+- For physical/smart home features in production, make sure your `PHYSICAL_CONTROLLER_URL` is publicly reachable (or use a secure tunnel / ngrok for testing).
+- After deploy, run the Supabase schema (`supabase/schema.sql`) in your Supabase project's SQL editor if not already done.
 
 ## Next Layer Improvements (Implemented)
 - Zod schemas + validation for inputs and tool args.
