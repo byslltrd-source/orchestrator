@@ -10,6 +10,10 @@ import {
   AlertTriangle,
   Scale,
   Eye,
+  Flame,
+  Clock,
+  Scroll,
+  Layers,
 } from "lucide-react";
 import type { AgentStep, StepRow } from "@/lib/agent/types";
 
@@ -101,6 +105,67 @@ export function StepRenderer({ step, index }: StepRendererProps) {
         </div>
         <div className="text-violet-200/90 text-xs whitespace-pre-wrap">{step.content}</div>
         <div className="text-[10px] text-violet-400 mt-1">Future self &amp; loved ones perspective</div>
+      </div>
+    );
+  }
+
+  // === Proprietary Strategic Tools (from proprietary-features.html, Ultra exclusive) ===
+  if (t === "memory" && step.content?.includes("🔥 Knowledge Heat Map")) {
+    return (
+      <div key={index} className="rounded-lg border border-orange-500/30 bg-orange-950/30 p-4 text-sm">
+        <div className="flex items-center gap-2 font-medium text-orange-300 mb-2">
+          <Flame className="h-4 w-4" /> Knowledge Heat Map (Proprietary)
+        </div>
+        <div className="text-orange-200/90 text-xs whitespace-pre-wrap">{step.content.replace('🔥 Knowledge Heat Map', '').replace('(end of run):', '').replace(':', '')}</div>
+        <div className="text-[10px] text-orange-400 mt-1">Heating vs cooling knowledge • Ultra Premium IP</div>
+      </div>
+    );
+  }
+
+  if (t === "memory" && step.content?.includes("⏳ Opportunity Decay Clock")) {
+    return (
+      <div key={index} className="rounded-lg border border-teal-500/30 bg-teal-950/30 p-4 text-sm">
+        <div className="flex items-center gap-2 font-medium text-teal-300 mb-2">
+          <Clock className="h-4 w-4" /> Opportunity Decay Clock (Proprietary)
+        </div>
+        <div className="text-teal-200/90 text-xs whitespace-pre-wrap">{step.content}</div>
+        <div className="text-[10px] text-teal-400 mt-1">Half-lives + refresh actions • Ultra Premium IP</div>
+      </div>
+    );
+  }
+
+  if (t === "memory" && (step.content?.includes("📜 Policy Translation") || step.content?.includes("Policy Translation Engine"))) {
+    return (
+      <div key={index} className="rounded-lg border border-rose-500/30 bg-rose-950/30 p-4 text-sm">
+        <div className="flex items-center gap-2 font-medium text-rose-300 mb-2">
+          <Scroll className="h-4 w-4" /> Policy Translation Engine (Proprietary)
+        </div>
+        <div className="text-rose-200/90 text-xs whitespace-pre-wrap">{step.content}</div>
+        <div className="text-[10px] text-rose-400 mt-1">Tribal resonance while preserving facts • Ultra Premium IP</div>
+      </div>
+    );
+  }
+
+  if (t === "memory" && (step.content?.includes("Constituent Emotion Layering") || step.content?.includes("emotional undercurrents"))) {
+    return (
+      <div key={index} className="rounded-lg border border-fuchsia-500/30 bg-fuchsia-950/30 p-4 text-sm">
+        <div className="flex items-center gap-2 font-medium text-fuchsia-300 mb-2">
+          <Layers className="h-4 w-4" /> Constituent Emotion Layering (Proprietary)
+        </div>
+        <div className="text-fuchsia-200/90 text-xs whitespace-pre-wrap">{step.content}</div>
+        <div className="text-[10px] text-fuchsia-400 mt-1">Privacy-preserving emotional terrain map • Ultra Premium IP</div>
+      </div>
+    );
+  }
+
+  if (t === "memory" && (step.content?.includes("Invisible Workflow Weaver") || step.content?.includes("PLAYBOOK:") || step.content?.includes("playbook"))) {
+    return (
+      <div key={index} className="rounded-lg border border-sky-500/30 bg-sky-950/30 p-4 text-sm">
+        <div className="flex items-center gap-2 font-medium text-sky-300 mb-2">
+          <Layers className="h-4 w-4" /> Invisible Workflow Weaver (Proprietary)
+        </div>
+        <div className="text-sky-200/90 text-xs whitespace-pre-wrap">{step.content}</div>
+        <div className="text-[10px] text-sky-400 mt-1">Hidden processes → shareable playbooks • Ultra Premium IP</div>
       </div>
     );
   }

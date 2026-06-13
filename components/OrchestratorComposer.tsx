@@ -567,7 +567,7 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
                   </div>
                 ))}
               </div>
-              <div className="text-[9px] text-blue-400/70 mt-1">These proprietary capabilities are included exclusively for Ultra subscribers and enterprise/leased deployments. They represent core IP that elevates Orchestrator for high-value use cases.</div>
+              <div className="text-[9px] text-blue-400/70 mt-1">These proprietary capabilities are included exclusively for Ultra subscribers and enterprise/leased deployments. They are now implemented as live agent tools (with auto-magical surfacing in Life OS mode) and represent core IP that elevates Orchestrator for high-value use cases.</div>
             </div>
           </div>
 

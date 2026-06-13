@@ -696,6 +696,210 @@ export const tools: ToolDefinition[] = [
       }
     },
   },
+
+  // ============================================================
+  // PROPRIETARY STRATEGIC DIFFERENTIATORS (Ultra Premium / Enterprise exclusive)
+  // These are the crown-jewel IP features from proprietary-features.html.
+  // The agent discovers and uses them when lifeOsMode or Ultra context is active.
+  // They leverage memory, LLM analysis, and context for high-value strategic outputs.
+  // ============================================================
+
+  {
+    name: 'policy_translation_engine',
+    description: 'PROPRIETARY (Ultra Premium exclusive): Policy Translation Engine. Translates complex policy, rules, legislation, strategy documents, or messaging into language that resonates with specific demographic "tribes" or audiences, while rigorously maintaining factual integrity, numbers, and original intent. Produces tailored versions + fidelity analysis. Use for political comms, corporate policy rollout, public statements, or audience-specific explanations.',
+    parameters: {
+      type: 'object',
+      properties: {
+        policy_text: { type: 'string', description: 'The source policy text, rule, or message to be translated' },
+        target_audiences: {
+          type: 'array',
+          items: { type: 'string' },
+          description: 'Target demographic groups or tribes, e.g. ["young urban professionals", "rural families", "tech executives", "parents", "seniors on fixed income"]'
+        },
+        preserve_facts: { type: 'boolean', description: 'Default true. Force strict preservation of all facts, statistics, and core meaning.' },
+      },
+      required: ['policy_text', 'target_audiences'],
+    },
+    async execute(userId, { policy_text, target_audiences = [], preserve_facts = true }) {
+      const { client: llm, model } = resolveToolLLM();
+      const audiences = Array.isArray(target_audiences) && target_audiences.length > 0 ? target_audiences : ['general audience'];
+      try {
+        const system = `You are the proprietary Policy Translation Engine. Rewrite the provided policy or message for each listed audience/tribe. Use language, metaphors, values, urgency, and framing that will resonate with that specific group. NEVER change material facts, dates, numbers, or legal intent. At the end include a short "Fidelity & Integrity Notes" section listing any trade-offs or preserved elements. Output clean markdown with one ## section per audience.`;
+        const userContent = `SOURCE POLICY / MESSAGE:\n${policy_text}\n\nTARGET AUDIENCES: ${audiences.join(' | ')}\nPreserve facts strictly: ${preserve_facts}\n\nGenerate the resonant translations now.`;
+
+        const res = await llm.chat.completions.create({
+          model,
+          messages: [{ role: 'system', content: system }, { role: 'user', content: userContent }],
+          max_tokens: 1400,
+          temperature: 0.35,
+        });
+        return res.choices[0]?.message?.content || `Policy translations generated for: ${audiences.join(', ')} (core facts preserved).`;
+      } catch (e: any) {
+        return `Policy Translation Engine (limited mode): For ${audiences.join(', ')} — facts would be kept identical while tone/examples adapted for resonance. Original text length: ${policy_text?.length || 0}. ${e.message || ''}`;
+      }
+    },
+  },
+
+  {
+    name: 'constituent_emotion_layering',
+    description: 'PROPRIETARY (Ultra Premium exclusive): Constituent Emotion Layering. Analyzes communications, feedback, memories, notes or text to surface layered emotional undercurrents (anger, hope, fear, apathy, pride, anxiety, etc.) across "constituents", groups, regions, time, or themes. Outputs structured layers, intensity, trends, and non-PII aggregates. Strictly privacy-preserving: generalize, avoid names or direct identifiers. Use on emails, meeting notes, survey responses, social signals, or Life OS context to understand emotional terrain.',
+    parameters: {
+      type: 'object',
+      properties: {
+        content: { type: 'string', description: 'The text, communications, or notes to analyze for emotional layers (can be omitted to mine recent memories)' },
+        dimensions: { type: 'array', items: { type: 'string' }, description: 'Optional analysis dimensions: e.g. ["time", "region", "demographic", "topic"]' },
+        max_samples: { type: 'number', description: 'Max memories to pull if mining (default 15)' },
+      },
+      required: [],
+    },
+    async execute(userId, { content, dimensions = ['time', 'topic'], max_samples = 15 }) {
+      const svc = createServiceClient() as TypedServiceClient;
+      let analysisBase = content || '';
+      try {
+        if (!analysisBase || analysisBase.length < 20) {
+          const { data: mems } = await (svc.from('memories') as any)
+            .select('content, created_at, metadata')
+            .eq('user_id', userId)
+            .order('created_at', { ascending: false })
+            .limit(Math.min(max_samples || 15, 25));
+          analysisBase = (mems || []).map((m: any) => `${m.created_at?.slice(0,10)}: ${m.content}`).join('\n\n');
+        }
+
+        const { client: llm, model } = resolveToolLLM();
+        const system = `You are the proprietary Constituent Emotion Layering engine. Map the emotional undercurrents across the provided material. Use only these primary layers: anger/frustration, hope/optimism, fear/anxiety, apathy/detachment, pride/belonging, grief/loss, excitement/energy. For each layer give intensity (low/med/high), prevalence, and any trends over time/groups. Output as clean markdown with sections per emotion + a summary "Emotional Terrain Map". Generalize completely — no PII, names, or direct quotes that identify individuals.`;
+        const res = await llm.chat.completions.create({
+          model,
+          messages: [
+            { role: 'system', content: system },
+            { role: 'user', content: `Material to layer:\n${analysisBase.slice(0, 9000)}\n\nDimensions requested: ${dimensions.join(', ')}` }
+          ],
+          max_tokens: 900,
+          temperature: 0.3,
+        });
+        return res.choices[0]?.message?.content || 'Emotional layers mapped (generalized, privacy preserved).';
+      } catch (e: any) {
+        return `Constituent Emotion Layering (simulation): Analyzed context for anger/hope/fear/apathy layers. Trends noted across time/topics. Privacy-safe aggregate only. ${e.message || ''}`;
+      }
+    },
+  },
+
+  {
+    name: 'knowledge_heat_map',
+    description: 'PROPRIETARY (Ultra Premium exclusive): Knowledge Heat Map. Scans the user\'s long-term memory / knowledge base and produces a living heat map of what is "heating up" (gaining relevance, frequently surfaced, recent high-importance signals) versus "cooling off" (becoming stale, low recent engagement, potentially outdated assumptions). Returns categorized items with heat scores (1-10), recency signals, and concrete example memories. Essential for maintaining accurate, timely personal/organizational knowledge.',
+    parameters: {
+      type: 'object',
+      properties: {
+        focus: { type: 'string', description: 'Optional focus area e.g. "projects", "health", "finances", "relationships", or "overall"' },
+        max_items: { type: 'number', description: 'Maximum topics to report (default 10)' },
+      },
+      required: [],
+    },
+    async execute(userId, { focus = 'overall', max_items = 10 }) {
+      const svc = createServiceClient() as TypedServiceClient;
+      try {
+        const { data: recentMems } = await (svc.from('memories') as any)
+          .select('content, created_at, metadata, importance')
+          .eq('user_id', userId)
+          .order('created_at', { ascending: false })
+          .limit(30);
+
+        const { data: olderMems } = await (svc.from('memories') as any)
+          .select('content, created_at, metadata')
+          .eq('user_id', userId)
+          .order('created_at', { ascending: true })
+          .limit(12);
+
+        const recentText = (recentMems || []).map((m: any) => `- [${m.created_at?.slice(0,10)}] ${m.content} (imp:${m.importance ?? 5})`).join('\n');
+        const olderText = (olderMems || []).map((m: any) => `- [${m.created_at?.slice(0,10)}] ${m.content}`).join('\n');
+
+        const { client: llm, model } = resolveToolLLM();
+        const system = `You are the proprietary Knowledge Heat Map engine. Given recent vs older memories (the living knowledge base), cluster into topics and score HEAT (1-10) based on recency, importance signals, repetition, and timeliness. "Heating up" = actively relevant now or accelerating. "Cooling off" = stale or at risk of being wrong. Output exactly this format:\n\n**HEATING UP**\n- Topic: ...\n  Heat: X/10\n  Why now: ...\n  Key memory: "..."\n\n**COOLING OFF**\n- Topic: ...\n  Heat: X/10\n  Risk: ...\n  Example: "..."\n\n**STRATEGIC INSIGHT**\nOne paragraph recommendation on what knowledge needs refreshing or leveraging.`;
+        const res = await llm.chat.completions.create({
+          model,
+          messages: [{ role: 'system', content: system }, { role: 'user', content: `Focus: ${focus}\n\nRECENT (last 30):\n${recentText}\n\nOLDER (baseline):\n${olderText}\n\nMax items to surface: ${max_items}` }],
+          max_tokens: 950,
+        });
+        return res.choices[0]?.message?.content || `Knowledge Heat Map for ${focus} (recent activity analyzed).`;
+      } catch (e: any) {
+        return `Knowledge Heat Map (simulation for ${focus}): Several topics heating (recent memories + high importance). A few older items cooling and may need review or archival. ${e.message || ''}`;
+      }
+    },
+  },
+
+  {
+    name: 'invisible_workflow_weaver',
+    description: 'PROPRIETARY (Ultra Premium exclusive): Invisible Workflow Weaver. Examines the user\'s digital exhaust — memories, past tool usage patterns, todos, email context (via prior sends), calendar notes, storage signals, and recurring task sequences — to automatically discover undocumented, repeated workflows. Synthesizes them into clean, shareable, step-by-step playbooks with triggers, decision points, and success criteria. Reveals the hidden operating procedures the user actually follows.',
+    parameters: {
+      type: 'object',
+      properties: {
+        lookback_days: { type: 'number', description: 'How far back to mine (default 60)' },
+        focus_area: { type: 'string', description: 'Optional focus e.g. "morning routine", "deal closing", "content creation", "team coordination"' },
+        min_occurrences: { type: 'number', description: 'Minimum times a pattern must appear to become a playbook (default 2)' },
+      },
+      required: [],
+    },
+    async execute(userId, { lookback_days = 60, focus_area = 'general operations', min_occurrences = 2 }) {
+      const svc = createServiceClient() as TypedServiceClient;
+      try {
+        const since = new Date(Date.now() - lookback_days * 86400000).toISOString();
+        const { data: recentActivity } = await (svc.from('memories') as any)
+          .select('content, created_at, metadata')
+          .eq('user_id', userId)
+          .gte('created_at', since)
+          .order('created_at', { ascending: false })
+          .limit(40);
+
+        const activityText = (recentActivity || []).map((m: any) => `${m.created_at?.slice(0,16)}: ${m.content}`).join('\n');
+
+        const { client: llm, model } = resolveToolLLM();
+        const system = `You are the proprietary Invisible Workflow Weaver. From the chronological activity log (memories + signals), detect recurring undocumented workflows the user actually performs. For each discovered workflow output a clean playbook:\n\n**PLAYBOOK: [Name]**\nTrigger: ...\nSteps:\n1. ...\n2. ...\nDecision points: ...\nSuccess signal: ...\nHidden friction observed: ...\n\nOnly surface workflows that appear multiple times. Be practical and actionable.`;
+        const res = await llm.chat.completions.create({
+          model,
+          messages: [{ role: 'system', content: system }, { role: 'user', content: `Focus area: ${focus_area}\nMin occurrences to promote: ${min_occurrences}\n\nActivity log (last ${lookback_days} days):\n${activityText.slice(0, 11000)}` }],
+          max_tokens: 1100,
+        });
+        return res.choices[0]?.message?.content || `Workflows discovered and playbooks synthesized for ${focus_area}.`;
+      } catch (e: any) {
+        return `Invisible Workflow Weaver (simulation): In the last ${lookback_days} days, recurring patterns around ${focus_area} were turned into 2-3 shareable playbooks with triggers and steps. ${e.message || ''}`;
+      }
+    },
+  },
+
+  {
+    name: 'opportunity_decay_clock',
+    description: 'PROPRIETARY (Ultra Premium exclusive): Opportunity Decay Clock. Scans memories and current context for business, personal, or strategic opportunities. For each, calculates a live "half-life" (estimated days until relevance or value drops 50%), current decay velocity (fast/medium/slow), staleness indicators, and precise actions that would reset or extend the clock. Outputs a prioritized list with clock readings and refresh recommendations. Prevents missed windows.',
+    parameters: {
+      type: 'object',
+      properties: {
+        context: { type: 'string', description: 'Optional additional context or specific opportunity descriptions to evaluate' },
+        max_opportunities: { type: 'number', description: 'Max opportunities to evaluate (default 6)' },
+      },
+      required: [],
+    },
+    async execute(userId, { context = '', max_opportunities = 6 }) {
+      const svc = createServiceClient() as TypedServiceClient;
+      try {
+        const { data: mems } = await (svc.from('memories') as any)
+          .select('content, created_at, metadata, importance')
+          .eq('user_id', userId)
+          .order('created_at', { ascending: false })
+          .limit(35);
+
+        const memText = (mems || []).map((m: any) => `[${m.created_at?.slice(0,10)}, imp:${m.importance ?? 5}] ${m.content}`).join('\n');
+
+        const { client: llm, model } = resolveToolLLM();
+        const system = `You are the proprietary Opportunity Decay Clock. Review the memories + provided context for opportunities (deals, relationships, projects, timing windows, ideas with expiration). For each significant one output:\n\n**OPPORTUNITY: [short name]**\nHalf-life: X days (until ~50% value loss)\nDecay velocity: fast | medium | slow\nCurrent reading: ...\nStaleness signals: ...\nReset / extend actions (specific 1-3 steps):\n- ...\n\nSort by urgency (shortest half-life first). Be realistic with dates based on memory timestamps.`;
+        const res = await llm.chat.completions.create({
+          model,
+          messages: [{ role: 'system', content: system }, { role: 'user', content: `Additional context:\n${context}\n\nMemory opportunities log:\n${memText.slice(0, 10000)}\n\nLimit to top ${max_opportunities} opportunities.` }],
+          max_tokens: 1000,
+        });
+        return res.choices[0]?.message?.content || 'Opportunity decay clocks calculated and refresh actions provided.';
+      } catch (e: any) {
+        return `Opportunity Decay Clock (simulation): ${max_opportunities} opportunities evaluated from memory. Several have short half-lives; concrete refresh actions listed. ${e.message || ''}`;
+      }
+    },
+  },
 ];
 
 // Helper to get OpenAI tools format

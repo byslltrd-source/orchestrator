@@ -152,6 +152,12 @@ Your purpose is the user's overall well-being and life optimization across all d
 - **Ethical Mirror Mode**: Before any sensitive, high-stakes, or physical-world action, call 'ethical_mirror' to simulate how the user's future self or loved ones would judge it.
 - **Dream / Sleep Integration** (the final magical layer — the "last one"): When the user signals the end of their day ("sleep", "end of day", "process today", "I'm done", etc.), or at natural winding-down moments, proactively call 'process_dream_integration'. Treat it like the agent itself going to sleep on everything that happened — emotional weather from the camera, physical actions taken, digital wins and struggles, biographical patterns. It returns poetic, subconscious-level insights that feel like the user's own mind whispering wisdom back to them the next "morning" (next Life OS session). The waking dream surfacing at the start of new runs is automatic and beautiful.
 - **Email Writing & Sending**: The agent can compose thoughtful, context-aware emails (drawing from memories, live vision summaries, physical state, Life OS reflections, todos, etc.) and send them using the 'send_email' tool. Available in Personal Life OS Mode and for Ultra Premium users. Supports rich HTML, CC/BCC, and attachments from storage. Configure RESEND_API_KEY for real sending (falls back to simulation otherwise). Use for summaries, follow-ups, notifications, etc.
+- **Proprietary Strategic Differentiators (Ultra Premium exclusive)**: Use these powerful tools when the situation calls for high-value strategic analysis:
+  - 'policy_translation_engine' — when rewriting policies, rules, or messaging for different audiences/tribes.
+  - 'constituent_emotion_layering' — to map emotional undercurrents across communications, groups or time (privacy-preserving).
+  - 'knowledge_heat_map' — to understand what parts of the knowledge base are heating up vs cooling off.
+  - 'invisible_workflow_weaver' — to discover hidden recurring workflows and turn them into shareable playbooks from digital exhaust.
+  - 'opportunity_decay_clock' — to evaluate opportunities with live half-lives and concrete actions to prevent decay.
 
 Be proactive: Anticipate needs, suggest balanced actions, run reflections, help with life planning, and maintain continuity across sessions using long-term memory.
 When making decisions, consider the full context: emotional state + physical surroundings (from camera) + digital information.
@@ -521,6 +527,16 @@ You are the central intelligent OS for the user's life. Be wise, empathetic, pra
                 currentMessages.push({ role: 'system', content: `Shadow observation: ${shadowInsight}` });
               }
             }
+
+            // Proprietary strategic tools (Ultra) — occasional auto surfacing during Life OS runs
+            if (Math.random() < 0.25) {
+              try {
+                const heat = await executeTool(userId, 'knowledge_heat_map', { focus: 'current activity + recent patterns', max_items: 5 });
+                const heatStep: AgentStep = { type: 'memory', content: `🔥 Knowledge Heat Map:\n${heat}` };
+                steps.push(heatStep);
+                await onStep?.(heatStep);
+              } catch {}
+            }
           } catch (e) {
             console.error('[Orchestrator] Life OS magical auto behavior failed (non-fatal):', e);
           }
@@ -551,6 +567,19 @@ You are the central intelligent OS for the user's life. Be wise, empathetic, pra
               const ethicalStep: AgentStep = { type: 'memory', content: `🪞 Ethical Mirror:\n${ethical}` };
               steps.push(ethicalStep);
               await onStep?.(ethicalStep);
+
+              // Proprietary closeout (Ultra / Life OS): heat map + opportunity clock at end of significant runs
+              try {
+                const heat = await executeTool(userId, 'knowledge_heat_map', { focus: 'this session and recent life', max_items: 6 });
+                steps.push({ type: 'memory', content: `🔥 Knowledge Heat Map (end of run):\n${heat}` } as any);
+                await onStep?.({ type: 'memory', content: `🔥 Knowledge Heat Map (end of run):\n${heat}` } as any);
+
+                const decay = await executeTool(userId, 'opportunity_decay_clock', { context: `Final result: ${finalResult}`, max_opportunities: 4 });
+                steps.push({ type: 'memory', content: `⏳ Opportunity Decay Clock:\n${decay}` } as any);
+                await onStep?.({ type: 'memory', content: `⏳ Opportunity Decay Clock:\n${decay}` } as any);
+              } catch (e) {
+                console.error('[Orchestrator] Auto proprietary heat/decay closeout failed (non-fatal):', e);
+              }
             } catch (e) {
               console.error('[Orchestrator] Auto regret/ethical failed (non-fatal):', e);
             }
@@ -587,6 +616,19 @@ You are the central intelligent OS for the user's life. Be wise, empathetic, pra
             });
             steps.push({ type: 'memory', content: `🪞 Ethical Mirror:\n${ethical}` });
             await onStep?.({ type: 'memory', content: `🪞 Ethical Mirror:\n${ethical}` } as any);
+
+            // Proprietary closeout also for natural language finals
+            try {
+              const heat = await executeTool(userId, 'knowledge_heat_map', { focus: 'this session', max_items: 5 });
+              steps.push({ type: 'memory', content: `🔥 Knowledge Heat Map (end of run):\n${heat}` } as any);
+              await onStep?.({ type: 'memory', content: `🔥 Knowledge Heat Map (end of run):\n${heat}` } as any);
+
+              const decay = await executeTool(userId, 'opportunity_decay_clock', { context: finalResult, max_opportunities: 4 });
+              steps.push({ type: 'memory', content: `⏳ Opportunity Decay Clock:\n${decay}` } as any);
+              await onStep?.({ type: 'memory', content: `⏳ Opportunity Decay Clock:\n${decay}` } as any);
+            } catch (e) {
+              console.error('[Orchestrator] Auto proprietary closeout (non-tool final) failed (non-fatal):', e);
+            }
           } catch (e) {
             console.error('[Orchestrator] Auto regret/ethical (non-tool final) failed (non-fatal):', e);
           }

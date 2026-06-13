@@ -321,6 +321,8 @@ All of the above (multiple AIs, real-time vision, physical/smart home, emotional
 
 These five proprietary capabilities represent the core differentiated IP in Orchestrator. They are available exclusively to Ultra Premium subscribers and under commercial leasing / outright sale licenses. They turn the agent from a capable personal orchestrator into a high-value strategic system for business, government, knowledge work, and opportunity management.
 
+They are fully implemented as first-class tools (`policy_translation_engine`, `constituent_emotion_layering`, `knowledge_heat_map`, `invisible_workflow_weaver`, `opportunity_decay_clock`) with LLM-powered analysis over memory + context, plus auto "magical" invocation in Personal Life OS mode (similar to shadow/regret/ethical/dream behaviors) and special visual cards in the live trace.
+
 See the `proprietary-features.html` mockup (in Downloads) for the visual design language that was integrated into the in-app Tiers & Costs list.
 
 **Policy Translation Engine**  
