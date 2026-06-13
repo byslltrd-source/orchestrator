@@ -150,6 +150,10 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
 
   const proprietaryFeatures = [
     {
+      title: "Orchestra Tool (Funding Forge)",
+      desc: "The flagship proprietary tool. Autonomous funding acquisition engine that actively hunts opportunities, scores risk with decay clocks, generates tailored applications using policy translation + emotion layering, discovers workflows, and produces complete action plans. Chains all other proprietary engines. The real usable 'orchestra tool'.",
+    },
+    {
       title: "Policy Translation Engine",
       desc: "Translates complex policy into the exact language that resonates with different demographic \"tribes\" while maintaining factual integrity.",
     },
@@ -569,7 +573,7 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
                   </div>
                 ))}
               </div>
-              <div className="text-[9px] text-blue-400/70 mt-1">These proprietary capabilities are included exclusively for Ultra subscribers and enterprise/leased deployments. They are now implemented as live agent tools (with auto-magical surfacing in Life OS mode). The flagship real usable tool is <strong>Funding Forge</strong> — an autonomous funding acquisition engine that chains all five engines to hunt opportunities, score risk, generate tailored applications, and produce action plans.</div>
+              <div className="text-[9px] text-blue-400/70 mt-1">These proprietary capabilities are included exclusively for Ultra subscribers and enterprise/leased deployments. They are now implemented as live agent tools (with auto-magical surfacing in Life OS mode). <strong>The Orchestra Tool</strong> (Funding Forge) is the flagship — an autonomous funding acquisition engine that chains all five engines to hunt opportunities, score risk, generate tailored applications, and produce action plans.</div>
             </div>
           </div>
 

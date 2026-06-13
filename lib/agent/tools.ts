@@ -902,15 +902,16 @@ export const tools: ToolDefinition[] = [
   },
 
   // ============================================================
-  // FUNDING FORGE — The flagship real usable proprietary tool
+  // ORCHESTRA TOOL (Funding Forge) — The flagship real usable proprietary tool
   // Built on top of (and orchestrates) the 5 core proprietary engines:
   // Policy Translation + Constituent Emotion Layering + Knowledge Heat Map
   // + Invisible Workflow Weaver + Opportunity Decay Clock
   // This turns the abstract IP into a concrete, high-ROI autonomous funding co-founder.
+  // Called "the Orchestra Tool" in the UI and docs.
   // ============================================================
   {
     name: 'funding_forge',
-    description: 'PROPRIETARY (Ultra Premium exclusive): Funding Forge — Autonomous Funding Acquisition Engine. Actively hunts live funding opportunities (grants, VC, angels, government tenders, family offices, crowdfunding), matches them to your project using your biographical model, knowledge base, and traction signals. Scores realistic success probability and risk using decay-style analysis. Generates fully customized applications, pitch summaries, financial narratives, and warm intro messages tailored to each funder\'s preferences via policy translation and emotion layering. Produces a complete prioritized action plan with ready-to-submit materials, deadlines, and follow-up steps. This is the killer application of the proprietary tool suite — it can realistically save hundreds of hours and unlock significant capital.',
+    description: 'PROPRIETARY (Ultra Premium exclusive): Orchestra Tool (Funding Forge) — The flagship autonomous funding acquisition engine. Actively hunts live funding opportunities (grants, VC, angels, government tenders, family offices, crowdfunding), matches them to your project using your biographical model, knowledge base, and traction signals. Scores realistic success probability and risk using decay-style analysis. Generates fully customized applications, pitch summaries, financial narratives, and warm intro messages tailored to each funder\'s preferences via policy translation and emotion layering. Produces a complete prioritized action plan with ready-to-submit materials, deadlines, and follow-up steps. This is the killer application of the proprietary tool suite (chains the 5 engines) — it can realistically save hundreds of hours and unlock significant capital.',
     parameters: {
       type: 'object',
       properties: {
@@ -1010,7 +1011,7 @@ export const tools: ToolDefinition[] = [
       // 4. Probability & Risk + full Forge Report synthesis (Probability & Risk Engine + Warm Intros + Follow-up)
       const forgeSystem = `You are Funding Forge, the autonomous funding acquisition engine. Synthesize everything into a professional, actionable report with these exact sections:
 
-**FUNDING FORGE REPORT**
+**ORCHESTRA TOOL REPORT (Funding Forge)**
 **Project Snapshot**
 **Live Matched Opportunities** (top ${max_opportunities}, with source, fit score 1-10, why it matches your bio/knowledge)
 **Risk & Probability Analysis** (success odds, red flags, decay clock insights)
@@ -1031,20 +1032,20 @@ Be realistic, specific, and optimistic but honest. Use the provided discovered o
         temperature: 0.4,
       });
 
-      const report = finalRes.choices[0]?.message?.content || 'Funding Forge completed analysis.';
+      const report = finalRes.choices[0]?.message?.content || 'Orchestra Tool (Funding Forge) completed analysis.';
 
       // 5. Bonus: Log key opportunities back to memory for future decay tracking / continuity
       try {
         if (discoveredOpps.length > 50) {
           await (svc.from('memories') as any).insert({
             user_id: userId,
-            content: `[Funding Forge] Discovered opportunities: ${discoveredOpps.slice(0,600)}`,
+            content: `[Orchestra Tool / Funding Forge] Discovered opportunities: ${discoveredOpps.slice(0,600)}`,
             metadata: { type: 'funding_opportunity', timestamp: new Date().toISOString() }
           });
         }
       } catch {}
 
-      return `=== FUNDING FORGE REPORT (Ultra Proprietary) ===\n\n${report}\n\n---\nNext: Use send_email tool to fire off any generated warm intros. Run funding_forge again after new traction for updated matches. All 5 proprietary engines were activated behind the scenes.`;
+      return `=== ORCHESTRA TOOL REPORT (Funding Forge - Ultra Proprietary) ===\n\n${report}\n\n---\nNext: Use send_email tool to fire off any generated warm intros. Run funding_forge (the Orchestra Tool) again after new traction for updated matches. All 5 proprietary engines were activated behind the scenes.`;
     },
   },
 ];

@@ -89,7 +89,7 @@ Orchestrator goes further:
 - Every step is logged and watchable live
 - Memory that persists across sessions for the same user
 - Production-ready billing and quota system already wired up
-- **Exclusive Proprietary Feature Suite (Ultra / Enterprise)**: Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, and Opportunity Decay Clock. These are the crown-jewel differentiators that justify premium and enterprise pricing. They power the flagship **Funding Forge** autonomous funding acquisition tool — live opportunity hunting, risk scoring, tailored application generation, warm intros, and complete action plans. Built on memory, Life OS, and the full toolset; delivers real ROI (time saved + capital unlocked).
+- **Exclusive Proprietary Feature Suite (Ultra / Enterprise)**: Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, and Opportunity Decay Clock. These are the crown-jewel differentiators that justify premium and enterprise pricing. They power the flagship **Orchestra Tool (Funding Forge)** — live opportunity hunting, risk scoring, tailored application generation, warm intros, and complete action plans. Built on memory, Life OS, and the full toolset; delivers real ROI (time saved + capital unlocked). Marketed as the "Orchestra Tool".
 
 This is the foundation I wish I had when I started building agent tools.
 

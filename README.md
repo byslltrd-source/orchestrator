@@ -323,15 +323,15 @@ These five proprietary capabilities represent the core differentiated IP in Orch
 
 They are fully implemented as first-class tools (`policy_translation_engine`, `constituent_emotion_layering`, `knowledge_heat_map`, `invisible_workflow_weaver`, `opportunity_decay_clock`) with LLM-powered analysis over memory + context, plus auto "magical" invocation in Personal Life OS mode (similar to shadow/regret/ethical/dream behaviors) and special visual cards in the live trace.
 
-**The Flagship Usable Proprietary Tool: Funding Forge**
-The 5 engines are orchestrated by a powerful new tool called `funding_forge`. It is a complete autonomous funding acquisition engine:
+**The Flagship Usable Proprietary Tool: The Orchestra Tool (Funding Forge)**
+The 5 engines are orchestrated by a powerful new tool called `funding_forge` (branded as the "Orchestra Tool" in the UI). It is a complete autonomous funding acquisition engine:
 - Live multi-source opportunity discovery (grants, VC, angels, tenders...)
 - Matches to your real biographical model + knowledge heat map
 - Risk/probability scoring + decay clock timing analysis
 - Auto-generates tailored applications and narratives (via policy translation + emotion layering for different funder "tribes")
 - Produces warm intro drafts, full action plans, deadlines, and follow-up strategies
 
-See FUNDING-FORGE.md (in your Downloads) for the original vision. Run it in Life OS Mode on any real project for immediate high-value output. This single tool dramatically increases the commercial value of the entire proprietary suite.
+See FUNDING-FORGE.md (in your Downloads) for the original vision. Run it in Life OS Mode on any real project for immediate high-value output (use the new demo tasks or type "Run the Orchestra Tool on my [project]"). This single tool dramatically increases the commercial value of the entire proprietary suite and is the main reason for premium/enterprise pricing.
 
 See the `proprietary-features.html` mockup (in Downloads) for the visual design language that was integrated into the in-app Tiers & Costs list.
 
