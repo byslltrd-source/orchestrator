@@ -9,6 +9,7 @@ Your Personal AI Command Center with vision, user accounts, and subscription-bas
 - **Vision** — Attach one or more images. Task + images are sent together to the model using `detail: high`
 - **Usage tracking & enforcement** — Server-side quota checks + automatic monthly reset for free users
 - **Stripe billing** — Checkout + Customer Portal + webhook sync
+- **Proprietary Features** — Ultra Premium includes exclusive IP: Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, Opportunity Decay Clock (detailed below)
 
 ## Getting Started
 
@@ -315,4 +316,27 @@ Special tools: `personal_life_reflection`, `suggest_life_os_action`, `bridge_dig
 Example behavior: Notices stress from camera + full calendar → suggests physical environment adjustment + a realistic plan that respects your energy and emotional state. Or: "Send a follow-up email to the team summarizing today's physical sensor readings and decisions."
 
 All of the above (multiple AIs, real-time vision, physical/smart home, emotional awareness, Life OS with email) can be combined in a single autonomous run. The more premium features you opt into, the more capable and context-aware your personal AI becomes.
+
+## Proprietary Features (Ultra Premium / Enterprise exclusive)
+
+These five proprietary capabilities represent the core differentiated IP in Orchestrator. They are available exclusively to Ultra Premium subscribers and under commercial leasing / outright sale licenses. They turn the agent from a capable personal orchestrator into a high-value strategic system for business, government, knowledge work, and opportunity management.
+
+See the `proprietary-features.html` mockup (in Downloads) for the visual design language that was integrated into the in-app Tiers & Costs list.
+
+**Policy Translation Engine**  
+Translates complex policy into the exact language that resonates with different demographic "tribes" while maintaining factual integrity.
+
+**Constituent Emotion Layering**  
+Maps emotional undercurrents in constituent communications (anger, hope, fear, apathy) across regions and time without invading privacy.
+
+**Knowledge Heat Map**  
+Shows which parts of your company’s knowledge base are "cooling off" (becoming outdated) versus "heating up" (gaining relevance) in real time.
+
+**Invisible Workflow Weaver**  
+Automatically discovers undocumented workflows in a company by watching digital exhaust (file movements, email patterns, calendar overlaps) and turns them into shareable playbooks.
+
+**Opportunity Decay Clock**  
+Assigns a real-time "half-life" to every business opportunity, showing how fast it’s decaying and what action would extend its viability.
+
+These features leverage the full stack (memory + vision + Life OS + email + storage + traces) and are positioned as the primary justification for the higher Ultra tier pricing and enterprise licensing models (leasing, subscription, outright sale).
 

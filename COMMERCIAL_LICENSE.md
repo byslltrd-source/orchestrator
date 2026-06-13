@@ -14,9 +14,10 @@ Perpetual, worldwide license to:
 - Use the Software to create, modify, and deploy derivative works.
 - Sell, license, or distribute End Products built with the Software.
 - Use the Software for internal business purposes or client projects.
+- Full access to all Proprietary Features (Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, Opportunity Decay Clock) and the underlying IP for your own products and resale (subject to license restrictions).
 
 **B. Subscription-Based (Hosted or Update Access)**  
-During the active subscription term: Same rights as Outright Sale above, plus access to hosted version (if offered) and updates. Self-hosted kit rights apply while subscribed.
+During the active subscription term: Same rights as Outright Sale above, plus access to hosted version (if offered) and updates. Self-hosted kit rights apply while subscribed. Ultra-tier subscriptions include live access to the Proprietary Feature Suite.
 
 **C. Leasing (Enterprise Annual License)**  
 Annual renewable license with:
@@ -24,6 +25,7 @@ Annual renewable license with:
 - Priority support and SLA.
 - Option for revenue share or additional custom development.
 - Same usage rights as Outright during the term.
+- Full rights to deploy the complete Proprietary Feature Suite (Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, Opportunity Decay Clock) as a key value driver for your customers or internal teams.
 
 - Use the Software (the "Orchestrator" source code and related materials) to create, modify, and deploy derivative works.
 - Sell, license, or distribute End Products built with the Software.

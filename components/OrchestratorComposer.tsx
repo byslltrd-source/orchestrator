@@ -133,7 +133,7 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
     {
       name: "Ultra Premium",
       price: "$99/mo",
-      description: "Full power for power users & teams. The complete Orchestrator experience.",
+      description: "Full power for power users & teams. The complete Orchestrator experience + proprietary differentiators.",
       features: [
         "Everything in Pro",
         "Real-time Vision (live camera feed, premium only)",
@@ -143,7 +143,31 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
         "Unlimited storage + advanced capabilities (list, signed, bulk)",
         "All models including custom endpoints",
         "Priority support, advanced subagents, deeper memory",
+        "Proprietary Feature Suite (Ultra exclusive) — see full details below",
       ],
+    },
+  ];
+
+  const proprietaryFeatures = [
+    {
+      title: "Policy Translation Engine",
+      desc: "Translates complex policy into the exact language that resonates with different demographic \"tribes\" while maintaining factual integrity.",
+    },
+    {
+      title: "Constituent Emotion Layering",
+      desc: "Maps emotional undercurrents in constituent communications (anger, hope, fear, apathy) across regions and time without invading privacy.",
+    },
+    {
+      title: "Knowledge Heat Map",
+      desc: "Shows which parts of your company\u2019s knowledge base are \"cooling off\" (becoming outdated) versus \"heating up\" (gaining relevance) in real time.",
+    },
+    {
+      title: "Invisible Workflow Weaver",
+      desc: "Automatically discovers undocumented workflows in a company by watching digital exhaust (file movements, email patterns, calendar overlaps) and turns them into shareable playbooks.",
+    },
+    {
+      title: "Opportunity Decay Clock",
+      desc: "Assigns a real-time \"half-life\" to every business opportunity, showing how fast it\u2019s decaying and what action would extend its viability.",
     },
   ];
 
@@ -531,6 +555,20 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
               </div>
             ))}
             <div className="text-[9px] text-zinc-500">Free tier limited to basic use. Upgrade for unlimited + premium capabilities like real-time vision and Life OS.</div>
+
+            {/* Proprietary Features - integrated from proprietary-features.html mockup (Ultra exclusive) */}
+            <div className="mt-3 pt-3 border-t border-blue-500/20">
+              <div className="text-[10px] uppercase tracking-widest text-blue-400 mb-2">Proprietary Features (Ultra Premium only)</div>
+              <div className="rounded-lg bg-zinc-950/60 p-3 space-y-3">
+                {proprietaryFeatures.map((f, idx) => (
+                  <div key={idx}>
+                    <div className="text-sm font-medium text-blue-300">{f.title}</div>
+                    <div className="text-[10px] text-zinc-400 leading-snug">{f.desc}</div>
+                  </div>
+                ))}
+              </div>
+              <div className="text-[9px] text-blue-400/70 mt-1">These proprietary capabilities are included exclusively for Ultra subscribers and enterprise/leased deployments. They represent core IP that elevates Orchestrator for high-value use cases.</div>
+            </div>
           </div>
 
           {!user && <div className="text-center text-xs text-zinc-500">Sign in to orchestrate.</div>}
