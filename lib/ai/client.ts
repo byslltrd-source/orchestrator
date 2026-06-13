@@ -49,6 +49,16 @@ export function resolveOrchestratorLLM(requestedId?: string | null): ResolvedLLM
     process.env.OPENAI_API_KEY;
 
   if (!apiKey) {
+    if (process.env.BYPASS_SUPABASE_CHECK === 'true' || process.env.NEXT_PUBLIC_BYPASS_SUPABASE_CHECK === 'true') {
+      // Stub LLM for test mode
+      return {
+        client: { chat: { completions: { create: async () => ({ choices: [{ message: { content: 'Test mode simulation response.' } }] }) } } } as any,
+        model: 'gpt-4o-mini',
+        label: 'Test Mode',
+        id,
+        supportsVision: true,
+      };
+    }
     throw new Error(
       `No API key found for model "${id}". Set ${specificKeyEnv || 'ORCHESTRATOR_API_KEY'} or OPENAI_API_KEY.`
     );
@@ -83,6 +93,13 @@ export function getEmbedder(): ResolvedEmbedder {
     process.env.OPENAI_API_KEY;
 
   if (!apiKey) {
+    if (process.env.BYPASS_SUPABASE_CHECK === 'true' || process.env.NEXT_PUBLIC_BYPASS_SUPABASE_CHECK === 'true') {
+      // Stub embedder for test mode - memory ops will be skipped or simulated in tools
+      return {
+        client: { embeddings: { create: async () => ({ data: [{ embedding: new Array(1536).fill(0) }] }) } } as any,
+        model: 'text-embedding-3-small',
+      };
+    }
     throw new Error('No embedding API key available (EMBEDDING_API_KEY or OPENAI_API_KEY).');
   }
 

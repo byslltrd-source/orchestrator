@@ -681,11 +681,9 @@ export const tools: ToolDefinition[] = [
           cc: cc || undefined,
           bcc: bcc || undefined,
           reply_to: replyTo || undefined,
-          // Attachments would need content or path handling; for now basic support via storage paths if extended
-          attachments: attachments.length > 0 ? attachments.map((att: any) => ({
-            filename: att.filename || 'attachment',
-            // For real: fetch content from storage or pass base64/path
-          })) : undefined,
+          // Attachments: currently skipped for safety (would need to fetch content from storage using getSignedAssetUrl or similar and convert to base64/buffer).
+          // For now, do not include to avoid Resend errors. Future: support via storage capabilities.
+          // attachments: ... ,
         });
 
         if (error) {

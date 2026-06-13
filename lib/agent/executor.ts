@@ -474,7 +474,14 @@ You are the central intelligent OS for the user's life. Be wise, empathetic, pra
         steps.push(callStep);
         await onStep?.(callStep);
 
-        const result = await executeTool(userId, name, args);
+        let result: string;
+        try {
+          result = await executeTool(userId, name, args);
+        } catch (e: unknown) {
+          const msg = e instanceof Error ? e.message : String(e);
+          result = `Tool ${name} execution crashed: ${msg}`;
+          console.error(`[Orchestrator] Tool crash for ${name}:`, e);
+        }
 
         const resultStep: AgentStep = {
           type: 'tool_result',
@@ -492,28 +499,30 @@ You are the central intelligent OS for the user's life. Be wise, empathetic, pra
 
         // === Magical Life OS behaviors ===
         if (lifeOsMode) {
-          // Auto-update biographical model from significant tool results
-          if (['execute_smart_home_action', 'execute_physical_action', 'personal_life_reflection', 'bridge_digital_to_physical'].includes(name)) {
-            try {
+          try {
+            // Auto-update biographical model from significant tool results
+            if (['execute_smart_home_action', 'execute_physical_action', 'personal_life_reflection', 'bridge_digital_to_physical'].includes(name)) {
               await executeTool(userId, 'update_biographical_model', {
                 observation: `After ${name}: ${result}`,
                 category: 'life_pattern',
               });
-            } catch {}
-          }
-
-          // Shadow Agent behavior: silently look for high-value insights after important actions
-          if (Math.random() < 0.35) {  // ~35% chance per major tool call - feels magical without being spammy
-            const shadowInsight = await generateShadowInsight(userId, name, result, currentMessages.slice(-6));
-            if (shadowInsight && shadowInsight.length > 30) {
-              const shadowStep: AgentStep = {
-                type: 'memory',
-                content: `👤 Shadow Agent: ${shadowInsight}`,
-              };
-              steps.push(shadowStep);
-              await onStep?.(shadowStep);
-              currentMessages.push({ role: 'system', content: `Shadow observation: ${shadowInsight}` });
             }
+
+            // Shadow Agent behavior: silently look for high-value insights after important actions
+            if (Math.random() < 0.35) {  // ~35% chance per major tool call - feels magical without being spammy
+              const shadowInsight = await generateShadowInsight(userId, name, result, currentMessages.slice(-6));
+              if (shadowInsight && shadowInsight.length > 30) {
+                const shadowStep: AgentStep = {
+                  type: 'memory',
+                  content: `👤 Shadow Agent: ${shadowInsight}`,
+                };
+                steps.push(shadowStep);
+                await onStep?.(shadowStep);
+                currentMessages.push({ role: 'system', content: `Shadow observation: ${shadowInsight}` });
+              }
+            }
+          } catch (e) {
+            console.error('[Orchestrator] Life OS magical auto behavior failed (non-fatal):', e);
           }
         }
 
@@ -542,7 +551,9 @@ You are the central intelligent OS for the user's life. Be wise, empathetic, pra
               const ethicalStep: AgentStep = { type: 'memory', content: `🪞 Ethical Mirror:\n${ethical}` };
               steps.push(ethicalStep);
               await onStep?.(ethicalStep);
-            } catch {}
+            } catch (e) {
+              console.error('[Orchestrator] Auto regret/ethical failed (non-fatal):', e);
+            }
           }
 
           // Restore controller env before early return
@@ -576,7 +587,9 @@ You are the central intelligent OS for the user's life. Be wise, empathetic, pra
             });
             steps.push({ type: 'memory', content: `🪞 Ethical Mirror:\n${ethical}` });
             await onStep?.({ type: 'memory', content: `🪞 Ethical Mirror:\n${ethical}` } as any);
-          } catch {}
+          } catch (e) {
+            console.error('[Orchestrator] Auto regret/ethical (non-tool final) failed (non-fatal):', e);
+          }
         }
 
         // Restore controller env before early return

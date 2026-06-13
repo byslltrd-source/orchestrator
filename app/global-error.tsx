@@ -34,7 +34,7 @@ export default function GlobalError({
             border: '1px solid #334155',
             borderRadius: 12,
             padding: '40px 50px',
-            max-width: 520,
+            maxWidth: 520,
             textAlign: 'center',
             boxShadow: '0 10px 30px rgba(0, 0, 0, 0.4)',
           }}

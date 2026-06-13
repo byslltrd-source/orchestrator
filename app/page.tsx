@@ -234,6 +234,18 @@ export default function OrchestratorPage() {
   // Main submit (one-shot or autonomous streaming)
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (isTestMode) {
+      // In test mode (bypass), simulate submit for visual testing. Real agent call would require Supabase.
+      setLoading(true);
+      setError(null);
+      setOneShotResult(null);
+      // Mock a result or live for demo
+      setTimeout(() => {
+        setOneShotResult(`[TEST MODE] Orchestration simulated for: ${task}. In real mode this would run the agent with selected features (model, Life OS, vision, etc.). Enable Life OS and try 'Send Current Frame' for camera test.`);
+        setLoading(false);
+      }, 800);
+      return;
+    }
     if (!user || !task.trim()) {
       setError("Sign in and enter a task.");
       return;
@@ -383,6 +395,20 @@ export default function OrchestratorPage() {
 
   async function captureAndPushFrame() {
     if (!liveRunId || !videoRef.current || !isPremium) return;
+
+    if (isTestMode) {
+      // Mock for visual test without backend
+      setIsPushingFrame(true);
+      setTimeout(() => {
+        const mockUrl = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIGZpbGw9IiMzMzQxNTUiLz48dGV4dCB4PSIzMiIgeT0iMzYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM5NGEzYjgiIHRleHQtYW5jaG9yPSJtaWRkbGUiPk1vY2sgRnJhbWU8L3RleHQ+PC9zdmc+';
+        setLiveSteps((prev) => [
+          ...prev,
+          { type: "vision_frame", content: mockUrl, step_number: prev.length + 1 },
+        ]);
+        setIsPushingFrame(false);
+      }, 300);
+      return;
+    }
 
     setIsPushingFrame(true);
     try {

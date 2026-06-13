@@ -12,6 +12,27 @@ export function createServiceClient() {
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
   if (!url || !serviceKey) {
+    if (process.env.BYPASS_SUPABASE_CHECK === 'true' || process.env.NEXT_PUBLIC_BYPASS_SUPABASE_CHECK === 'true') {
+      // Stub for test mode - memory/storage calls will no-op or return empty
+      return {
+        from: () => ({
+          insert: async () => ({ error: null }),
+          select: () => ({ eq: () => ({ order: () => ({ limit: async () => ({ data: [], error: null }) }) }) }),
+          update: async () => ({ error: null }),
+          delete: async () => ({ error: null }),
+        }),
+        storage: {
+          from: () => ({
+            upload: async () => ({ error: null }),
+            remove: async () => ({ error: null }),
+            list: async () => ({ data: [], error: null }),
+            getPublicUrl: () => ({ data: { publicUrl: 'https://example.com/mock' } }),
+            createSignedUrl: async () => ({ data: { signedUrl: 'https://example.com/mock-signed' }, error: null }),
+          }),
+        },
+        rpc: async () => ({ data: null, error: null }),
+      } as any
+    }
     throw new Error("Missing SUPABASE_SERVICE_ROLE_KEY (or NEXT_PUBLIC_SUPABASE_URL)")
   }
 

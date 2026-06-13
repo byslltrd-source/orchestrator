@@ -9,7 +9,7 @@ export function createClient() {
   // Return a safe stub during build / server prerender (no keys or server render of client comps).
   // Real functionality only matters in the browser at runtime.
   if (!url || !key) {
-    if (typeof window === 'undefined') {
+    if (typeof window === 'undefined' || process.env.NEXT_PUBLIC_BYPASS_SUPABASE_CHECK === 'true') {
       return {
         auth: {
           getUser: async () => ({ data: { user: null }, error: null }),
