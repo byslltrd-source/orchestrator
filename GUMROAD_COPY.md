@@ -7,9 +7,24 @@ Orchestrator – Full Next.js AI Agent Platform with Traces, Memory & Live Viewi
 **Subtitle / Short Description:**  
 Build your own personal autonomous AI agent. Includes tools, long-term memory, full execution traces, live streaming, vision, Stripe billing, and usage controls. The complete codebase.
 
-**Price:**  
-$199 (one-time, lifetime access)  
-Early bird: $149 (first 50 buyers)
+**Pricing Models (choose one or mix):**
+
+**1. Outright Sale (One-time, Lifetime Commercial License)**  
+$499 (early bird $349 for first 50 buyers)  
+Full source, perpetual rights to use/modify/sell derivatives per license. Best for builders who want to own it outright or resell as their own product.
+
+**2. Subscription-Based (Hosted SaaS or Updates)**  
+- Free tier: Limited (20 orchestrations/month, basic features)  
+- Pro: $29/month – Unlimited basic + autonomous + multi-image vision + advanced models + storage  
+- Ultra Premium: $79/month – Everything + real-time vision (camera), physical/smart home integration, emotional awareness, full Personal Life OS (biographical self-modeling, shadow agent, regret minimization, ethical mirror, dream/sleep integration), email writing/sending, unlimited storage, all models, priority support.
+
+Includes lifetime updates for subscribers. Self-hosted kit available at lower one-time price.
+
+**3. Leasing (Enterprise White-Label / Annual License)**  
+$4,999 – $14,999 / year per company (tiered by users/seats + revenue share option).  
+Full source + support + custom branding/white-label rights + SLA. Ideal for agencies or companies embedding it in their offerings. Custom dev available.
+
+Early bird / launch pricing available. Contact for enterprise quotes.
 
 **Description:**
 
@@ -123,10 +138,16 @@ Copyright (c) 2026 [Your Name]. All rights reserved.
 
 This software is licensed under a Commercial License Agreement. See the included LICENSE file and the separate Commercial License Agreement for full terms.
 
-You are granted a non-exclusive, perpetual, worldwide license to use, modify, and create derivative works from this software for commercial purposes, subject to the restrictions in the Commercial License Agreement.
+**License Options:**
+
+- **Outright Sale (One-time Commercial License):** Perpetual, non-exclusive, worldwide license to use, modify, and create derivative works for commercial purposes (build/sell your own products/SaaS, deploy for clients). Restrictions: May not resell/redistribute the original or substantially unmodified source code as-is. You may not claim the original as your own without modification.
+
+- **Subscription-Based:** For hosted access or ongoing updates. Includes the above rights during active subscription. Self-hosted kit may have separate terms.
+
+- **Leasing (Enterprise Annual License):** Renewable annual license with white-label rights, support SLA, and option for revenue share or custom development. Higher limits, priority features.
 
 You may not redistribute the original or substantially unmodified source code.
 
 THE SOFTWARE IS PROVIDED "AS IS".
 
-(We can make a more formal 1-page PDF version for the download if needed.)
+(We can make a more formal 1-page PDF version for the download if needed, with options for each model.)

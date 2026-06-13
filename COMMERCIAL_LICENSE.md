@@ -7,7 +7,23 @@ Effective Date: [Insert Date]
 This Commercial License Agreement ("Agreement") is entered into by and between the Licensor ("Licensor" or "You" in the context of the buyer) and the copyright holder ("Owner").
 
 1. GRANT OF LICENSE
-Subject to the terms of this Agreement, the Owner grants the Licensor a non-exclusive, non-transferable, perpetual, worldwide license to:
+Subject to the terms of this Agreement and the purchased model, the Owner grants the Licensor a non-exclusive, non-transferable license as follows:
+
+**A. Outright Sale (One-time, Perpetual Commercial License)**  
+Perpetual, worldwide license to:
+- Use the Software to create, modify, and deploy derivative works.
+- Sell, license, or distribute End Products built with the Software.
+- Use the Software for internal business purposes or client projects.
+
+**B. Subscription-Based (Hosted or Update Access)**  
+During the active subscription term: Same rights as Outright Sale above, plus access to hosted version (if offered) and updates. Self-hosted kit rights apply while subscribed.
+
+**C. Leasing (Enterprise Annual License)**  
+Annual renewable license with:
+- White-label / rebranding rights.
+- Priority support and SLA.
+- Option for revenue share or additional custom development.
+- Same usage rights as Outright during the term.
 
 - Use the Software (the "Orchestrator" source code and related materials) to create, modify, and deploy derivative works.
 - Sell, license, or distribute End Products built with the Software.
@@ -18,6 +34,9 @@ You may NOT:
 - Resell, sublicense, or redistribute the original Software or substantially unmodified copies of the source code.
 - Remove or alter any copyright, trademark, or proprietary notices.
 - Use the Software to create a competing product that is primarily a direct clone of the starter kit itself.
+- For Leasing: Sub-license the Software itself (only End Products).
+
+Additional restrictions may apply per model as detailed in purchase confirmation.
 
 3. OWNERSHIP
 The Owner retains all right, title, and interest in and to the Software, including all intellectual property rights. This Agreement does not transfer any ownership rights.
