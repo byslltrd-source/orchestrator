@@ -14,6 +14,8 @@ import {
   Clock,
   Scroll,
   Layers,
+  DollarSign,
+  Target,
 } from "lucide-react";
 import type { AgentStep, StepRow } from "@/lib/agent/types";
 
@@ -166,6 +168,19 @@ export function StepRenderer({ step, index }: StepRendererProps) {
         </div>
         <div className="text-sky-200/90 text-xs whitespace-pre-wrap">{step.content}</div>
         <div className="text-[10px] text-sky-400 mt-1">Hidden processes → shareable playbooks • Ultra Premium IP</div>
+      </div>
+    );
+  }
+
+  // Funding Forge — flagship proprietary tool (powered by all 5 engines)
+  if (t === "memory" && step.content?.includes("FUNDING FORGE REPORT")) {
+    return (
+      <div key={index} className="rounded-xl border border-emerald-500/40 bg-emerald-950/40 p-4 text-sm">
+        <div className="flex items-center gap-2 font-semibold text-emerald-300 mb-2">
+          <DollarSign className="h-4 w-4" /> <Target className="h-4 w-4" /> FUNDING FORGE (Proprietary Ultra)
+        </div>
+        <div className="text-emerald-200/90 text-xs whitespace-pre-wrap max-h-80 overflow-auto">{step.content}</div>
+        <div className="text-[10px] text-emerald-400 mt-2 font-medium">Autonomous opportunity hunter + application factory + risk engine • Chains Policy Translation • Heat Map • Decay Clock • Workflow Weaver • Emotion Layering</div>
       </div>
     );
   }

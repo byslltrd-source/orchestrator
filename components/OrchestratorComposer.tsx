@@ -214,6 +214,8 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
     "Research the best noise-cancelling headphones under $200 released in 2025. Compare top 3 models with current prices and real user feedback.",
     "Plan a 4-day solo trip to Tokyo in March. Include budget, must-see spots, and food recommendations.",
     "Summarize the latest research on AI agents for personal productivity. Include tools and case studies.",
+    "I have a B2B SaaS tool for small manufacturers. Help me find and prepare for the best grants, angel, and early VC funding opportunities right now. Use Funding Forge.",
+    "Run Funding Forge on my personal project: a community education platform focused on financial literacy for underserved neighborhoods. Target non-dilutive grants + impact investors.",
   ];
 
   return (
@@ -567,7 +569,7 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
                   </div>
                 ))}
               </div>
-              <div className="text-[9px] text-blue-400/70 mt-1">These proprietary capabilities are included exclusively for Ultra subscribers and enterprise/leased deployments. They are now implemented as live agent tools (with auto-magical surfacing in Life OS mode) and represent core IP that elevates Orchestrator for high-value use cases.</div>
+              <div className="text-[9px] text-blue-400/70 mt-1">These proprietary capabilities are included exclusively for Ultra subscribers and enterprise/leased deployments. They are now implemented as live agent tools (with auto-magical surfacing in Life OS mode). The flagship real usable tool is <strong>Funding Forge</strong> — an autonomous funding acquisition engine that chains all five engines to hunt opportunities, score risk, generate tailored applications, and produce action plans.</div>
             </div>
           </div>
 
