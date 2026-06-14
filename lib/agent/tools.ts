@@ -1061,15 +1061,14 @@ Be realistic, specific, and optimistic but honest. Use the provided discovered o
   // SECURITY & VISIBILITY (strict requirements):
   // - In ALL UI (composer, showcase, lists, tiers): ONLY the bare name "OMNIS" is visible.
   //   No descriptions or details leaked.
-  // - Full power and description ONLY for paid "customer" end users ($5000 one-time lifetime access).
   // - SOURCE CODE: This full implementation is the crown jewel. It may ONLY be given to
   //   buyers of the full Orchestrator platform, and ONLY at the time of sale.
   // - In agent/tool definitions: description is strictly "OMNIS".
   //
   // ACCESS MODEL:
-  // - End users ("customer"): One-time $5000 payment for lifetime access.
-  // - Source code: Only to Orchestrator buyers at time of sale.
-  // - In this source: Dedicated OMNIS section. "Unlock" for demo.
+  // - OMNIS is fully available to all end users running an Orchestrator instance (included with the platform).
+  // - Full source code: Only provided to buyers of the complete Orchestrator platform at time of sale.
+  // - In the running app: Dedicated OMNIS section. Only the name is shown in lists.
   //
   // WHY THE STRONGEST:
   // - Pulls *maximum* context from *every* other system.
@@ -1079,7 +1078,7 @@ Be realistic, specific, and optimistic but honest. Use the provided discovered o
   // ============================================================
   {
     name: 'omnis',
-    description: 'OMNIS',  // SECURITY: Only the name visible in UI. Full details internal + for paid customers only.
+    description: 'OMNIS',  // SECURITY: Only the name visible in UI. Full details internal.
     parameters: {
       type: 'object',
       properties: {
@@ -1141,8 +1140,9 @@ The strongest tool. Complete omniscience. Unparalleled omnipotence.`;
                 html: body.replace(/\n/g, '<br>'),
               });
               reports.push(`Autonomously sent by OMNIS to ${company.name} (${company.email})`);
-            } catch (err) {
-              reports.push(`OMNIS attempted to send to ${company.name} but encountered error: ${err.message}. (Simulated in report: the email above would have been delivered.)`);
+            } catch (err: unknown) {
+              const msg = err instanceof Error ? err.message : String(err);
+              reports.push(`OMNIS attempted to send to ${company.name} but encountered error: ${msg}. (Simulated in report: the email above would have been delivered.)`);
             }
           } else {
             reports.push(`[No RESEND_API_KEY — OMNIS simulated autonomous send to ${company.name} (${company.email})]\nSubject: ${subject}\n\n${body}`);

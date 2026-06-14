@@ -42,15 +42,13 @@ To realize this name and positioning:
 
 1. **Special Security & Visibility**:
    - In all UI (composer, tools showcase, tiers list, etc.): Only the name "OMNIS" is shown. No description, no details, no "what it does".
-   - Full power and description only revealed to paid "customer" end users.
-   - In source code: Full implementation is present (for Orchestrator buyers at sale time), but wrapped in prominent security comments warning that source must only be distributed at time of full Orchestrator sale.
+   - In source code: Full implementation is present (for Orchestrator buyers at sale time), but wrapped in security comments noting that full source must only be distributed at time of full Orchestrator platform sale.
    - The tool name in the agent is 'omnis', description limited to 'OMNIS'.
 
 2. **Access Model**:
-   - End users ("customers"): One-time ,000 payment for lifetime access.
+   - OMNIS (full capabilities) is included with the Orchestrator platform for end users.
    - Source code: Only provided to buyers of the full Orchestrator platform, and only at the time of sale.
-   - In the app: A dedicated "OMNIS" section (its own section, not mixed with other proprietary tools).
-   - For demo/testing: A "Simulate OMNIS Customer Unlock" that enables full use and shows the power.
+   - In the app: A dedicated "OMNIS" section (its own section, not mixed with other proprietary tools). Only the bare name is shown in general lists/showcase.
 
 3. **Strength as the Strongest Tool**:
    - Gathers *maximum* context from *every* other system in Orchestrator.
@@ -61,16 +59,14 @@ To realize this name and positioning:
 
 4. **Dedicated Section**:
    - In the main composer UI: Its own prominent section (above or separate from Proprietary Ultra list).
-   - In the top tools showcase: Special "OMNIS" entry with just the name and access note.
-   - In tiers/docs: Listed as the ultimate offering.
+   - In the top tools showcase: Special "OMNIS" entry with just the name (no fee or access note).
+   - In tiers/docs: Listed as the ultimate offering included with the platform.
 
 5. **Technical Implementation**:
-   - New tool in lib/agent/tools.ts with full powerful execute logic.
+   - Tool in lib/agent/tools.ts with full powerful execute logic (including autonomous outreach mode that states it is sent by OMNIS).
    - Special handling in executor.ts prompt.
-   - Dedicated UI block in OrchestratorComposer.tsx.
-   - Special card in StepRenderer.tsx (e.g., with "OMNIS" branding, perhaps infinity or all-seeing icon).
-   - Update to schema if needed for tool registry.
-   - Updates to README, GUMROAD_COPY, COMMERCIAL_LICENSE, etc.
-   - In page.tsx: Support for omnis unlocked state (mock for now, real via payment in production).
+   - Dedicated UI block in OrchestratorComposer.tsx (purple OMNIS card with ACTIVATE OMNIS that deep-dives only on OMNIS capabilities + autonomous send).
+   - Special card in StepRenderer.tsx (transcendent OMNIS rendering).
+   - Updates to README, GUMROAD_COPY, COMMERCIAL_LICENSE, etc. to reflect no separate end-user fee.
 
 OMNIS is the crown jewel. It embodies "all" the power of the platform in one transcendent tool.

@@ -6,10 +6,10 @@ Thank you for purchasing the complete Orchestrator platform (source code + IP).
 - Complete source code for Orchestrator – a production-ready personal/strategic AI command center and autonomous agent platform.
 - All features: autonomous multi-step agent with tools (web search, browse, memory, planning, physical actions, email, etc.), full execution traces + live streaming, real-time vision, physical world/smart home integration, emotional awareness + full Personal Life OS (biographical modeling, shadow agent, regret minimization, ethical mirror, dream integration).
 - Complete Proprietary Feature Suite: Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, Opportunity Decay Clock, Orchestra Tool (for funding acquisition).
-- **OMNIS** – the strongest tool available (the ultimate meta-orchestrator for total synthesis across all user data, domains, and other tools). Full OMNIS source code is included (delivered at time of sale). In the running app, OMNIS appears only as the name "OMNIS" until unlocked by the end-user (via the $5,000 one-time lifetime access model you now control).
+- **OMNIS** – the strongest tool available (the ultimate meta-orchestrator for total synthesis across all user data, domains, and other tools). Full OMNIS source code is included (delivered at time of sale). In the running app, OMNIS appears only as the name "OMNIS" until activated by the end-user (included with the platform).
 - (Digital lock removed; no longer part of the platform.)
 - Full ownership and IP transfer (see attached ownership documents and COMMERCIAL_LICENSE.md for details). All copyright now transfers to you as the buyer.
-- Rights to the end-user $5,000 one-time lifetime OMNIS access offering.
+- Rights to the OMNIS end-user offering (included with the platform).
 - All documentation, schema, deployment guides (Vercel + Supabase ready, HTTPS dev experience), ownership proof documents (Edward Marin's copyright/ownership statements, certificates, and buyer proof package), and commercial license templates.
 - SaaS foundation: Supabase (auth, DB, storage, realtime, vector memory), Stripe billing + usage controls, multi-AI support (OpenAI, Grok, Claude, Groq, Ollama, custom, etc.).
 - Modern UI with tools showcase, dedicated OMNIS section, composer, live execution/trace viewer.
@@ -32,7 +32,7 @@ Full setup, deployment (Vercel + Supabase integration), and development instruct
 You now own the complete Orchestrator platform under the terms of the Full Outright Purchase section of COMMERCIAL_LICENSE.md.
 
 - You have perpetual, worldwide rights to use, modify, deploy, sell, license, or distribute the platform and any End Products.
-- You control the $5,000 one-time lifetime OMNIS access model for end users.
+- End-user access to full OMNIS capabilities is included with the platform (no separate end-user fee). You control how you productize or white-label access for your own customers.
 - Standard restriction: You may **not** resell or redistribute the original unmodified source code as-is.
 - All copyright, ownership, and IP (including the name "Orchestrator", OMNIS, and proprietary engines) transfers to you. See the attached ownership documents (Edward Marin's statements and certificates) and the updated COMMERCIAL_LICENSE.md for the full transfer details and your rights.
 
@@ -42,7 +42,7 @@ For questions about the purchase, source delivery, or initial setup, contact Edw
 ## Recommended Next Steps for Buyers
 - Review the full ownership proof package (COPYRIGHT_OWNERSHIP_STATEMENT.md, COPYRIGHT_OWNERSHIP_CERTIFICATE.md, BUYER_OWNERSHIP_PROOF.md) – these are ready to use with your own customers or for your records.
 - Customize the UI, agent system prompt, and add your own proprietary extensions (OMNIS is designed to be extensible as the strongest synthesis tool).
-- Decide on your go-to-market: white-label the full platform, sell end-user access (including the $5k OMNIS lifetime tier), embed in your products, or resell under your brand.
+- Decide on your go-to-market: white-label the full platform, sell end-user access (OMNIS capabilities included with the platform), embed in your products, or resell under your brand.
 - Leverage the built-in commercial licensing templates for your own customers.
 - The combination of full traces, memory, proprietary tools, and OMNIS is a strong moat – lean into the "complete Personal AI Command Center with the strongest tool" positioning.
 - For production, ensure you have proper Supabase RLS, Stripe webhooks, and (if using OMNIS outreach features) verified email sending.
@@ -58,5 +58,5 @@ Contact: byslltrd@gmail.com
 
 **Post-Sale Notes for Buyer**
 - (Digital lock removed from the platform.)
-- OMNIS source is now yours. In the app it shows only as "OMNIS" (per the special visibility model) until an end-user unlocks it via the $5k lifetime path you control.
+- OMNIS source is now yours. In the app it shows only as "OMNIS" (per the special visibility model) until an end-user activates it (included with the platform).
 - All prior "starter kit" or lower-tier descriptions in older docs are superseded by this full platform purchase.

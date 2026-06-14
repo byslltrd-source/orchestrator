@@ -15,9 +15,8 @@ $9,999 – $49,999 (one-time, price negotiable based on valuation and buyer; ear
 Includes:
 - Full source code (Next.js 16, all features, tools, UI, docs).
 - Complete ownership transfer of "Orchestrator" name, branding, and IP.
-- Full OMNIS implementation (the strongest tool – source code delivered only at time of sale, with special security: UI shows only the name "OMNIS" until unlocked).
-- (Digital lock removed; no longer part of the platform.)
-- All proprietary features (Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, Opportunity Decay Clock, Orchestra Tool) and end-user $5,000 lifetime OMNIS access model.
+- Full OMNIS implementation (the strongest tool – source code delivered only at time of sale, with special visibility: UI shows only the name "OMNIS" until activated by end users).
+- All proprietary features (Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, Opportunity Decay Clock, Orchestra Tool) and the OMNIS end-user offering (included with the platform).
 - Perpetual, worldwide rights to use, modify, sell, license, or distribute the platform and derivative products (with standard restriction: do not resell the original unmodified source as-is).
 - All supporting documentation, ownership proof documents (copyright statements, certificates, buyer proof package in Edward Marin's name), commercial licenses, and setup guides.
 - Transfer of Supabase schema, Stripe integration, and deployment configs (Vercel ready).
@@ -42,8 +41,8 @@ Orchestrator is a production-ready, full-stack autonomous AI agent platform and 
 - Real-time vision (camera), physical world/smart home integration (sensors, actuators).
 - Emotional state awareness + full Personal Life OS (biographical self-modeling, shadow agent, regret minimization, ethical mirror, dream integration).
 - Proprietary Feature Suite: Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, Opportunity Decay Clock, Orchestra Tool (funding acquisition).
-- OMNIS – the strongest tool available (complete omni-synthesis across all data/domains; end-user lifetime access $5,000 one-time; source code only to full platform buyers at sale, with UI security showing only the name "OMNIS").
-- Digital lock (private owner password; source includes lock, password transferred at sale).
+- OMNIS – the strongest tool available (complete omni-synthesis across all data/domains; end-user access included with the platform; source code only to full platform buyers at sale, with special visibility showing only the name "OMNIS").
+- (Digital lock removed; no longer part of the platform.)
 - SaaS foundation: Supabase (auth, DB, storage, realtime), Stripe billing, usage controls, multi-AI support (OpenAI, Grok, Claude, etc.).
 - Modern UI with tools showcase, dedicated OMNIS section, composer, live execution.
 - Complete docs, ownership proof (Edward Marin copyright/ownership statements, certificates), commercial licenses, Vercel/HTTPS dev setup.
@@ -55,7 +54,7 @@ This is not a basic starter – it is a complete, defensible platform with uniqu
 - Complete source code (Next.js 16 App Router, TypeScript, Tailwind, shadcn/ui, all features).
 - Working autonomous agent with full toolset, memory, traces, vision, physical, Life OS, proprietary tools, and OMNIS.
 - All documentation, schema, deployment guides, ownership docs, and licenses.
-- Rights to the $5,000 OMNIS end-user offering.
+- Rights to the OMNIS end-user offering (included with the platform).
 - Clear, documented ownership (transfers to buyer).
 - Source code and full OMNIS details provided only at time of sale.
 
@@ -133,9 +132,9 @@ Orchestrator goes further:
 - Production-ready billing and quota system already wired up
 - **Exclusive Proprietary Ultra Suite (Proprietary Ultra / Enterprise)**: Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, Opportunity Decay Clock + flagship `orchestra_tool`. These are the crown-jewel differentiators native to Orchestrator (Proprietary Ultra tier only) that justify premium and enterprise pricing. They power the built-in Orchestra Tool for live opportunity hunting, risk scoring, tailored application generation, warm intros, and complete action plans. Deeply integrated as core Orchestrator functionality.
 
-- **OMNIS — The Strongest Tool Available (End-User Only, $5,000 one-time lifetime)**: "OMNIS" (Latin "omnis" = all/every/the whole) is the ultimate meta-orchestrator. Complete knowledge of the user's entire existence (synthesizing every other tool + all data) + coordinated unlimited power across all domains. Omniscience • Omnipotence • Omnipresence in one tool. 
+- **OMNIS — The Strongest Tool Available**: "OMNIS" (Latin "omnis" = all/every/the whole) is the ultimate meta-orchestrator. Complete knowledge of the user's entire existence (synthesizing every other tool + all data) + coordinated unlimited power across all domains. Omniscience • Omnipotence • Omnipresence in one tool. 
 
-  Only for end users ("customers") via one-time $5,000 lifetime payment. Source code provided *only* to buyers of the full Orchestrator platform at time of sale. In the UI and tool definitions: *only the bare name "OMNIS" is ever visible* (special security). Full transcendent power unlocked only for paid customers. Has its own dedicated section. This is the crown jewel that makes the entire platform the strongest possible.
+  End-user access to full OMNIS capabilities is included with the Orchestrator platform. Source code provided *only* to buyers of the full Orchestrator platform at time of sale. In the UI and tool definitions: *only the bare name "OMNIS" is ever visible* (special visibility model). Has its own dedicated section. This is the crown jewel that makes the entire platform the strongest possible.
 
   Built on memory, Life OS, and the full toolset; delivers unmatched ROI through total life synthesis. See OMNIS.md in the source for the deep etymology and implementation.
 

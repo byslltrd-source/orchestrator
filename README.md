@@ -353,9 +353,9 @@ They are fully implemented as first-class tools (`policy_translation_engine`, `c
 **OMNIS — The Strongest Tool Available (Dedicated Crown Jewel)**
 "OMNIS" (Latin "omnis" = all/every/the whole) is the ultimate meta-orchestrator. It has complete knowledge of the user's entire existence (synthesizing *every* other tool and all data) and coordinated unlimited power to act across all domains simultaneously. 
 
-- Only for end users ("customers"): one-time $5,000 lifetime access.
+- End-user access to full OMNIS capabilities is included with the Orchestrator platform.
 - Source code provided only to buyers of the full Orchestrator platform, and only at the time of sale.
-- In the UI: Only the bare name "OMNIS" is ever shown (special security). Full power unlocked only for paid customers.
+- In the UI: Only the bare name "OMNIS" is ever shown (special visibility model).
 - It is the strongest tool: total omni-synthesis and transcendent reasoning that no other tool or combination can achieve.
 - Has its own dedicated section in the composer. See OMNIS.md in the repo for the full deep dive and implementation.
 - Live multi-source opportunity discovery (grants, VC, angels, tenders...)
