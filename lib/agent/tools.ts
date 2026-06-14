@@ -902,16 +902,15 @@ export const tools: ToolDefinition[] = [
   },
 
   // ============================================================
-  // ORCHESTRA TOOL (Funding Forge) — The flagship real usable proprietary tool
+  // ORCHESTRA TOOL (`orchestra_tool`) — Native, built-in proprietary orchestration engine of Orchestrator
   // Built on top of (and orchestrates) the 5 core proprietary engines:
   // Policy Translation + Constituent Emotion Layering + Knowledge Heat Map
   // + Invisible Workflow Weaver + Opportunity Decay Clock
-  // This turns the abstract IP into a concrete, high-ROI autonomous funding co-founder.
-  // Called "the Orchestra Tool" in the UI and docs.
+  // Deeply integrated as a first-class part of the Orchestrator agent (not a side feature).
   // ============================================================
   {
-    name: 'funding_forge',
-    description: 'PROPRIETARY (Ultra Premium exclusive): Orchestra Tool (Funding Forge) — The flagship autonomous funding acquisition engine. Actively hunts live funding opportunities (grants, VC, angels, government tenders, family offices, crowdfunding), matches them to your project using your biographical model, knowledge base, and traction signals. Scores realistic success probability and risk using decay-style analysis. Generates fully customized applications, pitch summaries, financial narratives, and warm intro messages tailored to each funder\'s preferences via policy translation and emotion layering. Produces a complete prioritized action plan with ready-to-submit materials, deadlines, and follow-up steps. This is the killer application of the proprietary tool suite (chains the 5 engines) — it can realistically save hundreds of hours and unlock significant capital.',
+    name: 'orchestra_tool',
+    description: 'PROPRIETARY (Ultra Premium exclusive) — Built-in Orchestra Tool of Orchestrator. The core proprietary orchestration engine. Actively hunts live funding opportunities (grants, VC, angels, government tenders, family offices, crowdfunding), matches them to your project using your biographical model, knowledge base, and traction signals. Scores realistic success probability and risk using decay-style analysis. Generates fully customized applications, pitch summaries, financial narratives, and warm intro messages tailored to each funder\'s preferences via policy translation and emotion layering. Produces a complete prioritized action plan with ready-to-submit materials, deadlines, and follow-up steps. This is the signature built-in tool of Orchestrator (chains the 5 proprietary engines) — it can realistically save hundreds of hours and unlock significant capital.',
     parameters: {
       type: 'object',
       properties: {
@@ -1009,9 +1008,9 @@ export const tools: ToolDefinition[] = [
       }
 
       // 4. Probability & Risk + full Forge Report synthesis (Probability & Risk Engine + Warm Intros + Follow-up)
-      const forgeSystem = `You are Funding Forge, the autonomous funding acquisition engine. Synthesize everything into a professional, actionable report with these exact sections:
+      const forgeSystem = `You are the built-in Orchestra Tool of Orchestrator (the core proprietary orchestration engine). Synthesize everything into a professional, actionable report with these exact sections:
 
-**ORCHESTRA TOOL REPORT (Funding Forge)**
+**ORCHESTRA TOOL REPORT (native to Orchestrator)**
 **Project Snapshot**
 **Live Matched Opportunities** (top ${max_opportunities}, with source, fit score 1-10, why it matches your bio/knowledge)
 **Risk & Probability Analysis** (success odds, red flags, decay clock insights)
@@ -1020,7 +1019,7 @@ export const tools: ToolDefinition[] = [
 **Action Plan & Timeline** (immediate next steps, deadlines, what to submit, follow-up cadence, documentation checklist)
 **Proprietary Engine Usage** (brief note on which of the 5 engines were activated)
 
-Be realistic, specific, and optimistic but honest. Use the provided discovered opps, heat map, decay analysis, and tailored materials.`;
+Be realistic, specific, and optimistic but honest. Use the provided discovered opps, heat map, decay analysis, and tailored materials. This is a native capability of Orchestrator.`;
 
       const finalRes = await llm.chat.completions.create({
         model,
@@ -1045,7 +1044,7 @@ Be realistic, specific, and optimistic but honest. Use the provided discovered o
         }
       } catch {}
 
-      return `=== ORCHESTRA TOOL REPORT (Funding Forge - Ultra Proprietary) ===\n\n${report}\n\n---\nNext: Use send_email tool to fire off any generated warm intros. Run funding_forge (the Orchestra Tool) again after new traction for updated matches. All 5 proprietary engines were activated behind the scenes.`;
+      return `=== ORCHESTRA TOOL REPORT (native part of Orchestrator) ===\n\n${report}\n\n---\nNext: Use send_email tool to fire off any generated warm intros. Call orchestra_tool again after new traction. All 5 proprietary engines were activated as a built-in part of Orchestrator.`;
     },
   },
 ];

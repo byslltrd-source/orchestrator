@@ -133,7 +133,7 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
     {
       name: "Ultra Premium",
       price: "$99/mo",
-      description: "Full power for power users & teams. The complete Orchestrator experience + proprietary differentiators.",
+      description: "Full power for power users & teams. The complete Orchestrator experience with the built-in Orchestra Tool and proprietary differentiators as native capabilities.",
       features: [
         "Everything in Pro",
         "Real-time Vision (live camera feed, premium only)",
@@ -143,7 +143,7 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
         "Unlimited storage + advanced capabilities (list, signed, bulk)",
         "All models including custom endpoints",
         "Priority support, advanced subagents, deeper memory",
-        "Proprietary Feature Suite (Ultra exclusive) — see full details below",
+        "Orchestra Tool (`orchestra_tool`) + full Proprietary Feature Suite — native, built-in part of Orchestrator (see below)",
       ],
     },
   ];
@@ -218,8 +218,8 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
     "Research the best noise-cancelling headphones under $200 released in 2025. Compare top 3 models with current prices and real user feedback.",
     "Plan a 4-day solo trip to Tokyo in March. Include budget, must-see spots, and food recommendations.",
     "Summarize the latest research on AI agents for personal productivity. Include tools and case studies.",
-    "I have a B2B SaaS tool for small manufacturers. Help me find and prepare for the best grants, angel, and early VC funding opportunities right now. Use Funding Forge.",
-    "Run Funding Forge on my personal project: a community education platform focused on financial literacy for underserved neighborhoods. Target non-dilutive grants + impact investors.",
+    "I have a B2B SaaS tool for small manufacturers. Help me find and prepare for the best grants, angel, and early VC funding opportunities right now. Use the orchestra_tool.",
+    "Run orchestra_tool on my personal project: a community education platform focused on financial literacy for underserved neighborhoods. Target non-dilutive grants + impact investors.",
   ];
 
   return (
@@ -313,6 +313,31 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
             <div className="mt-1 text-[10px] text-zinc-500">
               {getModelOptions().find((o) => o.id === model)?.notes || 'Select a model to power the orchestrator agent.'}
             </div>
+          </div>
+
+          {/* Orchestra Tool — core built-in proprietary part of Orchestrator */}
+          <div className="rounded-lg border border-emerald-500/30 bg-emerald-950/10 p-3">
+            <div className="text-xs uppercase tracking-widest text-emerald-400 mb-1 flex items-center gap-2">
+              🎯 Orchestra Tool (Ultra Proprietary)
+            </div>
+            <div className="text-[10px] text-emerald-200/80 mb-2">
+              The signature native capability of Orchestrator. Uses all proprietary engines to autonomously hunt funding, score opportunities, generate tailored materials, and produce action plans.
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                const sample = "Use the orchestra_tool on my project. Project summary: [Describe your project, stage, traction here]. Funding goals: [e.g. $250k non-dilutive grants + early VC]. Funder types: grant, vc-seed, angel. Prepare full materials and action plan.";
+                setTask(sample);
+                if (!autonomous) setAutonomous(true);
+                // Life OS mode enables the full proprietary magic
+                // Note: caller (page) manages the actual lifeOsModeEnabled prop
+              }}
+              className="w-full text-xs px-3 py-2 rounded border border-emerald-400/50 hover:bg-emerald-500/10 text-emerald-200"
+              disabled={!user || loading}
+            >
+              Prefill &amp; Launch Orchestra Tool (sets autonomous mode)
+            </button>
+            <div className="text-[9px] text-emerald-400/70 mt-1">Click to prefill a strong task. Enable Personal Life OS Mode above for full engine chaining and auto behaviors. Ultra only.</div>
           </div>
 
           {/* Premium Real-time Vision (live camera feed) - explicit expensive opt-in */}
@@ -573,7 +598,7 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
                   </div>
                 ))}
               </div>
-              <div className="text-[9px] text-blue-400/70 mt-1">These proprietary capabilities are included exclusively for Ultra subscribers and enterprise/leased deployments. They are now implemented as live agent tools (with auto-magical surfacing in Life OS mode). <strong>The Orchestra Tool</strong> (Funding Forge) is the flagship — an autonomous funding acquisition engine that chains all five engines to hunt opportunities, score risk, generate tailored applications, and produce action plans.</div>
+              <div className="text-[9px] text-blue-400/70 mt-1">These proprietary capabilities are built-in core features of Orchestrator (Ultra only). Implemented as native tools with auto-magical behaviors in Life OS. The <strong>Orchestra Tool</strong> (`orchestra_tool`) is the flagship native engine — chains all five for real funding workflows inside Orchestrator.</div>
             </div>
           </div>
 
