@@ -16,7 +16,7 @@ Full source, perpetual rights to use/modify/sell derivatives per license. Best f
 **2. Subscription-Based (Hosted SaaS or Updates)**  
 - Free tier: Limited (20 orchestrations/month, basic features)  
 - Pro: $29/month – Unlimited basic + autonomous + multi-image vision + advanced models + storage  
-- Ultra Premium: $99/month – Everything in Pro + real-time vision (camera), physical/smart home integration, emotional awareness, full Personal Life OS (biographical self-modeling, shadow agent, regret minimization, ethical mirror, dream/sleep integration), email writing/sending, unlimited storage, all models, priority support, **plus the full Proprietary Feature Suite** (Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, Opportunity Decay Clock).
+- Proprietary Ultra: $99/month – Everything in Pro + real-time vision (camera), physical/smart home integration, emotional awareness, full Personal Life OS (biographical self-modeling, shadow agent, regret minimization, ethical mirror, dream/sleep integration), email writing/sending, unlimited storage, all models, priority support, **plus the full Proprietary Feature Suite + flagship Orchestra Tool** (Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, Opportunity Decay Clock, and the native `orchestra_tool` that chains them all for funding acquisition).
 
 Includes lifetime updates for subscribers. Self-hosted kit available at lower one-time price.
 
@@ -89,7 +89,7 @@ Orchestrator goes further:
 - Every step is logged and watchable live
 - Memory that persists across sessions for the same user
 - Production-ready billing and quota system already wired up
-- **Exclusive Proprietary Feature Suite (Ultra / Enterprise)**: Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, and Opportunity Decay Clock. These are the crown-jewel differentiators that justify premium and enterprise pricing. They power the built-in **Orchestra Tool** (`orchestra_tool`) — a native, first-class part of Orchestrator for live opportunity hunting, risk scoring, tailored application generation, warm intros, and complete action plans. Deeply integrated into the agent (not separate). Built on memory, Life OS, and the full toolset; delivers real ROI (time saved + capital unlocked).
+- **Exclusive Proprietary Ultra Suite (Proprietary Ultra / Enterprise)**: Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, Opportunity Decay Clock + flagship `orchestra_tool`. These are the crown-jewel differentiators native to Orchestrator (Proprietary Ultra tier only) that justify premium and enterprise pricing. They power the built-in Orchestra Tool for live opportunity hunting, risk scoring, tailored application generation, warm intros, and complete action plans. Deeply integrated as core Orchestrator functionality. Built on memory, Life OS, and the full toolset; delivers real ROI (time saved + capital unlocked).
 
 This is the foundation I wish I had when I started building agent tools.
 

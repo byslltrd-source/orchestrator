@@ -9,7 +9,7 @@ Your Personal AI Command Center with vision, user accounts, and subscription-bas
 - **Vision** — Attach one or more images. Task + images are sent together to the model using `detail: high`
 - **Usage tracking & enforcement** — Server-side quota checks + automatic monthly reset for free users
 - **Stripe billing** — Checkout + Customer Portal + webhook sync
-- **Proprietary Features** — Ultra Premium includes exclusive IP: Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, Opportunity Decay Clock (detailed below)
+- **Proprietary Features** — Proprietary Ultra tier includes exclusive native IP as core part of Orchestrator: Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, Opportunity Decay Clock + the flagship Orchestra Tool (detailed below)
 
 ## Getting Started
 
@@ -317,14 +317,14 @@ Example behavior: Notices stress from camera + full calendar → suggests physic
 
 All of the above (multiple AIs, real-time vision, physical/smart home, emotional awareness, Life OS with email) can be combined in a single autonomous run. The more premium features you opt into, the more capable and context-aware your personal AI becomes.
 
-## Proprietary Features (Ultra Premium / Enterprise exclusive)
+## Proprietary Ultra Features (native to Orchestrator)
 
-These five proprietary capabilities represent the core differentiated IP in Orchestrator. They are available exclusively to Ultra Premium subscribers and under commercial leasing / outright sale licenses. They turn the agent from a capable personal orchestrator into a high-value strategic system for business, government, knowledge work, and opportunity management.
+These five proprietary capabilities + the flagship Orchestra Tool represent the core differentiated IP built into Orchestrator as native capabilities. They are available exclusively to the Proprietary Ultra tier ($99/mo) and under commercial leasing / outright sale licenses. They turn Orchestrator from a capable personal AI command center into a high-value strategic system for business, government, knowledge work, and opportunity management (with the Orchestra Tool as the killer app for funding).
 
 They are fully implemented as first-class tools (`policy_translation_engine`, `constituent_emotion_layering`, `knowledge_heat_map`, `invisible_workflow_weaver`, `opportunity_decay_clock`) with LLM-powered analysis over memory + context, plus auto "magical" invocation in Personal Life OS mode (similar to shadow/regret/ethical/dream behaviors) and special visual cards in the live trace.
 
-**The Orchestra Tool — Built-in Core of Orchestrator**
-`orchestra_tool` is a native, first-class part of Orchestrator (not a bolted-on feature). The 5 proprietary engines are orchestrated by this built-in tool. It is a complete autonomous funding acquisition engine deeply integrated into the Orchestrator agent loop:
+**The Orchestra Tool — Flagship of Proprietary Ultra (native core of Orchestrator)**
+`orchestra_tool` is a native, first-class part of Orchestrator exclusively in the Proprietary Ultra tier (not available lower). The 5 proprietary engines are orchestrated by this built-in tool. It is a complete autonomous funding acquisition engine deeply integrated into the Orchestrator agent loop:
 - Live multi-source opportunity discovery (grants, VC, angels, tenders...)
 - Matches to your real biographical model + knowledge heat map
 - Risk/probability scoring + decay clock timing analysis

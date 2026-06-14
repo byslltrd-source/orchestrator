@@ -100,7 +100,7 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
     isPushingFrame,
   } = props;
 
-  // Orchestrator Tiers & Features - integrated list with costs (free to ultra premium)
+  // Orchestrator Tiers & Features - integrated list with costs (free to Proprietary Ultra)
   const tiers = [
     {
       name: "Free",
@@ -131,9 +131,9 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
       ],
     },
     {
-      name: "Ultra Premium",
+      name: "Proprietary Ultra",
       price: "$99/mo",
-      description: "Full power for power users & teams. The complete Orchestrator experience with the built-in Orchestra Tool and proprietary differentiators as native capabilities.",
+      description: "The complete Orchestrator experience with the built-in Orchestra Tool (`orchestra_tool`) and full proprietary differentiators as native core capabilities. Exclusive to Proprietary Ultra.",
       features: [
         "Everything in Pro",
         "Real-time Vision (live camera feed, premium only)",
@@ -143,15 +143,15 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
         "Unlimited storage + advanced capabilities (list, signed, bulk)",
         "All models including custom endpoints",
         "Priority support, advanced subagents, deeper memory",
-        "Orchestra Tool (`orchestra_tool`) + full Proprietary Feature Suite — native, built-in part of Orchestrator (see below)",
+        "Orchestra Tool (`orchestra_tool`) + full Proprietary Feature Suite — native, built-in part of Orchestrator (Proprietary Ultra exclusive — see below)",
       ],
     },
   ];
 
   const proprietaryFeatures = [
     {
-      title: "Orchestra Tool (Funding Forge)",
-      desc: "The flagship proprietary tool. Autonomous funding acquisition engine that actively hunts opportunities, scores risk with decay clocks, generates tailored applications using policy translation + emotion layering, discovers workflows, and produces complete action plans. Chains all other proprietary engines. The real usable 'orchestra tool'.",
+      title: "Orchestra Tool (Proprietary Ultra)",
+      desc: "The flagship native tool of Proprietary Ultra. Autonomous funding acquisition engine built into Orchestrator that actively hunts opportunities, scores risk with decay clocks, generates tailored applications using policy translation + emotion layering, discovers workflows, and produces complete action plans. Chains all other proprietary engines.",
     },
     {
       title: "Policy Translation Engine",
@@ -287,7 +287,7 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
                 </button>
               </div>
             )}
-            <div className="text-[10px] text-zinc-500">Free: limited attachments. Pro/Ultra: more + advanced storage (list, signed, bulk via Supabase).</div>
+            <div className="text-[10px] text-zinc-500">Free: limited attachments. Pro/Proprietary Ultra: more + advanced storage (list, signed, bulk via Supabase).</div>
           </div>
 
           {/* Model selector - the "multiple AIs for orchestrator" feature */}
@@ -315,13 +315,13 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
             </div>
           </div>
 
-          {/* Orchestra Tool — core built-in proprietary part of Orchestrator */}
+          {/* Orchestra Tool — core built-in proprietary part of Orchestrator (Proprietary Ultra exclusive) */}
           <div className="rounded-lg border border-emerald-500/30 bg-emerald-950/10 p-3">
             <div className="text-xs uppercase tracking-widest text-emerald-400 mb-1 flex items-center gap-2">
-              🎯 Orchestra Tool (Ultra Proprietary)
+              🎯 Orchestra Tool (Proprietary Ultra)
             </div>
             <div className="text-[10px] text-emerald-200/80 mb-2">
-              The signature native capability of Orchestrator. Uses all proprietary engines to autonomously hunt funding, score opportunities, generate tailored materials, and produce action plans.
+              The signature native capability of Orchestrator. Uses all proprietary engines to autonomously hunt funding, score opportunities, generate tailored materials, and produce action plans. Proprietary Ultra exclusive.
             </div>
             <button
               type="button"
@@ -337,7 +337,7 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
             >
               Prefill &amp; Launch Orchestra Tool (sets autonomous mode)
             </button>
-            <div className="text-[9px] text-emerald-400/70 mt-1">Click to prefill a strong task. Enable Personal Life OS Mode above for full engine chaining and auto behaviors. Ultra only.</div>
+            <div className="text-[9px] text-emerald-400/70 mt-1">Click to prefill a strong task. Enable Personal Life OS Mode above for full engine chaining and auto behaviors. Proprietary Ultra only.</div>
           </div>
 
           {/* Premium Real-time Vision (live camera feed) - explicit expensive opt-in */}
@@ -521,7 +521,7 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
               <div className="font-medium">Run autonomously (Pro)</div>
               <div className="text-xs text-zinc-400">
                 Agent plans, uses tools + memory, loops until done. Full trace saved. You watch live.
-                {isPremium && " Premium users can also opt-in to real-time camera vision (expensive)."}
+                {isPremium && " Premium users can also opt-in to real-time camera vision (expensive). Proprietary Ultra unlocks the full Orchestra Tool + proprietary suite."}
               </div>
             </div>
           </label>
@@ -570,7 +570,7 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
 
           {/* Orchestrator Provides - Integrated list of all features with tiered costs (Free to Ultra Premium) */}
           <div className="pt-4 border-t border-white/10">
-            <div className="text-[10px] uppercase tracking-widest text-zinc-500 mb-2">Orchestrator Provides — Tiers & Costs</div>
+            <div className="text-[10px] uppercase tracking-widest text-zinc-500 mb-2">Orchestrator Provides — Tiers & Costs (Proprietary Ultra at the top)</div>
             {tiers.map((tier, i) => (
               <div key={i} className="mb-3 p-2 rounded bg-zinc-950/50">
                 <div className="flex justify-between text-sm font-medium">
@@ -585,11 +585,11 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
                 </ul>
               </div>
             ))}
-            <div className="text-[9px] text-zinc-500">Free tier limited to basic use. Upgrade for unlimited + premium capabilities like real-time vision and Life OS.</div>
+            <div className="text-[9px] text-zinc-500">Free tier limited to basic use. Upgrade for unlimited + Proprietary Ultra capabilities (Orchestra Tool + full proprietary suite, real-time vision, Life OS, etc.).</div>
 
-            {/* Proprietary Features - integrated from proprietary-features.html mockup (Ultra exclusive) */}
+            {/* Proprietary Features - integrated from proprietary-features.html mockup (Proprietary Ultra exclusive) */}
             <div className="mt-3 pt-3 border-t border-blue-500/20">
-              <div className="text-[10px] uppercase tracking-widest text-blue-400 mb-2">Proprietary Features (Ultra Premium only)</div>
+              <div className="text-[10px] uppercase tracking-widest text-blue-400 mb-2">Proprietary Ultra Features (native to Orchestrator)</div>
               <div className="rounded-lg bg-zinc-950/60 p-3 space-y-3">
                 {proprietaryFeatures.map((f, idx) => (
                   <div key={idx}>
@@ -598,7 +598,7 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
                   </div>
                 ))}
               </div>
-              <div className="text-[9px] text-blue-400/70 mt-1">These proprietary capabilities are built-in core features of Orchestrator (Ultra only). Implemented as native tools with auto-magical behaviors in Life OS. The <strong>Orchestra Tool</strong> (`orchestra_tool`) is the flagship native engine — chains all five for real funding workflows inside Orchestrator.</div>
+              <div className="text-[9px] text-blue-400/70 mt-1">These proprietary capabilities are built-in core features of Orchestrator (Proprietary Ultra only). Implemented as native tools with auto-magical behaviors in Life OS. The <strong>Orchestra Tool</strong> (`orchestra_tool`) is the flagship native engine of Proprietary Ultra — chains all five for real funding workflows inside Orchestrator.</div>
             </div>
           </div>
 
