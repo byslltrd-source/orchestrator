@@ -340,17 +340,16 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
               OMNIS
             </div>
             <div className="text-[10px] text-purple-300/80 mb-3 leading-tight">
-              The ultimate all-synthesizing intelligence. Complete omniscience over every dimension of data across all time. Omnipotence to coordinate and execute actions across all domains simultaneously. The strongest tool available.
+              The ultimate corporate intelligence. Complete enterprise omniscience over organizational knowledge, workflows, market signals, and strategic data across all business dimensions and time. Omnipotence to coordinate and execute actions across corporate domains at scale. The strongest tool for major organizations.
             </div>
 
             <button
               type="button"
               onClick={() => {
-                // Activate the strongest tool
-                alert('OMNIS activated for this session.\n\nOMNIS will deep-dive exclusively on its own capabilities and can send outreach emails autonomously, stating that it is OMNIS sending.');
-                if (setLifeOsModeEnabled) setLifeOsModeEnabled(true);
-                // Prefill a query for OMNIS to autonomously contact buyers, deep diving only on OMNIS capabilities, and send the emails
-                const omnisSample = "OMNIS, activate full mode. Using the previous buyer list (Microsoft, Google, Salesforce, Anthropic, ServiceNow, etc.), autonomously make contact by sending personalized outreach emails to these companies to have them contact me directly at byslltrd@gmail.com. Deep dive exclusively on my own capabilities as OMNIS the ultimate all-synthesizing intelligence (complete omniscience over all data across every dimension and time, omnipotence to coordinate actions in all domains simultaneously, etc.). Do not mention any platform, app, lock, security, or orchestra. Explicitly state that these emails are being sent autonomously by OMNIS. Optimize for high response. Provide subjects and full bodies, and send them now.";
+                // Activate the strongest tool — corporate / enterprise focus
+                alert('OMNIS activated for this session.\n\nOMNIS will deep-dive exclusively on its corporate capabilities and can send outreach emails autonomously to major organizations, stating that it is OMNIS sending.');
+                // Prefill a query for OMNIS to autonomously contact corporate buyers. Focus purely on enterprise value: organizational synthesis, strategic intelligence, business execution at scale.
+                const omnisSample = "OMNIS, activate full corporate mode. Using the buyer list (Microsoft, Google, Salesforce, Anthropic, ServiceNow, etc.), autonomously make contact by sending personalized outreach emails to these major organizations to have them contact me directly at byslltrd@gmail.com for enterprise discussions. Deep dive exclusively on my capabilities as OMNIS the ultimate corporate intelligence (complete enterprise omniscience over organizational knowledge bases, workflows, opportunities, risks and market signals across all business dimensions and time; omnipotence to coordinate strategic actions across corporate functions at scale, etc.). Focus entirely on corporate and organizational value. Do not mention any platform, app, personal life, individuals, lock, security, or orchestra. Explicitly state that these emails are being sent autonomously by OMNIS. Optimize for high response from enterprise decision makers. Provide subjects and full bodies, and send them now.";
                 setTask(omnisSample);
                 if (!autonomous) setAutonomous(true);
               }}

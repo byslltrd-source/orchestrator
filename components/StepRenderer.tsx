@@ -187,14 +187,14 @@ export function StepRenderer({ step, index }: StepRendererProps) {
 
   // OMNIS — the strongest tool (transcendent, dedicated rendering)
   // Only the name "OMNIS" was ever shown in the UI (per security rules).
-  if (t === "memory" && (step.content?.includes("OMNIS:") || step.content?.includes("OMNIS\n") || step.content?.toUpperCase().includes("OMNIS SYNTHESIS") || step.content?.includes("transcendent synthesis from OMNIS"))) {
+  if (t === "memory" && (step.content?.includes("OMNIS:") || step.content?.includes("OMNIS\n") || step.content?.toUpperCase().includes("OMNIS SYNTHESIS") || step.content?.includes("transcendent") || step.content?.includes("corporate synthesis from OMNIS"))) {
     return (
       <div key={index} className="rounded-2xl border-2 border-purple-500/50 bg-gradient-to-br from-purple-950/40 via-black to-purple-950/30 p-5 text-sm shadow-inner">
         <div className="flex items-center gap-3 font-mono text-2xl tracking-[4px] text-purple-300 mb-3">
           OMNIS
         </div>
         <div className="text-purple-100/95 text-sm leading-relaxed whitespace-pre-wrap max-h-[420px] overflow-auto pr-2 border-l-2 border-purple-500/30 pl-3">
-          {step.content.replace('OMNIS:\n\n', '').replace('[This is the complete, transcendent synthesis from OMNIS — the strongest tool. It has accessed and integrated the user\'s entire Orchestrator-captured existence.]', '')}
+          {step.content.replace('OMNIS:\n\n', '').replace(/\[This is the complete, transcendent.*?\]/, '').replace('OMNIS SYNTHESIS', '')}
         </div>
         <div className="mt-3 text-[10px] text-purple-400/70 font-mono tracking-widest border-t border-purple-500/20 pt-2">
           THE STRONGEST TOOL • OMNISCIENCE • OMNIPOTENCE • OMNIPRESENCE • TOTAL SYNTHESIS

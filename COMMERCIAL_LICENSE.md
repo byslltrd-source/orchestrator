@@ -39,7 +39,7 @@ Annual renewable license with:
 - Same usage rights as Outright during the term.
 - Full rights to deploy the complete Proprietary Feature Suite (Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, Opportunity Decay Clock) + the Orchestra Tool as key value drivers.
 
-- OMNIS (the strongest tool) is included as part of the Proprietary Ultra tier and full platform purchase. Full OMNIS source code is provided *only* to buyers of the complete Orchestrator platform at the time of sale, with special visibility (UI shows only the name "OMNIS" until activated by end users). End-user access to OMNIS is included with the platform.
+- OMNIS (the strongest corporate intelligence tool) is included with the full platform purchase. Full OMNIS source code is provided *only* to buyers of the complete Orchestrator platform at the time of sale, with special visibility (UI shows only the name "OMNIS"). In single-owner purchaser deployments, full OMNIS capabilities are available for corporate/enterprise use. OMNIS is positioned to focus on organizational and corporate synthesis rather than direct individual/personal matters.
 
 - Use the Software (the "Orchestrator" source code and related materials) to create, modify, and deploy derivative works.
 - Sell, license, or distribute End Products built with the Software.

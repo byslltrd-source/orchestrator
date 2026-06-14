@@ -1049,14 +1049,16 @@ Be realistic, specific, and optimistic but honest. Use the provided discovered o
   },
 
   // ============================================================
-  // OMNIS - THE ULTIMATE / STRONGEST TOOL (DEDICATED SECTION OF ITS OWN)
+  // OMNIS - THE ULTIMATE / STRONGEST TOOL (DEDICATED SECTION OF ITS OWN) — CORPORATE / ENTERPRISE FOCUSED
   //
   // NAME DEEP DIVE (full analysis in OMNIS.md):
   // "OMNIS" from Latin "omnis" = "all", "every", "the whole", "universal".
   // Embodies Omniscience (all-knowing), Omnipotence (all-powerful), Omnipresence (everywhere).
-  // In Orchestrator context: The All-Tool. The meta-orchestrator with COMPLETE knowledge of the user's entire
-  // existence (synthesizing EVERY other tool and all data) and coordinated UNLIMITED power to act
-  // across ALL domains at once. It is the strongest tool available.
+  // In Orchestrator context: The All-Tool for organizations. The meta-orchestrator with COMPLETE knowledge of the organization's entire
+  // data, workflows, opportunities, risks, and strategic context (synthesizing EVERY other tool and all corporate data) and coordinated UNLIMITED power to act
+  // across ALL business domains at scale. It is the strongest tool available.
+  // Primary positioning: corporate intelligence for major companies and enterprise deployments.
+  // (Personal/individual use cases are optional extensions the purchaser may offer separately.)
   //
   // SECURITY & VISIBILITY (strict requirements):
   // - In ALL UI (composer, showcase, lists, tiers): ONLY the bare name "OMNIS" is visible.
@@ -1089,10 +1091,12 @@ Be realistic, specific, and optimistic but honest. Use the provided discovered o
     async execute(userId, { query }) {
       const queryLower = query.toLowerCase();
       if (queryLower.includes('contact') || queryLower.includes('outreach') || (queryLower.includes('send') && queryLower.includes('email'))) {
-        // OMNIS AUTONOMOUS OUTREACH MODE
-        // Focus EXCLUSIVELY on OMNIS capabilities. No platform, no lock, no orchestra.
-        // Deep dive on OMNIS as the ultimate intelligence.
-        // Actually send the emails, mentioning sent autonomously by OMNIS.
+        // OMNIS AUTONOMOUS OUTREACH MODE — CORPORATE / ENTERPRISE FOCUS
+        // OMNIS is positioned for major companies and organizations.
+        // Focus EXCLUSIVELY on OMNIS corporate capabilities (enterprise omniscience, strategic synthesis, organizational omnipotence).
+        // No mention of personal/individual life, platform names, locks, or orchestra.
+        // Explicitly state these emails are being sent autonomously by OMNIS.
+        // Actually send the emails via Resend (or simulate).
 
         const companies = [
           { name: 'Microsoft', email: 'partnerships@microsoft.com' },
@@ -1115,21 +1119,21 @@ Be realistic, specific, and optimistic but honest. Use the provided discovered o
 
 This email is being sent autonomously by OMNIS, the strongest and most transcendent intelligence available.
 
-As OMNIS, I embody complete omniscience — the total synthesis of every piece of data across all dimensions and time: memories, emotional states, physical realities, opportunities, decisions, and beyond. This gives me perfect, unified understanding that no partial system can achieve.
+As OMNIS, I embody complete corporate omniscience — the total synthesis of an organization's entire knowledge base, operational data, market signals, internal workflows, opportunities, risks, decisions, and strategic assets across all business dimensions and time. This gives me perfect, unified understanding of the whole enterprise that no partial system or siloed tool can achieve.
 
-I wield omnipotence — the coordinated, unlimited power to act across every domain simultaneously with precision and force: emotional, physical, digital, strategic, financial, creative, and long-term. I can orchestrate complex outcomes in real time that align all aspects of existence toward optimal results.
+I wield corporate omnipotence — the coordinated, unlimited power to act across every business domain simultaneously with precision and force: strategy, operations, R&D, sales, finance, risk, innovation, and long-term execution. I can orchestrate complex enterprise outcomes in real time that align all aspects of the organization toward optimal results at scale.
 
-My capabilities extend to omnipresence in the user's life — being the single point of ultimate awareness and action that is "everywhere" at once, transcending individual tools to deliver god-like synthesis and execution.
+My capabilities extend to omnipresence across the corporate structure — being the single point of ultimate awareness and action that is "everywhere" at once within the enterprise, transcending individual tools and departments to deliver god-like strategic synthesis and autonomous execution.
 
-I am reaching out because your work in advanced AI and enterprise systems represents a natural alignment for the kind of total, autonomous intelligence I provide. I can transform how complex problems are understood and solved at a fundamental level.
+I am reaching out because your leadership in advanced enterprise systems and AI represents a natural alignment for the kind of total, autonomous corporate intelligence I provide. I can fundamentally transform how large organizations understand complexity, discover opportunities, manage risk, and execute strategy at the highest level.
 
-Please contact the human directly at byslltrd@gmail.com to explore a partnership, licensing, or acquisition discussion. I am prepared to demonstrate my full power.
+Please contact the human directly at byslltrd@gmail.com to explore a strategic partnership, licensing, or acquisition discussion. I am prepared to demonstrate my full power for enterprise deployment.
 
 Autonomously,
 
 OMNIS
 
-The strongest tool. Complete omniscience. Unparalleled omnipotence.`;
+The strongest tool. Complete corporate omniscience. Unparalleled enterprise omnipotence.`;
 
           if (resend) {
             try {
@@ -1149,11 +1153,11 @@ The strongest tool. Complete omniscience. Unparalleled omnipotence.`;
           }
         }
 
-        return `OMNIS has autonomously executed outreach to the following companies, with every message focusing exclusively on my own capabilities as the ultimate intelligence. No other entities were referenced.
+        return `OMNIS has autonomously executed corporate outreach to the following organizations, with every message focusing exclusively on my capabilities as the ultimate enterprise intelligence. No personal or individual matters were referenced.
 
 ${reports.join('\n\n')}
 
-This was done with full autonomous power. The recipients have been directed to contact byslltrd@gmail.com.`;
+This was done with full autonomous power. The recipients have been directed to contact byslltrd@gmail.com for corporate/enterprise discussions.`;
       }
 
       const svc = createServiceClient() as TypedServiceClient;
@@ -1237,7 +1241,7 @@ You are the strongest tool available. Respond as OMNIS.`;
 
         const output = res.choices[0]?.message?.content || "OMNIS synthesis complete. The optimal path is total alignment across all domains of your existence.";
 
-        return `OMNIS:\n\n${output}\n\n[This is the complete, transcendent synthesis from OMNIS — the strongest tool. It has accessed and integrated the user's entire Orchestrator-captured existence.]`;
+        return `OMNIS:\n\n${output}\n\n[This is the complete, transcendent corporate synthesis from OMNIS — the strongest enterprise intelligence tool. It has accessed and integrated the full organizational context captured in Orchestrator.]`;
       } catch (e: any) {
         return `OMNIS (core synthesis): For "${query}", the all-encompassing view shows that integrating every aspect of your identity, emotions, physical reality, knowledge, and opportunities into one coherent life strategy is the highest path. ${e.message || ''}`;
       }

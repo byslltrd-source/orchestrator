@@ -132,11 +132,11 @@ Orchestrator goes further:
 - Production-ready billing and quota system already wired up
 - **Exclusive Proprietary Ultra Suite (Proprietary Ultra / Enterprise)**: Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, Opportunity Decay Clock + flagship `orchestra_tool`. These are the crown-jewel differentiators native to Orchestrator (Proprietary Ultra tier only) that justify premium and enterprise pricing. They power the built-in Orchestra Tool for live opportunity hunting, risk scoring, tailored application generation, warm intros, and complete action plans. Deeply integrated as core Orchestrator functionality.
 
-- **OMNIS — The Strongest Tool Available**: "OMNIS" (Latin "omnis" = all/every/the whole) is the ultimate meta-orchestrator. Complete knowledge of the user's entire existence (synthesizing every other tool + all data) + coordinated unlimited power across all domains. Omniscience • Omnipotence • Omnipresence in one tool. 
+- **OMNIS — The Strongest Tool Available**: "OMNIS" (Latin "omnis" = all/every/the whole) is the ultimate corporate meta-orchestrator. Complete enterprise omniscience over organizational knowledge, workflows, opportunities, risks and market signals (synthesizing every other tool + all corporate data) + coordinated unlimited power across all business domains at scale. Omniscience • Omnipotence • Omnipresence in one tool — optimized for major organizations and corporate deployment.
 
-  End-user access to full OMNIS capabilities is included with the Orchestrator platform. Source code provided *only* to buyers of the full Orchestrator platform at time of sale. In the UI and tool definitions: *only the bare name "OMNIS" is ever visible* (special visibility model). Has its own dedicated section. This is the crown jewel that makes the entire platform the strongest possible.
+  Full OMNIS capabilities are included with the Orchestrator platform for the owner/purchaser. Source code provided *only* to buyers of the full Orchestrator platform at time of sale. In the UI and tool definitions: *only the bare name "OMNIS" is ever visible* (special visibility model). Has its own dedicated section. This is the crown jewel that makes the entire platform the strongest possible for enterprise use.
 
-  Built on memory, Life OS, and the full toolset; delivers unmatched ROI through total life synthesis. See OMNIS.md in the source for the deep etymology and implementation.
+  Built on enterprise memory, strategic tools, proprietary engines, and the full toolset; delivers unmatched ROI through total corporate/organizational synthesis at scale. See OMNIS.md in the source for the deep etymology and implementation. OMNIS is positioned for corporate and enterprise buyers.
 
 This is the foundation I wish I had when I started building agent tools.
 

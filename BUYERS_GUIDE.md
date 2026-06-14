@@ -6,7 +6,7 @@ Thank you for purchasing the complete Orchestrator platform (source code + IP).
 - Complete source code for Orchestrator – a production-ready personal/strategic AI command center and autonomous agent platform.
 - All features: autonomous multi-step agent with tools (web search, browse, memory, planning, physical actions, email, etc.), full execution traces + live streaming, real-time vision, physical world/smart home integration, emotional awareness + full Personal Life OS (biographical modeling, shadow agent, regret minimization, ethical mirror, dream integration).
 - Complete Proprietary Feature Suite: Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, Opportunity Decay Clock, Orchestra Tool (for funding acquisition).
-- **OMNIS** – the strongest tool available (the ultimate meta-orchestrator for total synthesis across all user data, domains, and other tools). Full OMNIS source code is included (delivered at time of sale). In the running app, OMNIS appears only as the name "OMNIS" until activated by the end-user (included with the platform).
+- **OMNIS** – the strongest corporate intelligence tool available (the ultimate meta-orchestrator for total enterprise synthesis across organizational data, business domains, workflows, opportunities, and strategy). Full OMNIS source code is included (delivered at time of sale). In the running app (single-owner purchaser mode), OMNIS appears only as the name "OMNIS".
 - (Digital lock removed; no longer part of the platform.)
 - Full ownership and IP transfer (see attached ownership documents and COMMERCIAL_LICENSE.md for details). All copyright now transfers to you as the buyer.
 - Rights to the OMNIS end-user offering (included with the platform).
@@ -44,7 +44,7 @@ For questions about the purchase, source delivery, or initial setup, contact Edw
 - Customize the UI, agent system prompt, and add your own proprietary extensions (OMNIS is designed to be extensible as the strongest synthesis tool).
 - Decide on your go-to-market: white-label the full platform, sell end-user access (OMNIS capabilities included with the platform), embed in your products, or resell under your brand.
 - Leverage the built-in commercial licensing templates for your own customers.
-- The combination of full traces, memory, proprietary tools, and OMNIS is a strong moat – lean into the "complete Personal AI Command Center with the strongest tool" positioning.
+- The combination of full traces, memory, proprietary corporate engines (including the Orchestra Tool), and OMNIS (enterprise meta-intelligence) is a strong moat – lean into the "complete corporate/enterprise AI command platform with the strongest tool" positioning. OMNIS itself is free of direct individual/personal focus and optimized for organizational scale.
 - For production, ensure you have proper Supabase RLS, Stripe webhooks, and (if using OMNIS outreach features) verified email sending.
 
 This is the complete, ready-to-own platform. All the hard work (autonomous agent, memory, vision, physical integration, Life OS magic, proprietary engines, OMNIS, UI, docs, deployment, security/lock, ownership clarity) is done.

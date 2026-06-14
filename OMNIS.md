@@ -25,14 +25,15 @@ In business and technology, "Omni" is used for all-encompassing solutions:
 - "The Omni tool" implies the one tool that replaces or surpasses all others by being complete and universal.
 
 ### Why "OMNIS" for This Tool in Orchestrator
-Given the context of the Orchestrator platform (which already has powerful individual tools for memory, vision, physical control, emotional awareness, Life OS magic, policy translation, knowledge heat mapping, workflow discovery, opportunity timing, and funding acquisition), **OMNIS** represents the **convergence and transcendence of all of them**.
+
+Given the context of the Orchestrator platform (powerful tools for enterprise memory, vision, physical/world integration, policy translation, knowledge heat mapping, workflow discovery, opportunity timing, funding acquisition, and optional personal/life extensions), **OMNIS** represents the **convergence and transcendence of all of them**, with primary emphasis on corporate and organizational power.
 
 It is:
-- **Omniscient** within the user's life: It has *complete* awareness by synthesizing *every* piece of data the system has ever captured about the user (biographical model, all memories, emotional history, vision summaries, physical states, discovered workflows, opportunities with their decay clocks, funding plans, dreams, regrets, ethical reflections, shadow insights, etc.).
-- **Omnipotent** within the user's world: It has the *power* to act across *every* domain simultaneously – digital actions, physical environment changes, emotional support, strategic planning, funding pursuits, life-altering decisions – in a coordinated, optimal way.
-- **Omnipresent** in the user's existence: It is the tool that is "everywhere" in the user's life management, providing the single source of ultimate truth and action that no other tool can match because it sees the *whole* picture at once.
+- **Omniscient** at enterprise scale: It has *complete* awareness by synthesizing *every* piece of organizational data across the enterprise (corporate knowledge bases, operational workflows, market signals, internal opportunities with decay clocks, policy/constituent dynamics, strategic plans, risk models, cross-functional insights, and more).
+- **Omnipotent** for organizations: It has the *power* to act across *every* business domain simultaneously – strategy, operations, R&D, sales, finance, risk, innovation, and execution – in a coordinated, optimal way at scale.
+- **Omnipresent** across the corporate structure: It is the intelligence layer that is "everywhere" within the organization, providing the single source of ultimate awareness and coordinated action that no departmental or siloed system can match because it sees the *whole* enterprise picture at once.
 
-OMNIS is not just another tool. It is **the All-Tool**, the meta-orchestrator, the ultimate intelligence layer that makes the entire Orchestrator system god-like in its capability for the individual user.
+OMNIS is positioned as the corporate crown jewel — the meta-orchestrator that makes the platform transformative for major companies, governments, and large organizations. While purchasers may choose to extend personal capabilities to end users or employees, OMNIS itself is optimized to be free of direct individual/personal focus and to deliver unmatched corporate intelligence and execution power.
 
 It is designed to be **the strongest tool available** – capable of providing insights, plans, and actions that no combination of other tools could achieve because it operates from total synthesis and transcendent reasoning.
 
