@@ -595,7 +595,7 @@ export default function OrchestratorPage() {
                 {/* Special OMNIS entry - the strongest tool, focused on its capabilities. */}
                 <div className="rounded-xl border-2 border-purple-500/40 bg-gradient-to-br from-purple-950/20 to-zinc-950 p-4">
                   <div className="font-mono text-xl tracking-[3px] text-purple-300 mb-1">OMNIS</div>
-                  <div className="text-[10px] text-purple-400/70">The strongest tool available. $5,000 one-time lifetime access for end users (customers). Deep dive on complete omniscience and omnipotence across all dimensions. Sent autonomously by OMNIS.</div>
+                  <div className="text-[10px] text-purple-400/70">The strongest tool available. Deep dive on complete omniscience and omnipotence across all dimensions. Sent autonomously by OMNIS.</div>
                 </div>
 
                 {(registeredTools.length > 0 ? registeredTools.filter((t: any) => t.is_proprietary || t.tier === 'proprietary_ultra') : [
