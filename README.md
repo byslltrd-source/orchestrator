@@ -155,7 +155,7 @@ See the integration UI mockup in `versel-supabase-integration.html` for what the
    - The integration will automatically inject:
      - `NEXT_PUBLIC_SUPABASE_URL`
      - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-   - (You will still need to manually add the secret `SUPABASE_SERVICE_ROLE_KEY` in Vercel → Settings → Environment Variables, as it's not exposed by the integration for security.)
+   - (You will still need to manually add the secret `SUPABASE_SERVICE_ROLE_KEY` in Vercel → Settings → Environment Variables, as it's not exposed by the integration for security. This key is required for the `orchestra_tool` + proprietary tools sync and other privileged operations.)
 
 4. **Add remaining environment variables** in Vercel (Settings → Environment Variables). Copy from your `.env.local` / `.env.example`:
    - `OPENAI_API_KEY` (or `XAI_API_KEY`, `GROQ_API_KEY`, `OPENROUTER_API_KEY`, etc. for the multiple LLM support)
@@ -194,7 +194,12 @@ See the integration UI mockup in `versel-supabase-integration.html` for what the
 
 See the `versel-supabase-integration.html` file in your Downloads for a visual of the connection UI (including the project card, "TEAM" badge, "Manage" button, connection status in the last section showing "byslltrd@gmail.com... orchestrator Connected X minutes ago", etc.).
 
-After connecting, your Vercel project will automatically receive the Supabase environment variables on every deploy and preview. This keeps everything in sync and avoids the Supabase 500 errors during middleware checks.
+After connecting, your Vercel project will automatically receive the Supabase environment variables (URL + anon) on every deploy and preview. 
+
+**Important now that bypass mode is removed**: 
+- Manually add `SUPABASE_SERVICE_ROLE_KEY` (required for tool syncing and privileged DB ops like the Orchestra Tool and proprietary engines).
+- In your Supabase project, run `supabase/schema.sql` (including the new `tools` table) so that the list of tools (orchestra_tool + all proprietary ultra engines) is visible in the deployed UI.
+- The middleware will now strictly require the Supabase vars — no more silent bypass.
 
 #### Alternative: Manual env var setup (not recommended)
 
@@ -202,8 +207,9 @@ If you don't use the integration:
 - Go to Vercel project → Settings → Environment Variables
 - Add every variable from `.env.example` (production + preview environments)
 - Still set `NEXT_PUBLIC_SITE_URL` and Stripe webhook.
+- Critically: add `SUPABASE_SERVICE_ROLE_KEY` and ensure your Supabase project has run the latest schema.sql (tools table + seeds for orchestra_tool and proprietary ultra tools).
 
-This is error-prone and doesn't auto-update when you rotate Supabase keys.
+This is error-prone and doesn't auto-update when you rotate Supabase keys. The official integration is strongly recommended.
 
 ### Local Development (HTTPS for Real-time Vision)
 
@@ -214,7 +220,11 @@ See the earlier "Run over HTTPS" section. Use the custom certificates for local 
 - **Vercel** is the easiest because of the native Supabase integration + automatic HTTPS + preview deployments.
 - Set `NEXT_PUBLIC_SITE_URL` correctly so Stripe redirects and other absolute URLs work.
 - For physical/smart home features in production, make sure your `PHYSICAL_CONTROLLER_URL` is publicly reachable (or use a secure tunnel / ngrok for testing).
-- After deploy, run the Supabase schema (`supabase/schema.sql`) in your Supabase project's SQL editor if not already done.
+- After deploy (or before first deploy), run the full updated `supabase/schema.sql` in your Supabase project's SQL Editor. This is critical:
+  - Creates the `tools` table.
+  - Seeds all tools, including the new proprietary ultra ones and the `orchestra_tool` (the flagship).
+  - Without this, you won't see the dynamic list of tools in the UI on Vercel (the composer pulls from Supabase `tools` table for Proprietary Ultra features).
+  - The `syncToolsToSupabase()` call in the orchestrate route will keep new tools in sync going forward.
 
 ## Next Layer Improvements (Implemented)
 - Zod schemas + validation for inputs and tool args.
