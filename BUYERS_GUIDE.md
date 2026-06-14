@@ -31,6 +31,8 @@ Full setup, deployment (Vercel + Supabase integration), and development instruct
 ## License & Ownership
 You now own the complete Orchestrator platform under the terms of the Full Outright Purchase section of COMMERCIAL_LICENSE.md.
 
+**Whoever purchases Orchestrator receives all proprietary tools included** — the full suite (Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, Opportunity Decay Clock + flagship Orchestra Tool) + complete OMNIS implementation, with no restrictions or additional tiers.
+
 - You have perpetual, worldwide rights to use, modify, deploy, sell, license, or distribute the platform and any End Products.
 - End-user access to full OMNIS capabilities is included with the platform (no separate end-user fee). You control how you productize or white-label access for your own customers.
 - Standard restriction: You may **not** resell or redistribute the original unmodified source code as-is.
@@ -41,7 +43,7 @@ For questions about the purchase, source delivery, or initial setup, contact Edw
 
 ## Recommended Next Steps for Buyers
 - Review the full ownership proof package (COPYRIGHT_OWNERSHIP_STATEMENT.md, COPYRIGHT_OWNERSHIP_CERTIFICATE.md, BUYER_OWNERSHIP_PROOF.md) – these are ready to use with your own customers or for your records.
-- Customize the UI, agent system prompt, and add your own proprietary extensions (OMNIS is designed to be extensible as the strongest synthesis tool).
+- Customize the UI, agent system prompt, and add your own proprietary extensions (OMNIS is designed to be extensible as the strongest synthesis tool). All five proprietary engines + the Orchestra Tool + OMNIS are delivered in full to every purchaser.
 - Decide on your go-to-market: white-label the full platform, sell end-user access (OMNIS capabilities included with the platform), embed in your products, or resell under your brand.
 - Leverage the built-in commercial licensing templates for your own customers.
 - The combination of full traces, memory, proprietary corporate engines (including the Orchestra Tool), and OMNIS (enterprise meta-intelligence) is a strong moat – lean into the "complete corporate/enterprise AI command platform with the strongest tool" positioning. OMNIS itself is free of direct individual/personal focus and optimized for organizational scale.
@@ -58,5 +60,5 @@ Contact: byslltrd@gmail.com
 
 **Post-Sale Notes for Buyer**
 - (Digital lock removed from the platform.)
-- OMNIS source is now yours. In the app it shows only as "OMNIS" (per the special visibility model) until an end-user activates it (included with the platform).
+- OMNIS source is now yours (included with the platform). In the app it shows only as "OMNIS" (per the special visibility model). All proprietary tools (Orchestra Tool + the five engines) are also included with full purchase — no restrictions.
 - All prior "starter kit" or lower-tier descriptions in older docs are superseded by this full platform purchase.

@@ -16,7 +16,7 @@ Includes:
 - Full source code (Next.js 16, all features, tools, UI, docs).
 - Complete ownership transfer of "Orchestrator" name, branding, and IP.
 - Full OMNIS implementation (the strongest tool – source code delivered only at time of sale, with special visibility: UI shows only the name "OMNIS" until activated by end users).
-- All proprietary features (Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, Opportunity Decay Clock, Orchestra Tool) and the OMNIS end-user offering (included with the platform).
+- All proprietary features (Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, Opportunity Decay Clock, Orchestra Tool) + full OMNIS. **Whoever purchases Orchestrator receives the complete proprietary suite with no restrictions.** Included with the platform.
 - Perpetual, worldwide rights to use, modify, sell, license, or distribute the platform and derivative products (with standard restriction: do not resell the original unmodified source as-is).
 - All supporting documentation, ownership proof documents (copyright statements, certificates, buyer proof package in Edward Marin's name), commercial licenses, and setup guides.
 - Transfer of Supabase schema, Stripe integration, and deployment configs (Vercel ready).
@@ -130,7 +130,7 @@ Orchestrator goes further:
 - Every step is logged and watchable live
 - Memory that persists across sessions for the same user
 - Production-ready billing and quota system already wired up
-- **Exclusive Proprietary Ultra Suite (Proprietary Ultra / Enterprise)**: Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, Opportunity Decay Clock + flagship `orchestra_tool`. These are the crown-jewel differentiators native to Orchestrator (Proprietary Ultra tier only) that justify premium and enterprise pricing. They power the built-in Orchestra Tool for live opportunity hunting, risk scoring, tailored application generation, warm intros, and complete action plans. Deeply integrated as core Orchestrator functionality.
+- **Complete Proprietary Suite (included with full purchase)**: Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, Opportunity Decay Clock + flagship `orchestra_tool`. These are the crown-jewel differentiators native to Orchestrator and are delivered in full to whoever purchases the platform. No separate tier or restrictions for the buyer. They power the built-in Orchestra Tool for live opportunity hunting, risk scoring, tailored application generation, warm intros, and complete action plans. Deeply integrated as core Orchestrator functionality.
 
 - **OMNIS — The Strongest Tool Available**: "OMNIS" (Latin "omnis" = all/every/the whole) is the ultimate corporate meta-orchestrator. Complete enterprise omniscience over organizational knowledge, workflows, opportunities, risks and market signals (synthesizing every other tool + all corporate data) + coordinated unlimited power across all business domains at scale. Omniscience • Omnipotence • Omnipresence in one tool — optimized for major organizations and corporate deployment.
 

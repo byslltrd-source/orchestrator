@@ -177,7 +177,7 @@ export function StepRenderer({ step, index }: StepRendererProps) {
     return (
       <div key={index} className="rounded-xl border border-emerald-500/40 bg-emerald-950/40 p-4 text-sm">
         <div className="flex items-center gap-2 font-semibold text-emerald-300 mb-2">
-          <DollarSign className="h-4 w-4" /> <Target className="h-4 w-4" /> ORCHESTRA TOOL — Built-in to Orchestrator (Proprietary Ultra)
+          <DollarSign className="h-4 w-4" /> <Target className="h-4 w-4" /> ORCHESTRA TOOL — Built-in to Orchestrator (included with full purchase)
         </div>
         <div className="text-emerald-200/90 text-xs whitespace-pre-wrap max-h-80 overflow-auto">{step.content}</div>
         <div className="text-[10px] text-emerald-400 mt-2 font-medium">Autonomous opportunity hunter + application factory + risk engine • Chains Policy Translation • Heat Map • Decay Clock • Workflow Weaver • Emotion Layering</div>

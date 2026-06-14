@@ -344,14 +344,23 @@ Example behavior: Notices stress from camera + full calendar → suggests physic
 
 All of the above (multiple AIs, real-time vision, physical/smart home, emotional awareness, Life OS with email) can be combined in a single autonomous run. The more premium features you opt into, the more capable and context-aware your personal AI becomes.
 
-## Proprietary Ultra Features (native to Orchestrator)
+## Proprietary Tools — All Included with Full Purchase
 
-These five proprietary capabilities + the flagship Orchestra Tool represent the core differentiated IP built into Orchestrator as native capabilities. They are available exclusively to the Proprietary Ultra tier ($99/mo) and under commercial leasing / outright sale licenses. They turn Orchestrator from a capable personal AI command center into a high-value strategic system for business, government, knowledge work, and opportunity management (with the Orchestra Tool as the killer app for funding).
+Whoever purchases Orchestrator receives the complete set of proprietary tools with no restrictions or separate tiers. This is core differentiated IP delivered as part of outright ownership, leasing, or full platform subscription:
 
-They are fully implemented as first-class tools (`policy_translation_engine`, `constituent_emotion_layering`, `knowledge_heat_map`, `invisible_workflow_weaver`, `opportunity_decay_clock`) with LLM-powered analysis over memory + context, plus auto "magical" invocation in Personal Life OS mode (similar to shadow/regret/ethical/dream behaviors) and special visual cards in the live trace.
+- Policy Translation Engine
+- Constituent Emotion Layering
+- Knowledge Heat Map
+- Invisible Workflow Weaver
+- Opportunity Decay Clock
+- Flagship Orchestra Tool (chains all of the above for autonomous funding/opportunity acquisition)
 
-**The Orchestra Tool — Flagship of Proprietary Ultra (native core of Orchestrator)**
-`orchestra_tool` is a native, first-class part of Orchestrator exclusively in the Proprietary Ultra tier (not available lower). The 5 proprietary engines are orchestrated by this built-in tool. It is a complete autonomous funding acquisition engine deeply integrated into the Orchestrator agent loop:
+These are fully implemented as first-class native tools in the agent. They are available immediately in the single-owner purchaser deployment. The tiered hosted pricing language elsewhere is for reference only (what the buyer may later offer when productizing the platform for their own end users).
+
+They are implemented as first-class tools (`policy_translation_engine`, `constituent_emotion_layering`, `knowledge_heat_map`, `invisible_workflow_weaver`, `opportunity_decay_clock`, `orchestra_tool`) with LLM-powered analysis over memory + context, plus special visual cards in the live trace.
+
+**The Orchestra Tool — Flagship (native core of Orchestrator, included with full purchase)**
+`orchestra_tool` is a native, first-class part of Orchestrator and is delivered to every full purchaser. The 5 proprietary engines are orchestrated by this built-in tool. It is a complete autonomous funding acquisition engine deeply integrated into the Orchestrator agent loop:
 
 **OMNIS — The Strongest Tool Available (Dedicated Crown Jewel)**
 "OMNIS" (Latin "omnis" = all/every/the whole) is the ultimate meta-orchestrator. It has complete knowledge of the user's entire existence (synthesizing *every* other tool and all data) and coordinated unlimited power to act across all domains simultaneously. 
@@ -367,24 +376,24 @@ They are fully implemented as first-class tools (`policy_translation_engine`, `c
 - Auto-generates tailored applications and narratives (via policy translation + emotion layering for different funder "tribes")
 - Produces warm intro drafts, full action plans, deadlines, and follow-up strategies
 
-See FUNDING-FORGE.md (in your Downloads) for the original vision. It appears as a dedicated section in the main composer UI. Run it in Life OS Mode (or via the prefill button) on any real project for immediate high-value output. This is a core native capability of Orchestrator and the main reason for premium/enterprise pricing.
+See FUNDING-FORGE.md (in your Downloads) for the original vision. It appears as a dedicated section in the main composer UI. Run it in Life OS Mode (or via the prefill button) on any real project for immediate high-value output. This is a core native capability included with full platform purchase.
 
 See the `proprietary-features.html` mockup (in Downloads) for the visual design language that was integrated into the in-app Tiers & Costs list.
 
 **Policy Translation Engine**  
-Translates complex policy into the exact language that resonates with different demographic "tribes" while maintaining factual integrity.
+Translates complex policy into the exact language that resonates with different demographic "tribes" while maintaining factual integrity. (Included with full purchase)
 
 **Constituent Emotion Layering**  
-Maps emotional undercurrents in constituent communications (anger, hope, fear, apathy) across regions and time without invading privacy.
+Maps emotional undercurrents in constituent communications (anger, hope, fear, apathy) across regions and time without invading privacy. (Included with full purchase)
 
 **Knowledge Heat Map**  
-Shows which parts of your company’s knowledge base are "cooling off" (becoming outdated) versus "heating up" (gaining relevance) in real time.
+Shows which parts of your company’s knowledge base are "cooling off" (becoming outdated) versus "heating up" (gaining relevance) in real time. (Included with full purchase)
 
 **Invisible Workflow Weaver**  
-Automatically discovers undocumented workflows in a company by watching digital exhaust (file movements, email patterns, calendar overlaps) and turns them into shareable playbooks.
+Automatically discovers undocumented workflows in a company by watching digital exhaust (file movements, email patterns, calendar overlaps) and turns them into shareable playbooks. (Included with full purchase)
 
 **Opportunity Decay Clock**  
-Assigns a real-time "half-life" to every business opportunity, showing how fast it’s decaying and what action would extend its viability.
+Assigns a real-time "half-life" to every business opportunity, showing how fast it’s decaying and what action would extend its viability. (Included with full purchase)
 
-These features leverage the full stack (memory + vision + Life OS + email + storage + traces) and are positioned as the primary justification for the higher Ultra tier pricing and enterprise licensing models (leasing, subscription, outright sale).
+These features leverage the full stack (memory + vision + Life OS + email + storage + traces) and are delivered to every purchaser under outright sale, leasing, or full platform commercial license.
 

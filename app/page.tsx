@@ -553,10 +553,10 @@ export default function OrchestratorPage() {
         <div className="mb-10">
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <h2 className="text-2xl font-semibold tracking-tight">Proprietary Ultra Tools</h2>
-                  <p className="text-sm text-zinc-400">Native to Orchestrator. Exclusive to the top tier. These are what make us different.</p>
+                  <h2 className="text-2xl font-semibold tracking-tight">Proprietary Tools (All Included with Purchase)</h2>
+                  <p className="text-sm text-zinc-400">Native to Orchestrator. Whoever purchases the full platform receives the complete set — Orchestra Tool + all 5 proprietary engines + OMNIS — with no restrictions.</p>
                 </div>
-                <div className="text-xs px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">Proprietary Ultra only</div>
+                <div className="text-xs px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">Included with full purchase</div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -587,7 +587,7 @@ export default function OrchestratorPage() {
                   </div>
                 ))}
               </div>
-              <div className="mt-3 text-xs text-zinc-500">All capabilities (including Proprietary Ultra / Orchestra Tool + full OMNIS) are unlocked in this owner deployment. The purchaser integrates billing / sub-accounts as needed.</div>
+              <div className="mt-3 text-xs text-zinc-500">All proprietary tools, Orchestra Tool, and OMNIS are included with the full platform purchase. This owner deployment has everything unlocked. The purchaser decides how to productize or embed for their own users.</div>
             </div>
 
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">

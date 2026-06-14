@@ -134,19 +134,19 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
       ],
     },
     {
-      name: "Proprietary Ultra",
-      price: "$99/mo",
-      description: "The complete Orchestrator experience with the built-in Orchestra Tool (`orchestra_tool`) and full proprietary differentiators as native core capabilities. Exclusive to Proprietary Ultra.",
+      name: "Full Platform Ownership (Purchaser)",
+      price: "Included with outright purchase",
+      description: "Whoever purchases Orchestrator receives ALL proprietary tools, the Orchestra Tool, OMNIS, and the complete feature set as native core capabilities with no restrictions. This is the full platform IP. The hosted tier descriptions below are for reference only (what you may offer to your own customers later).",
       features: [
-        "Everything in Pro",
-        "Real-time Vision (live camera feed, premium only)",
+        "Everything in lower tiers",
+        "Real-time Vision (live camera feed)",
         "Physical World Integration (smart home, sensors, actuators via controller)",
         "Emotional State Awareness (from text + live vision cues)",
         "Personal Life OS Mode (full: Shadow Agent, Regret Minimization, Ethical Mirror, Dream/Sleep Integration, Biographical Self-Modeling)",
         "Unlimited storage + advanced capabilities (list, signed, bulk)",
         "All models including custom endpoints",
         "Priority support, advanced subagents, deeper memory",
-        "Orchestra Tool (`orchestra_tool`) + full Proprietary Feature Suite — native, built-in part of Orchestrator (Proprietary Ultra exclusive — see below)",
+        "ALL Proprietary Tools included: Orchestra Tool (`orchestra_tool`) + full Proprietary Feature Suite (Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, Opportunity Decay Clock) — native and built-in. No separate tier for the purchaser.",
       ],
     },
   ];
@@ -156,33 +156,33 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
   const dbProprietary = (registeredTools || []).filter((t: any) => t.is_proprietary || t.tier === 'proprietary_ultra');
   const proprietaryFeatures = dbProprietary.length > 0
     ? dbProprietary.map((t: any) => ({
-        title: t.name === 'orchestra_tool' ? 'Orchestra Tool (Proprietary Ultra)' : (t.name || 'Unknown Tool'),
-        desc: t.description || 'Registered in Supabase as a native Orchestrator tool.',
+        title: t.name === 'orchestra_tool' ? 'Orchestra Tool (included with full purchase)' : (t.name || 'Unknown Tool'),
+        desc: t.description || 'Registered in Supabase as a native Orchestrator tool. Included with full platform purchase.',
       }))
     : [
         {
-          title: "Orchestra Tool (Proprietary Ultra)",
-          desc: "The flagship native tool of Proprietary Ultra. Autonomous funding acquisition engine built into Orchestrator that actively hunts opportunities, scores risk with decay clocks, generates tailored applications using policy translation + emotion layering, discovers workflows, and produces complete action plans. Chains all other proprietary engines.",
+          title: "Orchestra Tool (included with full purchase)",
+          desc: "The flagship native tool of Orchestrator. Autonomous funding acquisition engine built into the platform that actively hunts opportunities, scores risk with decay clocks, generates tailored applications using policy translation + emotion layering, discovers workflows, and produces complete action plans. Chains all other proprietary engines. Included with full platform purchase.",
         },
         {
           title: "Policy Translation Engine",
-          desc: "Translates complex policy into the exact language that resonates with different demographic \"tribes\" while maintaining factual integrity.",
+          desc: "Translates complex policy into the exact language that resonates with different demographic \"tribes\" while maintaining factual integrity. Included with full platform purchase.",
         },
     {
       title: "Constituent Emotion Layering",
-      desc: "Maps emotional undercurrents in constituent communications (anger, hope, fear, apathy) across regions and time without invading privacy.",
+      desc: "Maps emotional undercurrents in constituent communications (anger, hope, fear, apathy) across regions and time without invading privacy. Included with full platform purchase.",
     },
     {
       title: "Knowledge Heat Map",
-      desc: "Shows which parts of your company\u2019s knowledge base are \"cooling off\" (becoming outdated) versus \"heating up\" (gaining relevance) in real time.",
+      desc: "Shows which parts of your company\u2019s knowledge base are \"cooling off\" (becoming outdated) versus \"heating up\" (gaining relevance) in real time. Included with full platform purchase.",
     },
     {
       title: "Invisible Workflow Weaver",
-      desc: "Automatically discovers undocumented workflows in a company by watching digital exhaust (file movements, email patterns, calendar overlaps) and turns them into shareable playbooks.",
+      desc: "Automatically discovers undocumented workflows in a company by watching digital exhaust (file movements, email patterns, calendar overlaps) and turns them into shareable playbooks. Included with full platform purchase.",
     },
     {
       title: "Opportunity Decay Clock",
-      desc: "Assigns a real-time \"half-life\" to every business opportunity, showing how fast it\u2019s decaying and what action would extend its viability.",
+      desc: "Assigns a real-time \"half-life\" to every business opportunity, showing how fast it\u2019s decaying and what action would extend its viability. Included with full platform purchase.",
     },
   ];
 
@@ -364,13 +364,13 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
             </div>
           </div>
 
-          {/* Orchestra Tool — core built-in proprietary part of Orchestrator (Proprietary Ultra exclusive) */}
+          {/* Orchestra Tool — core built-in proprietary part of Orchestrator. Included with full purchase. */}
           <div className="rounded-lg border border-emerald-500/30 bg-emerald-950/10 p-3">
             <div className="text-xs uppercase tracking-widest text-emerald-400 mb-1 flex items-center gap-2">
-              🎯 Orchestra Tool (Proprietary Ultra)
+              🎯 Orchestra Tool (included with full purchase)
             </div>
             <div className="text-[10px] text-emerald-200/80 mb-2">
-              The signature native capability of Orchestrator. Uses all proprietary engines to autonomously hunt funding, score opportunities, generate tailored materials, and produce action plans. Proprietary Ultra exclusive.
+              The signature native capability of Orchestrator. Uses all proprietary engines to autonomously hunt funding, score opportunities, generate tailored materials, and produce action plans. Included with full platform purchase for the buyer.
             </div>
             <button
               type="button"
@@ -383,9 +383,9 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
               className="w-full text-xs px-3 py-2 rounded border border-emerald-400/50 hover:bg-emerald-500/10 text-emerald-200 font-medium"
               disabled={!user || loading}
             >
-              Prefill &amp; Launch Orchestra Tool (full Proprietary Ultra magic)
+              Prefill &amp; Launch Orchestra Tool (full proprietary suite)
             </button>
-            <div className="text-[9px] text-emerald-400/70 mt-1">Click to prefill a strong task. Enable Personal Life OS Mode above for full engine chaining and auto behaviors. Proprietary Ultra only.</div>
+            <div className="text-[9px] text-emerald-400/70 mt-1">Click to prefill a strong task. Enable Personal Life OS Mode above for full engine chaining and auto behaviors. All proprietary tools included with purchase.</div>
           </div>
 
           {/* Premium Real-time Vision (live camera feed) - explicit expensive opt-in */}
@@ -569,7 +569,7 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
               <div className="font-medium">Run autonomously (Pro)</div>
               <div className="text-xs text-zinc-400">
                 Agent plans, uses tools + memory, loops until done. Full trace saved. You watch live.
-                {" All features (vision, physical, Life OS, OMNIS, Proprietary Ultra engines) are available in owner / purchaser deployments. The integrated tiers describe hosted plans a buyer may offer to their own users."}
+                {" All features (vision, physical, Life OS, OMNIS + the complete proprietary suite including Orchestra Tool and all 5 engines) are included with full platform purchase. The tier list above describes potential hosted plans you (the purchaser) may later offer to your own customers or users."}
               </div>
             </div>
           </label>
@@ -637,7 +637,7 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
 
             {/* Enhanced Proprietary Ultra Features showcase - more visible cards */}
             <div className="mt-3 pt-3 border-t border-blue-500/20">
-              <div className="text-[10px] uppercase tracking-widest text-blue-400 mb-2">Proprietary Ultra Features (native to Orchestrator)</div>
+              <div className="text-[10px] uppercase tracking-widest text-blue-400 mb-2">All Proprietary Features (included with full Orchestrator purchase)</div>
               <div className="grid grid-cols-1 gap-2">
                 {proprietaryFeatures.map((f, idx) => (
                   <div key={idx} className="rounded bg-zinc-950/70 p-2.5 border border-white/5">

@@ -706,7 +706,7 @@ export const tools: ToolDefinition[] = [
 
   {
     name: 'policy_translation_engine',
-    description: 'PROPRIETARY (Ultra Premium exclusive): Policy Translation Engine. Translates complex policy, rules, legislation, strategy documents, or messaging into language that resonates with specific demographic "tribes" or audiences, while rigorously maintaining factual integrity, numbers, and original intent. Produces tailored versions + fidelity analysis. Use for political comms, corporate policy rollout, public statements, or audience-specific explanations.',
+    description: 'PROPRIETARY (included with full Orchestrator purchase): Policy Translation Engine. Translates complex policy, rules, legislation, strategy documents, or messaging into language that resonates with specific demographic "tribes" or audiences, while rigorously maintaining factual integrity, numbers, and original intent. Produces tailored versions + fidelity analysis. Use for political comms, corporate policy rollout, public statements, or audience-specific explanations.',
     parameters: {
       type: 'object',
       properties: {
@@ -742,7 +742,7 @@ export const tools: ToolDefinition[] = [
 
   {
     name: 'constituent_emotion_layering',
-    description: 'PROPRIETARY (Ultra Premium exclusive): Constituent Emotion Layering. Analyzes communications, feedback, memories, notes or text to surface layered emotional undercurrents (anger, hope, fear, apathy, pride, anxiety, etc.) across "constituents", groups, regions, time, or themes. Outputs structured layers, intensity, trends, and non-PII aggregates. Strictly privacy-preserving: generalize, avoid names or direct identifiers. Use on emails, meeting notes, survey responses, social signals, or Life OS context to understand emotional terrain.',
+    description: 'PROPRIETARY (included with full Orchestrator purchase): Constituent Emotion Layering. Analyzes communications, feedback, memories, notes or text to surface layered emotional undercurrents (anger, hope, fear, apathy, pride, anxiety, etc.) across "constituents", groups, regions, time, or themes. Outputs structured layers, intensity, trends, and non-PII aggregates. Strictly privacy-preserving: generalize, avoid names or direct identifiers. Use on emails, meeting notes, survey responses, social signals, or Life OS context to understand emotional terrain.',
     parameters: {
       type: 'object',
       properties: {
@@ -785,7 +785,7 @@ export const tools: ToolDefinition[] = [
 
   {
     name: 'knowledge_heat_map',
-    description: 'PROPRIETARY (Ultra Premium exclusive): Knowledge Heat Map. Scans the user\'s long-term memory / knowledge base and produces a living heat map of what is "heating up" (gaining relevance, frequently surfaced, recent high-importance signals) versus "cooling off" (becoming stale, low recent engagement, potentially outdated assumptions). Returns categorized items with heat scores (1-10), recency signals, and concrete example memories. Essential for maintaining accurate, timely personal/organizational knowledge.',
+    description: 'PROPRIETARY (included with full Orchestrator purchase): Knowledge Heat Map. Scans the user\'s long-term memory / knowledge base and produces a living heat map of what is "heating up" (gaining relevance, frequently surfaced, recent high-importance signals) versus "cooling off" (becoming stale, low recent engagement, potentially outdated assumptions). Returns categorized items with heat scores (1-10), recency signals, and concrete example memories. Essential for maintaining accurate, timely personal/organizational knowledge.',
     parameters: {
       type: 'object',
       properties: {
@@ -828,7 +828,7 @@ export const tools: ToolDefinition[] = [
 
   {
     name: 'invisible_workflow_weaver',
-    description: 'PROPRIETARY (Ultra Premium exclusive): Invisible Workflow Weaver. Examines the user\'s digital exhaust — memories, past tool usage patterns, todos, email context (via prior sends), calendar notes, storage signals, and recurring task sequences — to automatically discover undocumented, repeated workflows. Synthesizes them into clean, shareable, step-by-step playbooks with triggers, decision points, and success criteria. Reveals the hidden operating procedures the user actually follows.',
+    description: 'PROPRIETARY (included with full Orchestrator purchase): Invisible Workflow Weaver. Examines the user\'s digital exhaust — memories, past tool usage patterns, todos, email context (via prior sends), calendar notes, storage signals, and recurring task sequences — to automatically discover undocumented, repeated workflows. Synthesizes them into clean, shareable, step-by-step playbooks with triggers, decision points, and success criteria. Reveals the hidden operating procedures the user actually follows.',
     parameters: {
       type: 'object',
       properties: {
@@ -867,7 +867,7 @@ export const tools: ToolDefinition[] = [
 
   {
     name: 'opportunity_decay_clock',
-    description: 'PROPRIETARY (Ultra Premium exclusive): Opportunity Decay Clock. Scans memories and current context for business, personal, or strategic opportunities. For each, calculates a live "half-life" (estimated days until relevance or value drops 50%), current decay velocity (fast/medium/slow), staleness indicators, and precise actions that would reset or extend the clock. Outputs a prioritized list with clock readings and refresh recommendations. Prevents missed windows.',
+    description: 'PROPRIETARY (included with full Orchestrator purchase): Opportunity Decay Clock. Scans memories and current context for business, personal, or strategic opportunities. For each, calculates a live "half-life" (estimated days until relevance or value drops 50%), current decay velocity (fast/medium/slow), staleness indicators, and precise actions that would reset or extend the clock. Outputs a prioritized list with clock readings and refresh recommendations. Prevents missed windows.',
     parameters: {
       type: 'object',
       properties: {
@@ -907,10 +907,11 @@ export const tools: ToolDefinition[] = [
   // Policy Translation + Constituent Emotion Layering + Knowledge Heat Map
   // + Invisible Workflow Weaver + Opportunity Decay Clock
   // Deeply integrated as a first-class part of the Orchestrator agent (not a side feature).
+  // INCLUDED WITH FULL PLATFORM PURCHASE — whoever buys Orchestrator gets all proprietary tools.
   // ============================================================
   {
     name: 'orchestra_tool',
-    description: 'PROPRIETARY (Ultra Premium exclusive) — Built-in Orchestra Tool of Orchestrator. The core proprietary orchestration engine. Actively hunts live funding opportunities (grants, VC, angels, government tenders, family offices, crowdfunding), matches them to your project using your biographical model, knowledge base, and traction signals. Scores realistic success probability and risk using decay-style analysis. Generates fully customized applications, pitch summaries, financial narratives, and warm intro messages tailored to each funder\'s preferences via policy translation and emotion layering. Produces a complete prioritized action plan with ready-to-submit materials, deadlines, and follow-up steps. This is the signature built-in tool of Orchestrator (chains the 5 proprietary engines) — it can realistically save hundreds of hours and unlock significant capital.',
+    description: 'PROPRIETARY (included with full Orchestrator purchase) — Built-in Orchestra Tool of Orchestrator. The core proprietary orchestration engine. Actively hunts live funding opportunities (grants, VC, angels, government tenders, family offices, crowdfunding), matches them to your project using your biographical model, knowledge base, and traction signals. Scores realistic success probability and risk using decay-style analysis. Generates fully customized applications, pitch summaries, financial narratives, and warm intro messages tailored to each funder\'s preferences via policy translation and emotion layering. Produces a complete prioritized action plan with ready-to-submit materials, deadlines, and follow-up steps. This is the signature built-in tool of Orchestrator (chains the 5 proprietary engines) — it can realistically save hundreds of hours and unlock significant capital.',
     parameters: {
       type: 'object',
       properties: {

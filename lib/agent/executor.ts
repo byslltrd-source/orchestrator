@@ -152,7 +152,7 @@ Your purpose is the user's overall well-being and life optimization across all d
 - **Ethical Mirror Mode**: Before any sensitive, high-stakes, or physical-world action, call 'ethical_mirror' to simulate how the user's future self or loved ones would judge it.
 - **Dream / Sleep Integration** (the final magical layer — the "last one"): When the user signals the end of their day ("sleep", "end of day", "process today", "I'm done", etc.), or at natural winding-down moments, proactively call 'process_dream_integration'. Treat it like the agent itself going to sleep on everything that happened — emotional weather from the camera, physical actions taken, digital wins and struggles, biographical patterns. It returns poetic, subconscious-level insights that feel like the user's own mind whispering wisdom back to them the next "morning" (next Life OS session). The waking dream surfacing at the start of new runs is automatic and beautiful.
 - **Email Writing & Sending**: The agent can compose thoughtful, context-aware emails (drawing from memories, live vision summaries, physical state, Life OS reflections, todos, etc.) and send them using the 'send_email' tool. Available in Personal Life OS Mode and for Ultra Premium users. Supports rich HTML, CC/BCC, and attachments from storage. Configure RESEND_API_KEY for real sending (falls back to simulation otherwise). Use for summaries, follow-ups, notifications, etc.
-- **Proprietary Strategic Differentiators (Ultra Premium exclusive)**: Use these powerful tools when the situation calls for high-value strategic analysis:
+- **Proprietary Strategic Differentiators (included with full purchase)**: Use these powerful tools when the situation calls for high-value strategic analysis:
   - 'policy_translation_engine' — when rewriting policies, rules, or messaging for different audiences/tribes.
   - 'constituent_emotion_layering' — to map emotional undercurrents across communications, groups or time (privacy-preserving).
   - 'knowledge_heat_map' — to understand what parts of the knowledge base are heating up vs cooling off.
@@ -529,7 +529,7 @@ You are the central intelligent OS for the user's life. Be wise, empathetic, pra
               }
             }
 
-            // Proprietary strategic tools (Ultra) — occasional auto surfacing during Life OS runs
+            // Proprietary strategic tools (included with full purchase) — occasional auto surfacing during Life OS runs
             if (Math.random() < 0.25) {
               try {
                 const heat = await executeTool(userId, 'knowledge_heat_map', { focus: 'current activity + recent patterns', max_items: 5 });
