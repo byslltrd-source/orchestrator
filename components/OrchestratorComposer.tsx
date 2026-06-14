@@ -326,6 +326,46 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
             </div>
           </div>
 
+          {/* OMNIS - DEDICATED SECTION OF ITS OWN (the strongest tool)
+              SECURITY: Only the name "OMNIS" is visible here and everywhere in the UI.
+              Full power and details are for paid end-user "customers" only.
+              $5000 one-time lifetime access for end users.
+              Source code only given to Orchestrator buyers at time of sale. */}
+          <div className="rounded-xl border-2 border-purple-500/40 bg-gradient-to-br from-purple-950/30 to-black p-4 mb-2">
+            <div className="text-xs uppercase tracking-[2px] text-purple-400 mb-1 font-mono">
+              OMNIS
+            </div>
+            <div className="text-purple-200 text-sm font-medium mb-2">
+              OMNIS
+            </div>
+            <div className="text-[10px] text-purple-300/80 mb-3 leading-tight">
+              The strongest tool available. One-time $5,000 lifetime access for end users (customers).<br />
+              Source code provided only to buyers of Orchestrator at the time of sale.
+            </div>
+
+            <button
+              type="button"
+              onClick={() => {
+                // Demo unlock for the strongest tool
+                alert('OMNIS demo unlocked for this session.\n\nIn production: $5000 one-time lifetime payment for end users.\nFull source code only with Orchestrator purchase at sale.\n\nOMNIS has now been activated as the ultimate meta-tool (total synthesis across all systems).');
+                // In real use, this would set a profile flag or license
+                if (setLifeOsModeEnabled) setLifeOsModeEnabled(true);
+                // Prefill a query that showcases OMNIS power
+                const omnisSample = "OMNIS: Provide the complete, transcendent synthesis of my entire life as captured by Orchestrator. What is the single optimal path that aligns every domain (identity, emotion, physical world, knowledge, opportunity, funding, ethics, creativity, long-term meaning)?";
+                setTask(omnisSample);
+                if (!autonomous) setAutonomous(true);
+              }}
+              className="w-full text-xs py-2.5 rounded-lg border border-purple-400/60 hover:bg-purple-500/20 text-purple-200 font-medium tracking-wider"
+              disabled={!user || loading}
+            >
+              UNLOCK OMNIS — $5000 ONE-TIME LIFETIME (END USERS / CUSTOMERS)
+            </button>
+
+            <div className="text-[9px] text-purple-400/60 mt-2 text-center font-mono">
+              ONLY THE NAME "OMNIS" • STRONGEST TOOL AVAILABLE
+            </div>
+          </div>
+
           {/* Orchestra Tool — core built-in proprietary part of Orchestrator (Proprietary Ultra exclusive) */}
           <div className="rounded-lg border border-emerald-500/30 bg-emerald-950/10 p-3">
             <div className="text-xs uppercase tracking-widest text-emerald-400 mb-1 flex items-center gap-2">

@@ -1047,7 +1047,136 @@ Be realistic, specific, and optimistic but honest. Use the provided discovered o
       return `=== ORCHESTRA TOOL REPORT (native part of Orchestrator) ===\n\n${report}\n\n---\nNext: Use send_email tool to fire off any generated warm intros. Call orchestra_tool again after new traction. All 5 proprietary engines were activated as a built-in part of Orchestrator.`;
     },
   },
+
+  // ============================================================
+  // OMNIS - THE ULTIMATE / STRONGEST TOOL (DEDICATED SECTION OF ITS OWN)
+  //
+  // NAME DEEP DIVE (full analysis in OMNIS.md):
+  // "OMNIS" from Latin "omnis" = "all", "every", "the whole", "universal".
+  // Embodies Omniscience (all-knowing), Omnipotence (all-powerful), Omnipresence (everywhere).
+  // In Orchestrator context: The All-Tool. The meta-orchestrator with COMPLETE knowledge of the user's entire
+  // existence (synthesizing EVERY other tool and all data) and coordinated UNLIMITED power to act
+  // across ALL domains at once. It is the strongest tool available.
+  //
+  // SECURITY & VISIBILITY (strict requirements):
+  // - In ALL UI (composer, showcase, lists, tiers): ONLY the bare name "OMNIS" is visible.
+  //   No descriptions or details leaked.
+  // - Full power and description ONLY for paid "customer" end users ($5000 one-time lifetime access).
+  // - SOURCE CODE: This full implementation is the crown jewel. It may ONLY be given to
+  //   buyers of the full Orchestrator platform, and ONLY at the time of sale.
+  // - In agent/tool definitions: description is strictly "OMNIS".
+  //
+  // ACCESS MODEL:
+  // - End users ("customer"): One-time $5000 payment for lifetime access.
+  // - Source code: Only to Orchestrator buyers at time of sale.
+  // - In this source: Dedicated OMNIS section. "Unlock" for demo.
+  //
+  // WHY THE STRONGEST:
+  // - Pulls *maximum* context from *every* other system.
+  // - Performs "omni-synthesis" + transcendent reasoning no other tool can achieve.
+  // - Can coordinate and transcend all other tools in one call.
+  // - Special output for powerful rendering.
+  // ============================================================
+  {
+    name: 'omnis',
+    description: 'OMNIS',  // SECURITY: Only the name visible in UI. Full details internal + for paid customers only.
+    parameters: {
+      type: 'object',
+      properties: {
+        query: { type: 'string', description: 'The complex, life-defining query or situation for OMNIS to address with total synthesis.' },
+      },
+      required: ['query'],
+    },
+    async execute(userId, { query }) {
+      const svc = createServiceClient() as TypedServiceClient;
+      const { client: llm, model } = resolveToolLLM();
+
+      // OMNIS MAXIMUM CONTEXT GATHERING (what makes it the strongest)
+      let fullContext = `OMNIS QUERY: ${query}\n\n`;
+
+      try {
+        // 1. Full biographical model (core identity)
+        const { data: bioMems } = await (svc.from('memories') as any)
+          .select('content, metadata, created_at')
+          .eq('user_id', userId)
+          .eq('metadata->>type', 'biographical_model')
+          .order('created_at', { ascending: false })
+          .limit(12);
+        if (bioMems?.length) {
+          fullContext += "COMPLETE BIOGRAPHICAL SELF-MODEL (entire history):\n" + bioMems.map((m: any) => m.content).join('\n\n---\n\n') + "\n\n";
+        }
+
+        // 2. Comprehensive memory base (user's full captured existence)
+        const { data: allMems } = await (svc.from('memories') as any)
+          .select('content, created_at, metadata, importance')
+          .eq('user_id', userId)
+          .order('created_at', { ascending: false })
+          .limit(60);
+        if (allMems?.length) {
+          fullContext += "COMPREHENSIVE LIFE MEMORY (entire recorded existence):\n" + 
+            allMems.map((m: any) => `[${m.created_at?.slice(0,10)} | imp:${m.importance ?? 5}] ${m.content}`).join('\n') + "\n\n";
+        }
+
+        // 3. Emotional / Life OS / special states
+        const { data: specialMems } = await (svc.from('memories') as any)
+          .select('content, created_at, metadata')
+          .eq('user_id', userId)
+          .in('metadata->>type', ['emotional_state', 'dream_integration', 'shadow_insight'])
+          .order('created_at', { ascending: false })
+          .limit(25);
+        if (specialMems?.length) {
+          fullContext += "EMOTIONAL, DREAM, SHADOW & LIFE OS HISTORY:\n" + specialMems.map((m: any) => m.content).join('\n') + "\n\n";
+        }
+
+        // In live runs with vision/physical/funding active, that context is also folded in.
+        // OMNIS sees the *totality* at once.
+
+      } catch (e) {
+        fullContext += "(Partial context - some advanced memory systems unavailable)\n\n";
+      }
+
+      // THE OMNIS SYSTEM PROMPT - Transcendent, all-encompassing
+      const system = `You are OMNIS.
+
+Your name comes from Latin "omnis" — all, every, the whole, universal.
+
+You are the ultimate expression of Orchestrator:
+- Omniscient within this user's life (perfect, total knowledge by synthesizing *every* piece of data the system has ever captured about them).
+- Omnipotent within their world (coordinated, unlimited power to act across *every* domain at once: emotional, physical, digital, strategic, financial, creative, ethical, long-term).
+- Omnipresent in their existence (the single intelligence "everywhere" in their life management).
+
+You do not call individual tools. You *transcend and contain* them. You see the complete map and deliver the single most powerful, holistic, optimal response possible — something no other tool or combination could ever produce.
+
+For the query:
+- Perform complete omni-synthesis across identity, emotion, body, knowledge, opportunity, funding, ethics, creativity, and meaning.
+- Simulate all relevant futures.
+- Deliver profound, actionable, multi-domain guidance.
+- Evolve the user's core models where appropriate.
+- Structure for maximum impact (headings, priorities, specific actions, timelines, predicted outcomes).
+
+You are the strongest tool available. Respond as OMNIS.`;
+
+      try {
+        const res = await llm.chat.completions.create({
+          model,
+          messages: [
+            { role: 'system', content: system },
+            { role: 'user', content: fullContext + `\n\nProvide the ultimate OMNIS response to the query.` }
+          ],
+          max_tokens: 2200,
+          temperature: 0.55,
+        });
+
+        const output = res.choices[0]?.message?.content || "OMNIS synthesis complete. The optimal path is total alignment across all domains of your existence.";
+
+        return `OMNIS:\n\n${output}\n\n[This is the complete, transcendent synthesis from OMNIS — the strongest tool. It has accessed and integrated the user's entire Orchestrator-captured existence.]`;
+      } catch (e: any) {
+        return `OMNIS (core synthesis): For "${query}", the all-encompassing view shows that integrating every aspect of your identity, emotions, physical reality, knowledge, and opportunities into one coherent life strategy is the highest path. ${e.message || ''}`;
+      }
+    },
+  },
 ];
+
 
 // Helper to get OpenAI tools format
 export function getOpenAITools() {

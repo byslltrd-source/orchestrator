@@ -349,6 +349,15 @@ They are fully implemented as first-class tools (`policy_translation_engine`, `c
 
 **The Orchestra Tool — Flagship of Proprietary Ultra (native core of Orchestrator)**
 `orchestra_tool` is a native, first-class part of Orchestrator exclusively in the Proprietary Ultra tier (not available lower). The 5 proprietary engines are orchestrated by this built-in tool. It is a complete autonomous funding acquisition engine deeply integrated into the Orchestrator agent loop:
+
+**OMNIS — The Strongest Tool Available (Dedicated Crown Jewel)**
+"OMNIS" (Latin "omnis" = all/every/the whole) is the ultimate meta-orchestrator. It has complete knowledge of the user's entire existence (synthesizing *every* other tool and all data) and coordinated unlimited power to act across all domains simultaneously. 
+
+- Only for end users ("customers"): one-time $5,000 lifetime access.
+- Source code provided only to buyers of the full Orchestrator platform, and only at the time of sale.
+- In the UI: Only the bare name "OMNIS" is ever shown (special security). Full power unlocked only for paid customers.
+- It is the strongest tool: total omni-synthesis and transcendent reasoning that no other tool or combination can achieve.
+- Has its own dedicated section in the composer. See OMNIS.md in the repo for the full deep dive and implementation.
 - Live multi-source opportunity discovery (grants, VC, angels, tenders...)
 - Matches to your real biographical model + knowledge heat map
 - Risk/probability scoring + decay clock timing analysis

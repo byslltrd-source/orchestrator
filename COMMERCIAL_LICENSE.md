@@ -25,7 +25,9 @@ Annual renewable license with:
 - Priority support and SLA.
 - Option for revenue share or additional custom development.
 - Same usage rights as Outright during the term.
-- Full rights to deploy the complete Proprietary Feature Suite (Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, Opportunity Decay Clock) as a key value driver for your customers or internal teams.
+- Full rights to deploy the complete Proprietary Feature Suite (Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, Opportunity Decay Clock) + the Orchestra Tool as key value drivers.
+
+- OMNIS (the strongest tool) is excluded from standard licenses. It is available only to end-user "customers" via separate one-time $5,000 lifetime payment. Full OMNIS source code is provided *only* to buyers of the complete Orchestrator platform at the time of sale, with special security (UI shows only the name "OMNIS").
 
 - Use the Software (the "Orchestrator" source code and related materials) to create, modify, and deploy derivative works.
 - Sell, license, or distribute End Products built with the Software.

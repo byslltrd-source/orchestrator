@@ -89,7 +89,13 @@ Orchestrator goes further:
 - Every step is logged and watchable live
 - Memory that persists across sessions for the same user
 - Production-ready billing and quota system already wired up
-- **Exclusive Proprietary Ultra Suite (Proprietary Ultra / Enterprise)**: Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, Opportunity Decay Clock + flagship `orchestra_tool`. These are the crown-jewel differentiators native to Orchestrator (Proprietary Ultra tier only) that justify premium and enterprise pricing. They power the built-in Orchestra Tool for live opportunity hunting, risk scoring, tailored application generation, warm intros, and complete action plans. Deeply integrated as core Orchestrator functionality. Built on memory, Life OS, and the full toolset; delivers real ROI (time saved + capital unlocked).
+- **Exclusive Proprietary Ultra Suite (Proprietary Ultra / Enterprise)**: Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, Opportunity Decay Clock + flagship `orchestra_tool`. These are the crown-jewel differentiators native to Orchestrator (Proprietary Ultra tier only) that justify premium and enterprise pricing. They power the built-in Orchestra Tool for live opportunity hunting, risk scoring, tailored application generation, warm intros, and complete action plans. Deeply integrated as core Orchestrator functionality.
+
+- **OMNIS — The Strongest Tool Available (End-User Only, $5,000 one-time lifetime)**: "OMNIS" (Latin "omnis" = all/every/the whole) is the ultimate meta-orchestrator. Complete knowledge of the user's entire existence (synthesizing every other tool + all data) + coordinated unlimited power across all domains. Omniscience • Omnipotence • Omnipresence in one tool. 
+
+  Only for end users ("customers") via one-time $5,000 lifetime payment. Source code provided *only* to buyers of the full Orchestrator platform at time of sale. In the UI and tool definitions: *only the bare name "OMNIS" is ever visible* (special security). Full transcendent power unlocked only for paid customers. Has its own dedicated section. This is the crown jewel that makes the entire platform the strongest possible.
+
+  Built on memory, Life OS, and the full toolset; delivers unmatched ROI through total life synthesis. See OMNIS.md in the source for the deep etymology and implementation.
 
 This is the foundation I wish I had when I started building agent tools.
 
