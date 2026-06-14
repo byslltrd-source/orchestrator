@@ -128,7 +128,7 @@ function get500Html(code: string, message: string): string {
       ID: ${Date.now()}-${Math.random().toString(36).substring(2, 15)}
     </div>
     <div class="footer">
-      Orchestrator — Personal AI Command Center
+      © 2026 Edward Marin — Orchestrator — Personal AI Command Center
     </div>
   </div>
 </body>

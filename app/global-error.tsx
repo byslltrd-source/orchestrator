@@ -105,7 +105,7 @@ export default function GlobalError({
               fontSize: 14,
             }}
           >
-            Orchestrator — Personal AI Command Center
+            © 2026 Edward Marin — Orchestrator — Personal AI Command Center
           </div>
         </div>
       </body>

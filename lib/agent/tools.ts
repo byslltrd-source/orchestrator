@@ -1,4 +1,4 @@
-// Copyright (c) 2026 [Your Name or Company]. All rights reserved.
+// Copyright (c) 2026 Edward Marin. All rights reserved.
 // This source code is proprietary. See LICENSE and the Commercial License Agreement for usage rights.
 
 /* eslint-disable @typescript-eslint/no-explicit-any -- External lib responses (tavily, OpenAI, cheerio text), Supabase service casts, and tool JSON schema are dynamic */

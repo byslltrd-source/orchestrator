@@ -2,6 +2,7 @@
   "name": "orchestrator",
   "version": "0.1.0",
   "private": true,
+  "author": "Edward Marin",
   "scripts": {
     "dev": "node scripts/start-dev.js",
     "dev:http": "next dev",

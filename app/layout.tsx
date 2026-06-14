@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-// Copyright (c) 2026 [Your Name or Company]. All rights reserved.
+// Copyright (c) 2026 Edward Marin. All rights reserved.
 // This source code is proprietary. See LICENSE and the Commercial License Agreement for usage rights.
 
 const geistSans = Geist({
@@ -24,8 +24,7 @@ export const metadata: Metadata = {
 };
 
 // Copyright notice for the application
-// TODO: Replace with your actual name/company before launch
-const COPYRIGHT = "© 2026 [Your Name or Company]. All rights reserved.";
+const COPYRIGHT = "© 2026 Edward Marin. All rights reserved.";
 
 export default function RootLayout({
   children,

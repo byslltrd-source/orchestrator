@@ -135,7 +135,7 @@ Next.js, Supabase, Stripe, AI, Agent, Starter Kit, Boilerplate, SaaS, TypeScript
 
 ## Recommended License Text (to include in download + reference on page)
 
-Copyright (c) 2026 [Your Name]. All rights reserved.
+Copyright (c) 2026 Edward Marin. All rights reserved.
 
 This software is licensed under a Commercial License Agreement. See the included LICENSE file and the separate Commercial License Agreement for full terms.
 

@@ -37,4 +37,4 @@ For setup issues, reply to your Gumroad receipt or reach out via the contact met
 
 Thank you again. I hope this saves you weeks of work.
 
-— [Your Name]
+— Edward Marin

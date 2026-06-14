@@ -60,8 +60,8 @@ This Agreement, together with the LICENSE file included with the Software, const
 
 By purchasing or downloading the Software, you acknowledge that you have read, understood, and agree to be bound by this Agreement.
 
-Owner: [Your Name or Company]
-Contact: [your email or Gumroad support link]
+Owner: Edward Marin
+Contact: edward.marin@example.com (update with real contact)
 
 ---
 

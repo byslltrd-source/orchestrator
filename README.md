@@ -239,7 +239,7 @@ See the earlier "Run over HTTPS" section. Use the custom certificates for local 
 
 ## Copyright & License
 
-© 2026 [Your Name or Company]. All rights reserved.
+© 2026 Edward Marin. All rights reserved.
 
 This project contains proprietary code. When purchasing or receiving a licensed copy (e.g. as a starter kit), you are granted rights only under the accompanying Commercial License Agreement.
 
