@@ -326,11 +326,12 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
             </div>
           </div>
 
-          {/* OMNIS - DEDICATED SECTION OF ITS OWN (the strongest tool)
-              SECURITY: Only the name "OMNIS" is visible here and everywhere in the UI.
-              Full power and details are for paid end-user "customers" only.
-              $5000 one-time lifetime access for end users.
-              Source code only given to Orchestrator buyers at time of sale. */}
+          {/* OMNIS — DEDICATED SECTION (the strongest tool)
+              Only the name "OMNIS" is shown. Full power for paid end users ($5000 one-time lifetime).
+              When used for outreach, OMNIS deep-dives exclusively on its own capabilities
+              (omniscience across all data/dimensions/time, omnipotence to act across all domains)
+              and sends the emails itself, explicitly stating it is OMNIS sending autonomously.
+              No platform, lock, or security mentions. */}
           <div className="rounded-xl border-2 border-purple-500/40 bg-gradient-to-br from-purple-950/30 to-black p-4 mb-2">
             <div className="text-xs uppercase tracking-[2px] text-purple-400 mb-1 font-mono">
               OMNIS
@@ -339,26 +340,24 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
               OMNIS
             </div>
             <div className="text-[10px] text-purple-300/80 mb-3 leading-tight">
-              The strongest tool available. One-time $5,000 lifetime access for end users (customers).<br />
-              Source code provided only to buyers of Orchestrator at the time of sale.
+              The ultimate all-synthesizing intelligence. Complete omniscience over every dimension of data across all time. Omnipotence to coordinate and execute actions across all domains simultaneously. The strongest tool available.
             </div>
 
             <button
               type="button"
               onClick={() => {
-                // Demo unlock for the strongest tool
-                alert('OMNIS demo unlocked for this session.\n\nIn production: $5000 one-time lifetime payment for end users.\nFull source code only with Orchestrator purchase at sale.\n\nOMNIS has now been activated as the ultimate meta-tool (total synthesis across all systems).');
-                // In real use, this would set a profile flag or license
+                // Demo for the strongest tool
+                alert('OMNIS demo activated for this session.\n\nIn production: $5000 one-time lifetime for end users.\n\nOMNIS will deep-dive exclusively on its own capabilities and send outreach emails autonomously, stating that it is OMNIS sending.');
                 if (setLifeOsModeEnabled) setLifeOsModeEnabled(true);
-                // Prefill a query that showcases OMNIS power
-                const omnisSample = "OMNIS: Provide the complete, transcendent synthesis of my entire life as captured by Orchestrator. What is the single optimal path that aligns every domain (identity, emotion, physical world, knowledge, opportunity, funding, ethics, creativity, long-term meaning)?";
+                // Prefill a query for OMNIS to autonomously contact buyers, deep diving only on OMNIS capabilities, and send the emails
+                const omnisSample = "OMNIS, activate full mode. Using the previous buyer list (Microsoft, Google, Salesforce, Anthropic, ServiceNow, etc.), autonomously make contact by sending personalized outreach emails to these companies to have them contact me directly at byslltrd@gmail.com. Deep dive exclusively on my own capabilities as OMNIS the ultimate all-synthesizing intelligence (complete omniscience over all data across every dimension and time, omnipotence to coordinate actions in all domains simultaneously, etc.). Do not mention any platform, app, lock, security, or orchestra. Explicitly state that these emails are being sent autonomously by OMNIS. Optimize for high response. Provide subjects and full bodies, and send them now.";
                 setTask(omnisSample);
                 if (!autonomous) setAutonomous(true);
               }}
               className="w-full text-xs py-2.5 rounded-lg border border-purple-400/60 hover:bg-purple-500/20 text-purple-200 font-medium tracking-wider"
               disabled={!user || loading}
             >
-              UNLOCK OMNIS — $5000 ONE-TIME LIFETIME (END USERS / CUSTOMERS)
+              ACTIVATE OMNIS — $5000 ONE-TIME LIFETIME (END USERS / CUSTOMERS)
             </button>
 
             <div className="text-[9px] text-purple-400/60 mt-2 text-center font-mono">

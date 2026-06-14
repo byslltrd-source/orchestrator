@@ -1,30 +1,72 @@
-# Orchestrator – AI Agent Starter Kit
+# Orchestrator – Full AI Agent Platform (Source Code + IP for Purchase)
+
 ## Gumroad Product Page Copy (Ready to Copy-Paste)
 
 **Title:**  
-Orchestrator – Full Next.js AI Agent Platform with Traces, Memory & Live Viewing
+Orchestrator – Complete Next.js AI Agent Platform with OMNIS, Proprietary Tools, Life OS & Full Source
 
 **Subtitle / Short Description:**  
-Build your own personal autonomous AI agent. Includes tools, long-term memory, full execution traces, live streaming, vision, Stripe billing, and usage controls. The complete codebase.
+The full production-ready Orchestrator platform: autonomous AI agent with tools, vector memory, live traces, real-time vision, physical integration, Personal Life OS, proprietary engines (including Orchestra Tool for funding), and OMNIS – the strongest all-synthesizing meta-tool. Complete source code + IP, available for outright purchase.
 
-**Pricing Models (choose one or mix):**
+**For the Purchase of Orchestrator (Full Platform Acquisition):**
 
-**1. Outright Sale (One-time, Lifetime Commercial License)**  
-$499 (early bird $349 for first 50 buyers)  
-Full source, perpetual rights to use/modify/sell derivatives per license. Best for builders who want to own it outright or resell as their own product.
+**Full Outright Purchase (One-time, Complete Transfer of Source Code + IP)**  
+$9,999 – $49,999 (one-time, price negotiable based on valuation and buyer; early/strategic buyers may qualify for lower).  
+Includes:
+- Full source code (Next.js 16, all features, tools, UI, docs).
+- Complete ownership transfer of "Orchestrator" name, branding, and IP.
+- Full OMNIS implementation (the strongest tool – source code delivered only at time of sale, with special security: UI shows only the name "OMNIS" until unlocked).
+- (Digital lock removed; no longer part of the platform.)
+- All proprietary features (Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, Opportunity Decay Clock, Orchestra Tool) and end-user $5,000 lifetime OMNIS access model.
+- Perpetual, worldwide rights to use, modify, sell, license, or distribute the platform and derivative products (with standard restriction: do not resell the original unmodified source as-is).
+- All supporting documentation, ownership proof documents (copyright statements, certificates, buyer proof package in Edward Marin's name), commercial licenses, and setup guides.
+- Transfer of Supabase schema, Stripe integration, and deployment configs (Vercel ready).
 
-**2. Subscription-Based (Hosted SaaS or Updates)**  
-- Free tier: Limited (20 orchestrations/month, basic features)  
-- Pro: $29/month – Unlimited basic + autonomous + multi-image vision + advanced models + storage  
-- Proprietary Ultra: $99/month – Everything in Pro + real-time vision (camera), physical/smart home integration, emotional awareness, full Personal Life OS (biographical self-modeling, shadow agent, regret minimization, ethical mirror, dream/sleep integration), email writing/sending, unlimited storage, all models, priority support, **plus the full Proprietary Feature Suite + flagship Orchestra Tool** (Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, Opportunity Decay Clock, and the native `orchestra_tool` that chains them all for funding acquisition).
+This is the complete platform for builders who want to own Orchestrator outright, resell as their own, or integrate into larger offerings. Source code and full OMNIS details provided only upon full payment and sale completion.
 
-Includes lifetime updates for subscribers. Self-hosted kit available at lower one-time price.
+**Alternative Models (if full purchase not desired):**
+- **Outright Sale (Perpetual Commercial License – Starter/Subset)**: $499–$1,499 (one-time). Limited to non-OMNIS source + basic proprietary features. Not the full platform.
+- **Subscription-Based (Hosted or Updates)**: Free tier limited; Pro $29/mo; Proprietary Ultra $99/mo (includes most features but OMNIS and full source excluded).
+- **Leasing (Enterprise White-Label / Annual)**: $4,999–$14,999/year (tiered). Full source access during term + support, but OMNIS source and permanent ownership require full purchase.
 
-**3. Leasing (Enterprise White-Label / Annual License)**  
-$4,999 – $14,999 / year per company (tiered by users/seats + revenue share option).  
-Full source + support + custom branding/white-label rights + SLA. Ideal for agencies or companies embedding it in their offerings. Custom dev available.
+Contact byslltrd@gmail.com for custom quotes, demos, or full purchase negotiation. Early/strategic buyers or those acquiring the full IP may receive favorable terms.
 
-Early bird / launch pricing available. Contact for enterprise quotes.
+**Description:**
+
+### The Complete AI Agent Platform – Ready for Acquisition
+
+Orchestrator is a production-ready, full-stack autonomous AI agent platform and Personal AI Command Center. It includes:
+
+- Autonomous multi-step agent with tools (web search, browsing, memory, planning, physical actions, email, proprietary engines).
+- Full execution traces, live streaming (NDJSON + Supabase realtime), historical review.
+- Real-time vision (camera), physical world/smart home integration (sensors, actuators).
+- Emotional state awareness + full Personal Life OS (biographical self-modeling, shadow agent, regret minimization, ethical mirror, dream integration).
+- Proprietary Feature Suite: Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, Opportunity Decay Clock, Orchestra Tool (funding acquisition).
+- OMNIS – the strongest tool available (complete omni-synthesis across all data/domains; end-user lifetime access $5,000 one-time; source code only to full platform buyers at sale, with UI security showing only the name "OMNIS").
+- Digital lock (private owner password; source includes lock, password transferred at sale).
+- SaaS foundation: Supabase (auth, DB, storage, realtime), Stripe billing, usage controls, multi-AI support (OpenAI, Grok, Claude, etc.).
+- Modern UI with tools showcase, dedicated OMNIS section, composer, live execution.
+- Complete docs, ownership proof (Edward Marin copyright/ownership statements, certificates), commercial licenses, Vercel/HTTPS dev setup.
+
+This is not a basic starter – it is a complete, defensible platform with unique proprietary IP, ready for immediate productization, white-labeling, or integration. All source, IP, and supporting materials transfer upon full purchase.
+
+### What You Get (Full Purchase)
+
+- Complete source code (Next.js 16 App Router, TypeScript, Tailwind, shadcn/ui, all features).
+- Working autonomous agent with full toolset, memory, traces, vision, physical, Life OS, proprietary tools, and OMNIS.
+- All documentation, schema, deployment guides, ownership docs, and licenses.
+- Rights to the $5,000 OMNIS end-user offering.
+- Clear, documented ownership (transfers to buyer).
+- Source code and full OMNIS details provided only at time of sale.
+
+### Who This Is For
+
+- Companies or individuals wanting to own a complete AI agent platform outright.
+- Builders reselling or white-labeling advanced agent tech.
+- Enterprises needing a production agent "OS" with proprietary moats.
+- Acquirers in the AI/agent space looking for differentiated IP.
+
+Contact byslltrd@gmail.com to discuss purchase, valuation, or custom terms. Full source and OMNIS provided only upon completion of sale.
 
 **Description:**
 

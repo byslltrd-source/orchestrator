@@ -82,12 +82,6 @@ export default function OrchestratorPage() {
   // List of tools from Supabase (so user can see every registered tool, including proprietary ultra ones)
   const [registeredTools, setRegisteredTools] = useState<any[]>([]);
 
-  // Digital Lock for Orchestrator - only the owner (Edward Marin) has the password
-  const [isOrchestratorUnlocked, setIsOrchestratorUnlocked] = useState(false);
-  const [lockPassword, setLockPassword] = useState('');
-  const [lockError, setLockError] = useState('');
-  const [isUnlocking, setIsUnlocking] = useState(false);
-
   // Runs and trace via best-practice hook
   const {
     recentRuns,
@@ -192,51 +186,6 @@ export default function OrchestratorPage() {
       }
     })();
   }, [user, supabase]);
-
-  // Digital Lock: Check if previously unlocked in this browser
-  useEffect(() => {
-    const wasUnlocked = localStorage.getItem('orchestratorUnlocked') === 'true';
-    if (wasUnlocked) {
-      setIsOrchestratorUnlocked(true);
-    }
-  }, []);
-
-  // Handle unlocking Orchestrator with the secret owner password
-  const handleOrchestratorUnlock = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!lockPassword.trim()) {
-      setLockError('Please enter the password.');
-      return;
-    }
-
-    setIsUnlocking(true);
-    setLockError('');
-
-    try {
-      const res = await fetch('/api/verify-lock', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ password: lockPassword }),
-      });
-
-      const data = await res.json();
-
-      if (res.ok && data.success) {
-        setIsOrchestratorUnlocked(true);
-        localStorage.setItem('orchestratorUnlocked', 'true');
-        setLockPassword('');
-        setLockError('');
-      } else {
-        setLockError(data.error || 'Incorrect password. Only the owner has this password.');
-      }
-    } catch (err) {
-      setLockError('Failed to verify password. Please try again.');
-    } finally {
-      setIsUnlocking(false);
-    }
-  };
 
   // When customer opts into real-time vision (expensive), set profile consent if not already set.
   // This acts as a master "I understand this is expensive" switch at profile level.
@@ -632,47 +581,8 @@ export default function OrchestratorPage() {
           )}
         </div>
 
-        {/* DIGITAL LOCK - Orchestrator is locked with a private password only the owner knows */}
-        {!isOrchestratorUnlocked ? (
-          <div className="min-h-[70vh] flex items-center justify-center p-6">
-            <div className="max-w-md w-full bg-zinc-950 border border-white/20 rounded-2xl p-8 text-center">
-              <div className="text-6xl mb-6">🔒</div>
-              <h1 className="text-3xl font-semibold tracking-tight mb-2">Orchestrator is Locked</h1>
-              <p className="text-zinc-400 mb-8">This is a private digital lock. Only the owner (Edward Marin) knows the password.</p>
-
-              <form onSubmit={handleOrchestratorUnlock} className="space-y-4">
-                <input
-                  type="password"
-                  value={lockPassword}
-                  onChange={(e) => setLockPassword(e.target.value)}
-                  placeholder="Enter owner password"
-                  className="w-full px-4 py-3 bg-black border border-white/20 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-white/40 text-lg"
-                  disabled={isUnlocking}
-                  autoFocus
-                />
-
-                <button
-                  type="submit"
-                  disabled={isUnlocking || !lockPassword.trim()}
-                  className="w-full py-3 bg-white text-black font-medium rounded-xl hover:bg-zinc-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                >
-                  {isUnlocking ? 'Verifying...' : 'Unlock Orchestrator'}
-                </button>
-              </form>
-
-              {lockError && (
-                <p className="mt-4 text-red-400 text-sm">{lockError}</p>
-              )}
-
-              <p className="mt-6 text-[10px] text-zinc-500">
-                This lock protects the full Orchestrator experience, including OMNIS and all proprietary features.
-              </p>
-            </div>
-          </div>
-        ) : (
-          <>
-            {/* Modern Tools Showcase - visible to everyone to understand what we offer and drive sign-ups */}
-            <div className="mb-10">
+        {/* Modern Tools Showcase - visible to everyone to understand what we offer and drive sign-ups */}
+        <div className="mb-10">
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <h2 className="text-2xl font-semibold tracking-tight">Proprietary Ultra Tools</h2>
@@ -682,10 +592,10 @@ export default function OrchestratorPage() {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {/* Special OMNIS entry - only the name is visible (security requirement). Strongest tool. */}
+                {/* Special OMNIS entry - the strongest tool, focused on its capabilities. */}
                 <div className="rounded-xl border-2 border-purple-500/40 bg-gradient-to-br from-purple-950/20 to-zinc-950 p-4">
                   <div className="font-mono text-xl tracking-[3px] text-purple-300 mb-1">OMNIS</div>
-                  <div className="text-[10px] text-purple-400/70">The strongest tool available. $5,000 one-time lifetime for end users (customers). Source code only with Orchestrator purchase at sale.</div>
+                  <div className="text-[10px] text-purple-400/70">The strongest tool available. $5,000 one-time lifetime access for end users (customers). Deep dive on complete omniscience and omnipotence across all dimensions. Sent autonomously by OMNIS.</div>
                 </div>
 
                 {(registeredTools.length > 0 ? registeredTools.filter((t: any) => t.is_proprietary || t.tier === 'proprietary_ultra') : [
@@ -827,8 +737,6 @@ export default function OrchestratorPage() {
             <UsageHistory usageEvents={usageEvents} />
           </div>
         </div>
-          </>
-        )}
 
         <div className="mt-8 text-center text-[10px] text-zinc-500">
           Steps are persisted to your Supabase DB in real time. The stream + realtime lets you watch the agent live.

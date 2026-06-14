@@ -1,25 +1,37 @@
 COMMERCIAL LICENSE AGREEMENT
 for
-Orchestrator AI Agent Starter Kit
+Orchestrator AI Agent Platform
 
 Effective Date: [Insert Date]
 
 This Commercial License Agreement ("Agreement") is entered into by and between the Licensor ("Licensor" or "You" in the context of the buyer) and the copyright holder ("Owner").
 
+**Owner:** Edward Marin  
+**Contact:** byslltrd@gmail.com
+
 1. GRANT OF LICENSE
 Subject to the terms of this Agreement and the purchased model, the Owner grants the Licensor a non-exclusive, non-transferable license as follows:
 
-**A. Outright Sale (One-time, Perpetual Commercial License)**  
+**A. Full Outright Purchase of Orchestrator (Complete Platform Acquisition)**  
+For a one-time purchase price (to be agreed at time of sale, based on current valuation including all proprietary IP such as OMNIS), the Owner transfers:
+- The complete source code and all related materials for the Orchestrator platform.
+- Full ownership and rights to the "Orchestrator" name, branding, and associated IP (subject to any retained rights for personal use if specified).
+- Full access to all features, including the complete OMNIS implementation (the strongest tool), with source code delivered only at the time of sale.
+
+- Rights to the end-user $5,000 one-time lifetime OMNIS access offering.
+- Perpetual, worldwide license to use, modify, deploy, sell, license, or distribute the Software and End Products built with it, for internal or client use, and to resell or sublicense under your own terms (with the restriction below on redistributing the original unmodified source).
+
+**B. Outright Sale (One-time, Perpetual Commercial License for the Starter Kit)**  
 Perpetual, worldwide license to:
 - Use the Software to create, modify, and deploy derivative works.
 - Sell, license, or distribute End Products built with the Software.
 - Use the Software for internal business purposes or client projects.
-- Full access to all Proprietary Features (Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, Opportunity Decay Clock) and the underlying IP for your own products and resale (subject to license restrictions).
+- Full access to all Proprietary Features (Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, Opportunity Decay Clock, Orchestra Tool) and the underlying IP for your own products and resale (subject to license restrictions).
 
-**B. Subscription-Based (Hosted or Update Access)**  
-During the active subscription term: Same rights as Outright Sale above, plus access to hosted version (if offered) and updates. Self-hosted kit rights apply while subscribed. Ultra-tier subscriptions include live access to the Proprietary Feature Suite.
+**C. Subscription-Based (Hosted or Update Access)**  
+During the active subscription term: Same rights as Outright Sale (B) above, plus access to hosted version (if offered) and updates. Self-hosted kit rights apply while subscribed. Ultra-tier subscriptions include live access to the Proprietary Feature Suite.
 
-**C. Leasing (Enterprise Annual License)**  
+**D. Leasing (Enterprise Annual License)**  
 Annual renewable license with:
 - White-label / rebranding rights.
 - Priority support and SLA.
@@ -27,7 +39,7 @@ Annual renewable license with:
 - Same usage rights as Outright during the term.
 - Full rights to deploy the complete Proprietary Feature Suite (Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, Opportunity Decay Clock) + the Orchestra Tool as key value drivers.
 
-- OMNIS (the strongest tool) is excluded from standard licenses. It is available only to end-user "customers" via separate one-time $5,000 lifetime payment. Full OMNIS source code is provided *only* to buyers of the complete Orchestrator platform at the time of sale, with special security (UI shows only the name "OMNIS").
+- OMNIS (the strongest tool) is excluded from standard licenses (B, C, D). It is available only to end-user "customers" via separate one-time $5,000 lifetime payment. Full OMNIS source code is provided *only* to buyers of the complete Orchestrator platform at the time of sale, with special security (UI shows only the name "OMNIS").
 
 - Use the Software (the "Orchestrator" source code and related materials) to create, modify, and deploy derivative works.
 - Sell, license, or distribute End Products built with the Software.
