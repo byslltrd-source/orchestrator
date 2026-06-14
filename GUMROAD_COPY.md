@@ -79,7 +79,7 @@ This is a production-ready Next.js 16 + Supabase + Stripe codebase for a persona
 - **Full execution traces** — every thought, tool call, and result is saved and reviewable
 - **Live viewing** — watch the agent think and act in real time (NDJSON stream + Supabase realtime)
 - **Vision support** — attach images for high-detail analysis
-- **Proper SaaS foundation** — Supabase Auth + RLS, Stripe checkout/portal/webhooks, usage quotas, free vs Pro tiers
+- **Clean persistence foundation** — Supabase (Postgres, RLS, realtime, vector memory, storage). Ships in single-owner mode (no public auth). All premium + proprietary features unlocked for the owner. Buyer adds auth/billing/tenancy as desired when productizing or embedding.
 - **Long-term memory** that actually works across runs
 
 ### What You Get

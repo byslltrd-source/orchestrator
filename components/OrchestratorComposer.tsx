@@ -570,7 +570,7 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
               <div className="font-medium">Run autonomously (Pro)</div>
               <div className="text-xs text-zinc-400">
                 Agent plans, uses tools + memory, loops until done. Full trace saved. You watch live.
-                {isPremium && " Premium users can also opt-in to real-time camera vision (expensive). Proprietary Ultra unlocks the full Orchestra Tool + proprietary suite."}
+                {" All features (vision, physical, Life OS, OMNIS, Proprietary Ultra engines) are available in owner / purchaser deployments. The integrated tiers describe hosted plans a buyer may offer to their own users."}
               </div>
             </div>
           </label>
@@ -634,7 +634,7 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
                 </ul>
               </div>
             ))}
-            <div className="text-[9px] text-zinc-500">Free limited. Upgrade for Proprietary Ultra (Orchestra Tool + full proprietary suite as native capabilities).</div>
+            <div className="text-[9px] text-zinc-500">In the purchased platform all capabilities are unlocked for the owner instance. Tiers shown are for reference (value when you productize hosted access for end users).</div>
 
             {/* Enhanced Proprietary Ultra Features showcase - more visible cards */}
             <div className="mt-3 pt-3 border-t border-blue-500/20">

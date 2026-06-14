@@ -37,7 +37,7 @@ export function RecentRunsList({
       </CardHeader>
       <CardContent>
         {!user ? (
-          <div className="text-sm text-zinc-400">Sign in to see your autonomous run history.</div>
+          <div className="text-sm text-zinc-400">Owner context required for run history.</div>
         ) : recentRuns.length === 0 ? (
           <div className="text-sm text-zinc-400">No autonomous runs yet. Check the box and submit a Pro task.</div>
         ) : (

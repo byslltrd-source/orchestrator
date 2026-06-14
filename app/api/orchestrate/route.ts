@@ -14,6 +14,7 @@ import {
   MAX_STEPS_DEFAULT,
   MAX_IMAGES_FREE,
   MAX_IMAGE_UPLOAD_BYTES,
+  OWNER_USER_ID,
 } from '@/lib/constants';
 import { OrchestrateInputSchema } from '@/lib/schemas';
 import type { Database } from '@/lib/supabase/database.types';
@@ -25,27 +26,31 @@ import { syncToolsToSupabase } from '@/lib/agent/tools';
 
 export async function POST(request: NextRequest) {
   try {
-    // 1. Authenticate user via Supabase session (populated by middleware)
-    const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    // SINGLE-OWNER / PURCHASER MODE: no public auth required.
+    // All operations run under the fixed OWNER_USER_ID using the privileged service client.
+    // The purchasing company may add their own authentication, multi-tenancy, and per-user
+    // isolation later exactly as they choose.
+    const ownerId = OWNER_USER_ID;
 
-    if (!user) {
-      return NextResponse.json({ error: "Please sign in to use Orchestrator" }, { status: 401 });
-    }
+    // Use service client for everything (guaranteed to work regardless of RLS or session cookies)
+    const service = createServiceClient() as any;
+
+    // We still call sync (non-blocking)
+    syncToolsToSupabase().catch(() => {});
 
     // Ensure all tools (including new proprietary/orchestra_tool) are registered in Supabase
     // (code on GitHub + persisted on Supabase)
     syncToolsToSupabase().catch(() => {});
 
-    // Basic rate limit (next layer polish) - 10 calls per minute per user (in-memory, resets on deploy)
+    // Basic rate limit (per owner in single-tenant mode)
     const rateLimitMap = (globalThis as any).__orchestratorRateLimit || new Map();
     (globalThis as any).__orchestratorRateLimit = rateLimitMap;
     const now = Date.now();
-    const last = rateLimitMap.get(user.id) || 0;
+    const last = rateLimitMap.get(ownerId) || 0;
     if (now - last < 6000) { // ~10/min
       return NextResponse.json({ error: "Rate limited. Please wait a moment." }, { status: 429 });
     }
-    rateLimitMap.set(user.id, now);
+    rateLimitMap.set(ownerId, now);
 
     // 2. Parse form (support multiple images now)
     const formData = await request.formData();
@@ -95,38 +100,34 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: envCheck.message }, { status: 500 });
     }
 
-    // 3. Load profile (use service client for reliable privileged read + later write)
-    // Supabase service client (any because we don't have generated types from the DB schema)
-    // Privileged service client. Full Database types live in lib/supabase/database.types.ts
-    const service = createServiceClient() as any;
+    // 3. Owner profile (force full "ultra" access in purchaser / single-owner artifact)
     let { data: profileData } = await service
       .from('profiles')
       .select('*')
-      .eq('id', user.id)
+      .eq('id', ownerId)
       .single();
 
-    // Auto-create a minimal free profile if missing (new user)
     if (!profileData) {
-      // Use loose cast for privileged admin insert (common pattern until full typegen)
       await (service.from('profiles') as any).insert({
-        id: user.id,
-        email: user.email,
-        subscription_plan: 'free',
-        subscription_status: 'free',
+        id: ownerId,
+        email: 'owner@orchestrator.internal',
+        subscription_plan: 'ultra',
+        subscription_status: 'active',
         orchestrations_used: 0,
-        orchestrations_limit: FREE_LIMIT,
+        orchestrations_limit: 999999,
       });
       profileData = {
-        id: user.id,
-        subscription_plan: 'free',
-        subscription_status: 'free',
+        id: ownerId,
+        subscription_plan: 'ultra',
+        subscription_status: 'active',
         orchestrations_used: 0,
-        orchestrations_limit: FREE_LIMIT,
-      } as any; // shape matches ProfileRow
+        orchestrations_limit: 999999,
+      } as any;
     }
 
     const p = (profileData || {}) as UserProfile;
-    const isPro = isProUser(p);
+    // Force full access for the owner context (buyer can re-introduce quotas / plans)
+    const isPro = true;
 
     // 4. Enforce subscription / quota
     const used = p.orchestrations_used ?? 0;
@@ -159,7 +160,7 @@ export async function POST(request: NextRequest) {
     if (imageFiles.length > 0) {
       for (const file of imageFiles) {
         try {
-          const asset = await uploadUserFile(user.id, file);
+          const asset = await uploadUserFile(ownerId, file);
           storedAssets.push(asset);
         } catch (err: any) {
           console.error('Image upload error:', err);
@@ -199,7 +200,7 @@ export async function POST(request: NextRequest) {
 
               const { data: newTask } = await (service.from('tasks') as any)
                 .insert({
-                  user_id: user.id,
+                  user_id: ownerId,
                   title: task.slice(0, 80),
                   goal: task,
                   status: 'active',
@@ -221,7 +222,7 @@ export async function POST(request: NextRequest) {
               const { data: newRun } = await (service.from('agent_runs') as any)
                 .insert({
                   task_id: taskId,
-                  user_id: user.id,
+                  user_id: ownerId,
                   status: 'running',
                   metadata: {
                     ...(realtimeVision ? { realtime_vision: true } : {}),
@@ -243,7 +244,7 @@ export async function POST(request: NextRequest) {
               // Run the agent - onStep fires live for both DB + stream to client
               const { finalResult, usedSteps } = await runAutonomousAgent({
                 goal: task,
-                userId: user.id,
+                userId: ownerId,
                 images: storedAssets.length > 0 ? storedAssets : undefined,
                 maxSteps: MAX_AUTONOMOUS_STEPS,
                 taskId,
@@ -291,12 +292,12 @@ export async function POST(request: NextRequest) {
               try {
                 const { data: fresh } = await (service.from('profiles') as any)
                   .select('orchestrations_used')
-                  .eq('id', user.id)
+                  .eq('id', ownerId)
                   .single();
                 const latestUsed = fresh?.orchestrations_used ?? (p.orchestrations_used ?? 0);
                 await (service.from('profiles') as any)
                   .update({ orchestrations_used: latestUsed + 1 })
-                  .eq('id', user.id);
+                  .eq('id', ownerId);
               } catch {}
 
               // Signal completion with final info (client can also use the last step of type final)
@@ -311,7 +312,7 @@ export async function POST(request: NextRequest) {
               // Record usage event
               try {
                 await (service.from('usage_events') as any).insert({
-                  user_id: user.id,
+                  user_id: ownerId,
                   type: 'autonomous',
                   task: task.slice(0, 500),
                   result_preview: (finalResult || '').slice(0, 200),
@@ -395,7 +396,7 @@ export async function POST(request: NextRequest) {
     try {
       const { data: fresh } = await (service.from('profiles') as any)
         .select('orchestrations_used, usage_reset_date')
-        .eq('id', user.id)
+        .eq('id', ownerId)
         .single();
 
       const latestUsed = fresh?.orchestrations_used ?? (p.orchestrations_used ?? 0);
@@ -416,7 +417,7 @@ export async function POST(request: NextRequest) {
 
       await (service.from('profiles') as any)
         .update(updates)
-        .eq('id', user.id);
+        .eq('id', ownerId);
     } catch (e) {
       console.error("Failed to increment usage (non-fatal):", e);
     }
@@ -426,7 +427,7 @@ export async function POST(request: NextRequest) {
     try {
       const { data: fresh } = await (service.from('profiles') as any)
         .select('orchestrations_used')
-        .eq('id', user.id)
+        .eq('id', ownerId)
         .single();
       if (fresh?.orchestrations_used != null) {
         reportedUsed = isPro ? 'unlimited' : fresh.orchestrations_used;
@@ -436,7 +437,7 @@ export async function POST(request: NextRequest) {
     // Record usage event (next layer audit history)
     try {
       await (service.from('usage_events') as any).insert({
-        user_id: user.id,
+        user_id: ownerId,
         type: 'one-shot',
         task: task.slice(0, 500),
         result_preview: (result || '').slice(0, 200),

@@ -56,3 +56,35 @@ export const SUBSCRIPTION_STATUSES = {
 
 export type Plan = (typeof PLANS)[keyof typeof PLANS];
 export type SubscriptionStatus = (typeof SUBSCRIPTION_STATUSES)[keyof typeof SUBSCRIPTION_STATUSES];
+
+/**
+ * SINGLE-OWNER MODE (for commercial sale / company purchaser deployments)
+ *
+ * This artifact is intended to be purchased by a company and integrated into their
+ * environment as they see fit (internal tool, white-labeled for their customers,
+ * embedded in products, etc.). There is intentionally NO public sign-up or login flow.
+ *
+ * All data (memories, agent_runs, agent_steps, stored files, profiles, usage) is
+ * partitioned under a single fixed "owner" user ID.
+ *
+ * - Set OWNER_USER_ID in your .env.local to a real Supabase auth user UUID if you
+ *   want to keep RLS policies strict and use normal authenticated client queries.
+ * - Or leave as the default string 'orchestrator-owner' and either:
+ *     a) Disable RLS on the relevant tables for your private deployment, or
+ *     b) Add simple owner policies, e.g.:
+ *        CREATE POLICY "single_owner_read" ON agent_runs FOR SELECT
+ *        USING (user_id = 'orchestrator-owner');
+ *   (Same for memories, agent_steps, profiles, etc.)
+ *
+ * Writes from the API routes use the service role client + this ID, so inserts
+ * always succeed with the correct user_id even without an auth user row.
+ *
+ * The frontend runs fully unlocked (all features: realtime vision, physical,
+ * emotional/Life OS, OMNIS, proprietary orchestra_tool + engines, unlimited storage,
+ * all models). The purchaser can add their own auth layer (SSO, multi-tenancy,
+ * per-customer billing, etc.) later.
+ */
+export const OWNER_USER_ID =
+  process.env.OWNER_USER_ID ||
+  process.env.NEXT_PUBLIC_OWNER_USER_ID ||
+  'orchestrator-owner';

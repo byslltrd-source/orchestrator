@@ -5,37 +5,26 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { createServiceClient } from '@/lib/supabase/service';
-import { isPremiumUser } from '@/lib/utils';
 import { uploadUserFile } from '@/lib/supabase/storage';
 import {
   REALTIME_VISION_MIN_INTERVAL_MS,
   REALTIME_VISION_MAX_FRAMES_PER_RUN,
+  OWNER_USER_ID,
 } from '@/lib/constants';
 
 export async function POST(request: NextRequest) {
   try {
-    const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-
-    if (!user) {
-      return NextResponse.json({ error: "Please sign in" }, { status: 401 });
-    }
-
+    // SINGLE-OWNER MODE: vision frames always allowed for the platform owner context.
+    // (Real-time vision is expensive; the purchaser decides access control when embedding.)
+    const ownerId = OWNER_USER_ID;
     const service = createServiceClient() as any;
 
-    // Load profile for premium gate
+    // Owner profile (no gate in base artifact)
     const { data: profile } = await service
       .from('profiles')
       .select('*')
-      .eq('id', user.id)
+      .eq('id', ownerId)
       .single();
-
-    if (!isPremiumUser(profile)) {
-      return NextResponse.json(
-        { error: "Real-time Vision is a Premium top-tier feature. Upgrade your plan." },
-        { status: 402 }
-      );
-    }
 
     const formData = await request.formData();
     const runId = formData.get('runId') as string;
@@ -52,7 +41,7 @@ export async function POST(request: NextRequest) {
       .eq('id', runId)
       .single();
 
-    if (!run || run.user_id !== user.id) {
+    if (!run || run.user_id !== ownerId) {
       return NextResponse.json({ error: "Run not found or not yours" }, { status: 404 });
     }
     if (run.status !== 'running') {
@@ -82,7 +71,7 @@ export async function POST(request: NextRequest) {
     // Upload the frame (re-uses the existing storage + rich metadata layer)
     let asset;
     try {
-      asset = await uploadUserFile(user.id, frameFile);
+      asset = await uploadUserFile(ownerId, frameFile);
     } catch (e: any) {
       return NextResponse.json({ error: `Failed to store frame: ${e.message}` }, { status: 500 });
     }
@@ -121,7 +110,7 @@ export async function POST(request: NextRequest) {
     // Track expensive realtime vision usage (for billing/auditing)
     try {
       await service.from('usage_events').insert({
-        user_id: user.id,
+        user_id: ownerId,
         type: 'realtime_vision_frame',
         task: `live-frame for run ${runId.slice(0, 8)}`,
         result_preview: `Live camera frame pushed`,
@@ -132,7 +121,7 @@ export async function POST(request: NextRequest) {
       const currentFrames = (profile?.realtime_vision_frames_used ?? 0) + 1;
       await service.from('profiles').update({
         realtime_vision_frames_used: currentFrames
-      }).eq('id', user.id);
+      }).eq('id', ownerId);
 
       // Persist on the run metadata for history
       await service.from('agent_runs').update({

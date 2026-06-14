@@ -9,21 +9,19 @@ import { useState, useEffect, useRef, useCallback } from "react";
 // that would execute the Supabase browser client without env vars present.
 export const dynamic = "force-dynamic";
 import { Header } from "@/components/Header";
-import { AuthModal } from "@/components/AuthModal";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { createClient } from "@/lib/supabase/client";
 import type { User } from "@supabase/supabase-js";
 import type { AgentStep, StepRow, LiveEvent, RecentRun } from "@/lib/agent/types";
-import { isProUser, isPremiumUser, type UserProfile } from "@/lib/utils";
-import { MAX_IMAGE_UPLOAD_BYTES, MAX_IMAGES_FREE } from "@/lib/constants";
+import { type UserProfile } from "@/lib/utils";
+import { MAX_IMAGE_UPLOAD_BYTES, MAX_IMAGES_FREE, OWNER_USER_ID } from "@/lib/constants";
 import { OrchestratorComposer } from "@/components/OrchestratorComposer";
 import { LiveExecution } from "@/components/LiveExecution";
 import { TraceViewer } from "@/components/TraceViewer";
 import { RecentRunsList } from "@/components/RecentRunsList";
 import { UsageHistory } from "@/components/UsageHistory";
-import { useProfile } from "@/lib/hooks/useProfile";
 import { useRuns } from "@/lib/hooks/useRuns";
 import {
   Send,
@@ -42,10 +40,28 @@ type Profile = UserProfile;
 export default function OrchestratorPage() {
   const supabase = createClient();
 
-  // Auth
-  const [user, setUser] = useState<User | null>(null);
-  const { profile, loadProfile: loadProfileHook, setProfile } = useProfile();
-  const [isAuthOpen, setIsAuthOpen] = useState(false);
+  // SINGLE-OWNER MODE (no public sign up / login)
+  // The entire artifact runs under one fixed owner identity.
+  // Purchaser of the platform integrates their own auth / multi-user system as they see fit.
+  const user: User = {
+    id: OWNER_USER_ID,
+    email: 'owner@orchestrator.internal',
+    app_metadata: {},
+    user_metadata: {},
+    aud: 'authenticated',
+    created_at: new Date().toISOString(),
+  } as any;
+
+  const ownerProfile: UserProfile = {
+    subscription_plan: 'ultra',
+    subscription_status: 'active',
+    orchestrations_used: 0,
+    orchestrations_limit: 999999,
+  } as UserProfile & { id?: string; tier?: string };
+
+  // Always full access in owner/purchaser deployment mode
+  const profile = ownerProfile;
+  // No useProfile hook needed for the owner artifact (kept for reference if buyer re-adds multi-user auth)
 
   // Composer state (kept here for form control, passed to component)
   const [task, setTask] = useState("");
@@ -99,65 +115,38 @@ export default function OrchestratorPage() {
   } = useRuns();
 
   const loadRecentRuns = useCallback(() => {
-    if (user?.id) loadRecentRunsWithId(user.id);
-  }, [user?.id, loadRecentRunsWithId]);
+    loadRecentRunsWithId(OWNER_USER_ID);
+  }, [loadRecentRunsWithId]);
 
   // Usage history (full next layer)
   const [usageEvents, setUsageEvents] = useState<any[]>([]);
 
   const loadUsageEvents = useCallback(async () => {
-    if (!user) return;
     try {
       const { data } = await supabase
         .from("usage_events")
         .select("id, type, task, result_preview, images_count, created_at")
-        .eq("user_id", user.id)
+        .eq("user_id", OWNER_USER_ID)
         .order("created_at", { ascending: false })
         .limit(5);
       if (data) setUsageEvents(data);
     } catch {}
-  }, [supabase, user]);
+  }, [supabase]);
 
   // Realtime channel refs for cleanup
   const liveChannelRef = useRef<any>(null);
   const traceChannelRef = useRef<any>(null);
 
-  const isPro = isProUser(profile);
-  const isPremium = isProUser(profile); // Proprietary Ultra features (Orchestra Tool + proprietary suite) are available to premium profiles
+  // In single-owner / purchaser mode we are always "ultra" with everything unlocked.
+  // No auth wall, no sign-up, no login. The buyer of the platform adds auth later as needed.
+  const isPro = true;
+  const isPremium = true;
 
-  // Auth initialization
+  // Owner mode: load data under the fixed OWNER_USER_ID (writes in APIs also target this id via service client)
   useEffect(() => {
-    // Initial session
-    supabase.auth.getUser().then(({ data }: { data: { user: User | null } }) => {
-      const u = data.user;
-      setUser(u);
-      if (u) {
-        loadProfileHook(u.id);
-        if (u.id) loadRecentRunsWithId(u.id);
-        loadUsageEvents();
-      }
-    });
-
-    // Listen for auth changes
-    const { data: listener } = supabase.auth.onAuthStateChange((_event: any, session: any) => {
-      const u = session?.user ?? null;
-      setUser(u);
-      if (u) {
-        loadProfileHook(u.id);
-        if (u.id) loadRecentRunsWithId(u.id);
-        loadUsageEvents();
-      } else {
-        setProfile(null);
-        setRecentRuns([]);
-        setUsageEvents([]);
-        clearLive();
-        clearTrace();
-      }
-    });
-
-    return () => {
-      listener.subscription.unsubscribe();
-    };
+    loadRecentRunsWithId(OWNER_USER_ID);
+    loadUsageEvents();
+    // registeredTools effect below also depends on owner context
   }, []);
 
   // Cleanup camera on unmount
@@ -167,12 +156,8 @@ export default function OrchestratorPage() {
     };
   }, []);
 
-  // Load registered tools from Supabase so the list is always visible (tools live in DB + code on GitHub)
+  // Load registered tools from Supabase (always visible in owner/purchaser single-tenant mode)
   useEffect(() => {
-    if (!user) {
-      setRegisteredTools([]);
-      return;
-    }
     (async () => {
       try {
         const { data } = await supabase
@@ -185,27 +170,13 @@ export default function OrchestratorPage() {
         // non-fatal; static list still shown in composer
       }
     })();
-  }, [user, supabase]);
+  }, [supabase]);
 
-  // When customer opts into real-time vision (expensive), set profile consent if not already set.
-  // This acts as a master "I understand this is expensive" switch at profile level.
+  // Owner / purchaser mode: all features (including expensive realtime vision + physical) are available.
+  // No per-user consent tracking in the base single-tenant artifact. Buyer can extend.
   useEffect(() => {
-    if (!realtimeVisionEnabled || !user || !isPremium || !profile) return;
-    if (profile.realtime_vision_consent) return;
-
-    (async () => {
-      try {
-        await supabase
-          .from('profiles')
-          .update({ realtime_vision_consent: true })
-          .eq('id', user.id);
-        // Refresh profile so UI updates immediately
-        loadProfileHook(user.id);
-      } catch (e) {
-        // non fatal
-      }
-    })();
-  }, [realtimeVisionEnabled, user, isPremium, profile, supabase]);
+    // no-op – full access always granted for the platform owner context
+  }, [realtimeVisionEnabled]);
 
   // If realtime vision is disabled, physical world must also be disabled (it depends on live camera)
   useEffect(() => {
@@ -236,14 +207,11 @@ export default function OrchestratorPage() {
   // Main submit (one-shot or autonomous streaming)
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!user || !task.trim()) {
-      setError("Sign in and enter a task.");
+    if (!task.trim()) {
+      setError("Enter a task.");
       return;
     }
-    if (autonomous && !isPro) {
-      setError("Autonomous agents are a Pro feature. Upgrade in the header.");
-      return;
-    }
+    // In owner/purchaser mode everything (including autonomous + all premium features) is unlocked.
 
     setError(null);
     setOneShotResult(null);
@@ -554,11 +522,11 @@ export default function OrchestratorPage() {
   // Safety: always ensure basic UI renders even if auth is slow
   // (prevents "completely blank" feeling while waiting for Supabase)
 
-  const canSubmit = !!user && task.trim().length > 0 && !loading;
+  const canSubmit = task.trim().length > 0 && !loading;
 
   return (
     <div className="min-h-screen bg-zinc-950 text-white">
-      <Header onAuthClick={() => setIsAuthOpen(true)} onUserChange={setUser} />
+      <Header />
 
       <div className="mx-auto max-w-5xl px-6 py-8">
         {/* Hero / title */}
@@ -619,7 +587,7 @@ export default function OrchestratorPage() {
                   </div>
                 ))}
               </div>
-              <div className="mt-3 text-xs text-zinc-500">Sign up for Proprietary Ultra to unlock the full Orchestra Tool and all proprietary engines in your runs. See the integrated list in the composer below for details and pricing.</div>
+              <div className="mt-3 text-xs text-zinc-500">All capabilities (including Proprietary Ultra / Orchestra Tool + full OMNIS) are unlocked in this owner deployment. The purchaser integrates billing / sub-accounts as needed.</div>
             </div>
 
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
@@ -740,18 +708,10 @@ export default function OrchestratorPage() {
 
         <div className="mt-8 text-center text-[10px] text-zinc-500">
           Steps are persisted to your Supabase DB in real time. The stream + realtime lets you watch the agent live.
-          {isPro === false && " Upgrade for unlimited autonomous runs + tools."}
+          Full platform (all tiers + OMNIS + proprietary) unlocked for the owner / purchaser instance.
         </div>
       </div>
 
-      <AuthModal
-        isOpen={isAuthOpen}
-        onClose={() => setIsAuthOpen(false)}
-        onAuthSuccess={() => {
-          setIsAuthOpen(false);
-          // Header will call onUserChange which triggers loads
-        }}
-      />
     </div>
   );
 }

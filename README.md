@@ -1,15 +1,17 @@
 ﻿# Orchestrator
 
-Your Personal AI Command Center with vision, user accounts, and subscription-based access.
+Your Personal AI Command Center (single-owner / purchaser deployment ready).
+
+No public sign-up or login. The platform is designed to be purchased by a company and implemented inside their environment exactly as they see fit (internal tool, white-label, embedded product, etc.). Supabase powers the persistence (memory, runs, storage, realtime traces) under a single owner identity. The buyer adds their own auth, multi-user, billing, or SSO layer.
 
 ## Features
 
-- **User accounts** — Email + password sign up / log in (powered by Supabase Auth)
-- **Subscription based** — Free tier (20 orchestrations/month, single image) vs Pro (unlimited + multi-image vision)
-- **Vision** — Attach one or more images. Task + images are sent together to the model using `detail: high`
-- **Usage tracking & enforcement** — Server-side quota checks + automatic monthly reset for free users
-- **Stripe billing** — Checkout + Customer Portal + webhook sync
-- **Proprietary Features** — Proprietary Ultra tier includes exclusive native IP as core part of Orchestrator: Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, Opportunity Decay Clock + the flagship Orchestra Tool (detailed below)
+- **Single-owner / purchaser mode (no public auth)** — The delivered artifact runs fully unlocked under one owner identity (configurable via OWNER_USER_ID). All premium capabilities (realtime vision, physical integration, emotional/Life OS, OMNIS, the full Proprietary Ultra suite + Orchestra Tool) are available immediately. No sign-up or login flow.
+- **Supabase persistence** — Vector memory, agent run history + traces, file storage (under the owner), realtime for live execution. Buyer controls RLS / adds multi-user auth on top.
+- **Vision + Physical** — Attach images or (with opt-in) push live camera frames; bridge to smart home / IoT / physical actuators.
+- **OMNIS** — The strongest tool: complete omni-synthesis + autonomous outreach that states it is sent by OMNIS.
+- **Proprietary Features** — Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, Opportunity Decay Clock + flagship Orchestra Tool (native, always available in owner mode).
+- **Stripe / quotas** — Code is present for hosted billing flows; the purchaser decides whether to enable, replace, or remove when productizing.
 
 ## Getting Started
 
@@ -69,7 +71,7 @@ To test the custom 500 error page (the design from 500-error.html):
 
 The error pages are dark-themed to match the rest of the Orchestrator UI and include the error code + a unique ID for debugging.
 
-### 2. Supabase Setup (Accounts)
+### 2. Supabase Setup (Persistence for Single-Owner Deployment)
 
 1. Create a new Supabase project at https://supabase.com
 2. Go to **SQL Editor** and run the entire contents of `supabase/schema.sql`
@@ -77,7 +79,7 @@ The error pages are dark-themed to match the rest of the Orchestrator UI and inc
    - Project URL → `NEXT_PUBLIC_SUPABASE_URL`
    - `anon` public key → `NEXT_PUBLIC_SUPABASE_ANON_KEY`
    - `service_role` key (keep secret!) → `SUPABASE_SERVICE_ROLE_KEY`
-4. (Dev only) Authentication → Providers → Email → turn **off** "Confirm email" so you can sign up instantly.
+4. (Optional for owner mode) If you later add real Supabase Auth users for multi-tenancy, configure email confirm as desired. For the base single-owner artifact no auth user is required (writes use the service role).
 
 ### 3. Stripe Setup (Subscriptions)
 
@@ -104,14 +106,14 @@ npm run dev
 
 Open http://localhost:3000
 
-Sign up (free), try orchestrating with/without images, then click **Upgrade** to test the full Pro flow.
+In the running owner deployment all features are unlocked. Submit tasks (check Autonomous + Life OS for the full experience). The integrated tiers in the composer describe the hosted plans you can offer after you add your own auth/billing layer.
 
 ## Tech Stack
 
 - Next.js 16 + App Router + Turbopack
 - React 19 + Tailwind
-- Supabase (Auth + Postgres + RLS)
-- Stripe (Checkout, Portal, Webhooks)
+- Supabase (Postgres + RLS + Realtime + Storage + Vector; Auth layer intentionally minimal / single-owner by default)
+- Stripe (Checkout, Portal, Webhooks — present for buyer to enable or replace)
 - Multiple LLMs for the orchestrator (OpenAI, Grok/xAI, Claude via OpenRouter, Groq, Ollama, OpenRouter, custom OpenAI-compatible endpoints) — pick per run in the UI!
 
 ## Key Files
@@ -119,8 +121,9 @@ Sign up (free), try orchestrating with/without images, then click **Upgrade** to
 - `app/api/orchestrate/route.ts` — protected, usage-gated, multi-image vision endpoint
 - `app/api/stripe/*` — checkout, portal, webhook handler
 - `lib/supabase/*` — server, browser, service-role, and middleware clients
-- `middleware.ts` — session refresh for SSR auth
-- `components/{Header,AuthModal}.tsx`
+- `middleware.ts` — (kept for future auth; currently minimal)
+- `components/Header.tsx` — simplified branding (no login UI)
+- `components/AuthModal.tsx` — kept in tree as reference / for buyer to reuse or delete
 - `supabase/schema.sql` — profiles table + trigger + RLS
 
 ## Notes / Future Ideas
