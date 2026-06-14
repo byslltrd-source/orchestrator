@@ -340,13 +340,12 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
                 const sample = "Use the orchestra_tool on my project. Project summary: [Describe your project, stage, traction here]. Funding goals: [e.g. $250k non-dilutive grants + early VC]. Funder types: grant, vc-seed, angel. Prepare full materials and action plan.";
                 setTask(sample);
                 if (!autonomous) setAutonomous(true);
-                // Life OS mode enables the full proprietary magic
-                // Note: caller (page) manages the actual lifeOsModeEnabled prop
+                if (setLifeOsModeEnabled) setLifeOsModeEnabled(true);
               }}
-              className="w-full text-xs px-3 py-2 rounded border border-emerald-400/50 hover:bg-emerald-500/10 text-emerald-200"
+              className="w-full text-xs px-3 py-2 rounded border border-emerald-400/50 hover:bg-emerald-500/10 text-emerald-200 font-medium"
               disabled={!user || loading}
             >
-              Prefill &amp; Launch Orchestra Tool (sets autonomous mode)
+              Prefill &amp; Launch Orchestra Tool (full Proprietary Ultra magic)
             </button>
             <div className="text-[9px] text-emerald-400/70 mt-1">Click to prefill a strong task. Enable Personal Life OS Mode above for full engine chaining and auto behaviors. Proprietary Ultra only.</div>
           </div>
@@ -579,9 +578,9 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
             <div className="text-[10px] text-zinc-500 mt-1">Click any to instantly load a strong autonomous demo task.</div>
           </div>
 
-          {/* Orchestrator Provides - Integrated list of all features with tiered costs (Free to Ultra Premium) */}
+          {/* Orchestrator Provides - Integrated list of all features with tiered costs (Free to Proprietary Ultra) */}
           <div className="pt-4 border-t border-white/10">
-            <div className="text-[10px] uppercase tracking-widest text-zinc-500 mb-2">Orchestrator Provides — Tiers & Costs (Proprietary Ultra at the top)</div>
+            <div className="text-[10px] uppercase tracking-widest text-zinc-500 mb-2">Tiers &amp; Costs</div>
             {tiers.map((tier, i) => (
               <div key={i} className="mb-3 p-2 rounded bg-zinc-950/50">
                 <div className="flex justify-between text-sm font-medium">
@@ -596,20 +595,20 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
                 </ul>
               </div>
             ))}
-            <div className="text-[9px] text-zinc-500">Free tier limited to basic use. Upgrade for unlimited + Proprietary Ultra capabilities (Orchestra Tool + full proprietary suite, real-time vision, Life OS, etc.).</div>
+            <div className="text-[9px] text-zinc-500">Free limited. Upgrade for Proprietary Ultra (Orchestra Tool + full proprietary suite as native capabilities).</div>
 
-            {/* Proprietary Features - integrated from proprietary-features.html mockup (Proprietary Ultra exclusive) */}
+            {/* Enhanced Proprietary Ultra Features showcase - more visible cards */}
             <div className="mt-3 pt-3 border-t border-blue-500/20">
               <div className="text-[10px] uppercase tracking-widest text-blue-400 mb-2">Proprietary Ultra Features (native to Orchestrator)</div>
-              <div className="rounded-lg bg-zinc-950/60 p-3 space-y-3">
+              <div className="grid grid-cols-1 gap-2">
                 {proprietaryFeatures.map((f, idx) => (
-                  <div key={idx}>
+                  <div key={idx} className="rounded bg-zinc-950/70 p-2.5 border border-white/5">
                     <div className="text-sm font-medium text-blue-300">{f.title}</div>
-                    <div className="text-[10px] text-zinc-400 leading-snug">{f.desc}</div>
+                    <div className="text-[10px] text-zinc-400 leading-snug mt-0.5">{f.desc}</div>
                   </div>
                 ))}
               </div>
-              <div className="text-[9px] text-blue-400/70 mt-1">These proprietary capabilities are built-in core features of Orchestrator (Proprietary Ultra only). Implemented as native tools with auto-magical behaviors in Life OS. The <strong>Orchestra Tool</strong> (`orchestra_tool`) is the flagship native engine of Proprietary Ultra — chains all five for real funding workflows inside Orchestrator.</div>
+              <div className="text-[9px] text-blue-400/70 mt-1">Built-in core of Orchestrator. <strong>Orchestra Tool</strong> is the flagship — chains all five for funding workflows. Auto-magic in Life OS. See the prominent showcase above for more.</div>
             </div>
           </div>
 

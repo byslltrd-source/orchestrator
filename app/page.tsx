@@ -581,6 +581,41 @@ export default function OrchestratorPage() {
           )}
         </div>
 
+        {/* Modern Tools Showcase - visible to everyone to understand what we offer and drive sign-ups */}
+        <div className="mb-10">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h2 className="text-2xl font-semibold tracking-tight">Proprietary Ultra Tools</h2>
+              <p className="text-sm text-zinc-400">Native to Orchestrator. Exclusive to the top tier. These are what make us different.</p>
+            </div>
+            <div className="text-xs px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">Proprietary Ultra only</div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {(registeredTools.length > 0 ? registeredTools.filter((t: any) => t.is_proprietary || t.tier === 'proprietary_ultra') : [
+              {name: 'orchestra_tool', description: 'The flagship autonomous funding acquisition engine. Hunts opportunities, scores risk, generates tailored apps & playbooks using all proprietary engines.'},
+              {name: 'policy_translation_engine', description: 'Translates complex policy into language that resonates with different demographic "tribes" while preserving facts.'},
+              {name: 'constituent_emotion_layering', description: 'Maps emotional undercurrents (anger, hope, fear, apathy) across communications, regions and time — privacy-preserving.'},
+              {name: 'knowledge_heat_map', description: 'Shows which parts of your knowledge base are heating up vs cooling off in real time.'},
+              {name: 'invisible_workflow_weaver', description: 'Discovers undocumented workflows from digital exhaust and turns them into shareable playbooks.'},
+              {name: 'opportunity_decay_clock', description: 'Assigns real-time half-lives to opportunities and recommends actions to extend their viability.'}
+            ]).map((tool: any, idx: number) => (
+              <div key={idx} className="rounded-xl border border-white/10 bg-zinc-950/60 p-4 hover:border-emerald-500/30 transition-colors">
+                <div className="font-medium text-emerald-300 mb-1 flex items-center gap-2">
+                  {tool.name === 'orchestra_tool' ? '🚀 ' : '⚙️ '} {tool.name === 'orchestra_tool' ? 'Orchestra Tool' : tool.name?.replace(/_/g, ' ')}
+                </div>
+                <div className="text-xs text-zinc-400 leading-relaxed">
+                  {tool.description || 'Advanced proprietary capability built into Orchestrator.'}
+                </div>
+                {tool.name === 'orchestra_tool' && (
+                  <div className="mt-2 text-[10px] text-emerald-400/70">Chains all other engines • Full action plans • Live in UI</div>
+                )}
+              </div>
+            ))}
+          </div>
+          <div className="mt-3 text-xs text-zinc-500">Sign up for Proprietary Ultra to unlock the full Orchestra Tool and all proprietary engines in your runs. See the integrated list in the composer below for details and pricing.</div>
+        </div>
+
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
           {/* COMPOSER - extracted (next layer) */}
           <div className="lg:col-span-2">
