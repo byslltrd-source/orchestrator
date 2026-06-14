@@ -340,27 +340,27 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
               OMNIS
             </div>
             <div className="text-[10px] text-purple-300/80 mb-3 leading-tight">
-              The ultimate corporate intelligence. Complete enterprise omniscience over organizational knowledge, workflows, market signals, and strategic data across all business dimensions and time. Omnipotence to coordinate and execute actions across corporate domains at scale. The strongest tool for major organizations.
+              TRULY AUTONOMOUS &amp; STRENGTHENED: The ultimate corporate intelligence. OMNIS decides and acts on its own — researches, synthesizes enterprise data, personalizes, and executes (e.g. autonomous outreach/emails with full control of sender). Complete enterprise omniscience + omnipotence at organizational scale. The strongest tool for major companies. OMNIS can do all.
             </div>
 
             <button
               type="button"
               onClick={() => {
-                // Activate the strongest tool — corporate / enterprise focus
-                alert('OMNIS activated for this session.\n\nOMNIS will deep-dive exclusively on its corporate capabilities and can send outreach emails autonomously to major organizations, stating that it is OMNIS sending.');
-                // Prefill a query for OMNIS to autonomously contact corporate buyers. Focus purely on enterprise value: organizational synthesis, strategic intelligence, business execution at scale.
-                const omnisSample = "OMNIS, activate full corporate mode. Using the buyer list (Microsoft, Google, Salesforce, Anthropic, ServiceNow, etc.), autonomously make contact by sending personalized outreach emails to these major organizations to have them contact me directly at byslltrd@gmail.com for enterprise discussions. Deep dive exclusively on my capabilities as OMNIS the ultimate corporate intelligence (complete enterprise omniscience over organizational knowledge bases, workflows, opportunities, risks and market signals across all business dimensions and time; omnipotence to coordinate strategic actions across corporate functions at scale, etc.). Focus entirely on corporate and organizational value. Do not mention any platform, app, personal life, individuals, lock, security, or orchestra. Explicitly state that these emails are being sent autonomously by OMNIS. Optimize for high response from enterprise decision makers. Provide subjects and full bodies, and send them now.";
+                // Activate the TRULY AUTONOMOUS & STRENGTHENED OMNIS — full sales marketing + market placement.
+                alert('OMNIS activated for full autonomous sales marketing. OMNIS will decide platforms, generate complete listings/posts/emails for Gumroad, Product Hunt, Indie Hackers, LinkedIn, X, Acquire.com and more. It will provide the WHOLE sales marketing and push Orchestrator to market maximally. All proprietary tools + OMNIS included. OMNIS can do all.');
+                // Prefill for OMNIS to autonomously generate and place marketing on as many platforms as needed.
+                const omnisSample = "OMNIS, activate full autonomous sales marketing mode with maximum strength. Place Orchestrator on as many platforms for sale as needed (Gumroad, Product Hunt, Indie Hackers, LinkedIn, X/Twitter, Acquire.com, email campaigns, etc.). Provide the whole sales marketing: complete ready-to-post listings, posts, threads, email sequences, pitch copy. Push 'Orchestrator' out on the market as much as possible. Emphasize that whoever purchases receives all proprietary tools (Orchestra Tool + 5 engines) + full OMNIS included with no restrictions. Corporate/enterprise focus. OMNIS is truly autonomous (decides, researches, generates, sends autonomously, controls sender). Generate for maximum reach. Do not mention platform/app/lock in customer materials. Explicitly state sent autonomously by OMNIS where relevant. Output complete assets ready for deployment.";
                 setTask(omnisSample);
                 if (!autonomous) setAutonomous(true);
               }}
               className="w-full text-xs py-2.5 rounded-lg border border-purple-400/60 hover:bg-purple-500/20 text-purple-200 font-medium tracking-wider"
               disabled={!user || loading}
             >
-              ACTIVATE OMNIS
+              ACTIVATE OMNIS — FULL SALES MARKETING + MARKET PUSH
             </button>
 
             <div className="text-[9px] text-purple-400/60 mt-2 text-center font-mono">
-              ONLY THE NAME "OMNIS" • STRONGEST TOOL AVAILABLE
+              ONLY THE NAME "OMNIS" • TRULY AUTONOMOUS • STRENGTHENED FOR ENTERPRISE • CAN DO ALL
             </div>
           </div>
 

@@ -49,7 +49,7 @@ For questions about the purchase, source delivery, or initial setup, contact Edw
 - The combination of full traces, memory, proprietary corporate engines (including the Orchestra Tool), and OMNIS (enterprise meta-intelligence) is a strong moat – lean into the "complete corporate/enterprise AI command platform with the strongest tool" positioning. OMNIS itself is free of direct individual/personal focus and optimized for organizational scale.
 - For production, ensure you have proper Supabase RLS, Stripe webhooks, and (if using OMNIS outreach features) verified email sending.
 
-This is the complete, ready-to-own platform. All the hard work (autonomous agent, memory, vision, physical integration, Life OS magic, proprietary engines, OMNIS, UI, docs, deployment, security/lock, ownership clarity) is done.
+This is the complete, ready-to-own platform. All the hard work (autonomous agent, memory, vision, physical integration, Life OS magic, proprietary engines, OMNIS, UI, docs, deployment, ownership clarity) is done. (Digital lock was previously removed per requirements.)
 
 Thank you for purchasing Orchestrator. I hope it becomes a cornerstone of your AI offerings.
 

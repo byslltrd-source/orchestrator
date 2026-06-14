@@ -33,7 +33,13 @@ It is:
 - **Omnipotent** for organizations: It has the *power* to act across *every* business domain simultaneously – strategy, operations, R&D, sales, finance, risk, innovation, and execution – in a coordinated, optimal way at scale.
 - **Omnipresent** across the corporate structure: It is the intelligence layer that is "everywhere" within the organization, providing the single source of ultimate awareness and coordinated action that no departmental or siloed system can match because it sees the *whole* enterprise picture at once.
 
-OMNIS is positioned as the corporate crown jewel — the meta-orchestrator that makes the platform transformative for major companies, governments, and large organizations. While purchasers may choose to extend personal capabilities to end users or employees, OMNIS itself is optimized to be free of direct individual/personal focus and to deliver unmatched corporate intelligence and execution power.
+OMNIS is positioned as the corporate crown jewel — the meta-orchestrator that makes the platform transformative for major companies, governments, and large organizations. 
+
+**True Autonomy & Added Strength:**
+- OMNIS is *truly autonomous*: It decides on its own when to research, synthesize, initiate actions (including outreach), and execute (e.g., autonomous email sending with full control over sender/from address replacement for RESEND_FROM_EMAIL — OMNIS does all without external static config dependency for its core operations).
+- It performs intent analysis, dynamically expands targets, researches corporate context (memory, opportunities, workflows, heat maps), personalizes communications per recipient using full synthesis, composes, and delivers — all under "sent autonomously by OMNIS".
+- Strengthened capabilities: Deeper integration of all proprietary/strategic data, LLM-powered per-recipient personalization in outreach, ability to chain insights and act at scale. In the agent loop, OMNIS transcends other tools and can orchestrate complex enterprise outcomes.
+- While purchasers may choose to extend personal capabilities to end users or employees, OMNIS itself is optimized to be free of direct individual/personal focus and to deliver unmatched corporate intelligence and execution power.
 
 It is designed to be **the strongest tool available** – capable of providing insights, plans, and actions that no combination of other tools could achieve because it operates from total synthesis and transcendent reasoning.
 

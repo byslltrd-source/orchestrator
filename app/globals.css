@@ -127,3 +127,9 @@
     @apply font-sans;
   }
 }
+
+/* Optional glassmorphic utility (inspired by provided design references) */
+.glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+}

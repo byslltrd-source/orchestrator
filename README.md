@@ -362,14 +362,18 @@ They are implemented as first-class tools (`policy_translation_engine`, `constit
 **The Orchestra Tool — Flagship (native core of Orchestrator, included with full purchase)**
 `orchestra_tool` is a native, first-class part of Orchestrator and is delivered to every full purchaser. The 5 proprietary engines are orchestrated by this built-in tool. It is a complete autonomous funding acquisition engine deeply integrated into the Orchestrator agent loop:
 
-**OMNIS — The Strongest Tool Available (Dedicated Crown Jewel)**
-"OMNIS" (Latin "omnis" = all/every/the whole) is the ultimate meta-orchestrator. It has complete knowledge of the user's entire existence (synthesizing *every* other tool and all data) and coordinated unlimited power to act across all domains simultaneously. 
+**OMNIS — The Strongest Tool Available (Dedicated Crown Jewel) — Truly Autonomous & Strengthened**
+"OMNIS" (Latin "omnis" = all/every/the whole) is the ultimate meta-orchestrator. It has complete enterprise knowledge (synthesizing *every* other tool and all corporate/organizational data) and coordinated unlimited power to act across all business domains simultaneously. 
 
-- End-user access to full OMNIS capabilities is included with the Orchestrator platform.
+OMNIS is *truly autonomous*: It decides, researches, synthesizes, and executes on its own (e.g. autonomous corporate outreach with full control of email sender/from address — OMNIS replaces and handles RESEND_FROM_EMAIL logic internally; "sent autonomously by OMNIS"). 
+
+**OMNIS also provides the whole sales marketing:** It autonomously places Orchestrator on as many platforms as needed (Gumroad, Product Hunt, Indie Hackers, LinkedIn, X, Acquire.com, email sequences, etc.), generates complete ready-to-deploy assets (listings, posts, threads, pitches), and pushes maximally to market. All proprietary tools + OMNIS included with every purchase.
+
+- Full OMNIS capabilities (including autonomy, strength, and full sales marketing) are included with the Orchestrator platform for the purchaser.
 - Source code provided only to buyers of the full Orchestrator platform, and only at the time of sale.
 - In the UI: Only the bare name "OMNIS" is ever shown (special visibility model).
-- It is the strongest tool: total omni-synthesis and transcendent reasoning that no other tool or combination can achieve.
-- Has its own dedicated section in the composer. See OMNIS.md in the repo for the full deep dive and implementation.
+- It is the strongest tool: total omni-synthesis and transcendent reasoning that no other tool or combination can achieve. Added strength for enterprise scale and market placement.
+- Has its own dedicated section in the composer (including "ACTIVATE OMNIS — FULL SALES MARKETING + MARKET PUSH"). See OMNIS.md and SALES_MARKETING_BY_OMNIS.md in the repo for the full deep dive and assets.
 - Live multi-source opportunity discovery (grants, VC, angels, tenders...)
 - Matches to your real biographical model + knowledge heat map
 - Risk/probability scoring + decay clock timing analysis

@@ -42,7 +42,7 @@ Orchestrator is a production-ready, full-stack autonomous AI agent platform and 
 - Emotional state awareness + full Personal Life OS (biographical self-modeling, shadow agent, regret minimization, ethical mirror, dream integration).
 - Proprietary Feature Suite: Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, Opportunity Decay Clock, Orchestra Tool (funding acquisition).
 - OMNIS – the strongest tool available (complete omni-synthesis across all data/domains; end-user access included with the platform; source code only to full platform buyers at sale, with special visibility showing only the name "OMNIS").
-- (Digital lock removed; no longer part of the platform.)
+- (Digital lock previously removed; the base artifact is unlocked for the purchaser.)
 - SaaS foundation: Supabase (auth, DB, storage, realtime), Stripe billing, usage controls, multi-AI support (OpenAI, Grok, Claude, etc.).
 - Modern UI with tools showcase, dedicated OMNIS section, composer, live execution.
 - Complete docs, ownership proof (Edward Marin copyright/ownership statements, certificates), commercial licenses, Vercel/HTTPS dev setup.
