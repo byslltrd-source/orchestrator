@@ -42,9 +42,6 @@ type Profile = UserProfile;
 export default function OrchestratorPage() {
   const supabase = createClient();
 
-  // Test mode bypass for visual UI testing (set NEXT_PUBLIC_BYPASS_SUPABASE_CHECK=true in .env.local)
-  const isTestMode = process.env.NEXT_PUBLIC_BYPASS_SUPABASE_CHECK === 'true';
-
   // Auth
   const [user, setUser] = useState<User | null>(null);
   const { profile, loadProfile: loadProfileHook, setProfile } = useProfile();
@@ -122,29 +119,11 @@ export default function OrchestratorPage() {
   const liveChannelRef = useRef<any>(null);
   const traceChannelRef = useRef<any>(null);
 
-  const isPro = isTestMode || isProUser(profile);
-  const isPremium = isTestMode || isProUser(profile);
+  const isPro = isProUser(profile);
+  const isPremium = isProUser(profile); // Proprietary Ultra features (Orchestra Tool + proprietary suite) are available to premium profiles
 
-  // Auth initialization (restored for HTTPS dev stability and to ensure user state loads)
+  // Auth initialization
   useEffect(() => {
-    if (isTestMode) {
-      // Mock premium user for visual testing of the full UI (composer toggles, camera preview, Life OS, etc.)
-      const mockUser = { id: 'test-user', email: 'test@local.dev' } as User;
-      const mockProfile = {
-        subscription_plan: 'premium',
-        subscription_status: 'active',
-        orchestrations_used: 0,
-        orchestrations_limit: 999999,
-      } as any;
-
-      setUser(mockUser);
-      setProfile(mockProfile);
-      // Pre-select some test states for easy visual inspection
-      setAutonomous(true);
-      // You can manually toggle Life OS / real-time vision / physical in the composer
-      return;
-    }
-
     // Initial session
     supabase.auth.getUser().then(({ data }: { data: { user: User | null } }) => {
       const u = data.user;
@@ -176,7 +155,7 @@ export default function OrchestratorPage() {
     return () => {
       listener.subscription.unsubscribe();
     };
-  }, [isTestMode]);
+  }, []);
 
   // Cleanup camera on unmount
   useEffect(() => {
@@ -234,18 +213,6 @@ export default function OrchestratorPage() {
   // Main submit (one-shot or autonomous streaming)
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (isTestMode) {
-      // In test mode (bypass), simulate submit for visual testing. Real agent call would require Supabase.
-      setLoading(true);
-      setError(null);
-      setOneShotResult(null);
-      // Mock a result or live for demo
-      setTimeout(() => {
-        setOneShotResult(`[TEST MODE] Orchestration simulated for: ${task}. In real mode this would run the agent with selected features (model, Life OS, vision, etc.). Enable Life OS and try 'Send Current Frame' for camera test.`);
-        setLoading(false);
-      }, 800);
-      return;
-    }
     if (!user || !task.trim()) {
       setError("Sign in and enter a task.");
       return;
@@ -395,20 +362,6 @@ export default function OrchestratorPage() {
 
   async function captureAndPushFrame() {
     if (!liveRunId || !videoRef.current || !isPremium) return;
-
-    if (isTestMode) {
-      // Mock for visual test without backend
-      setIsPushingFrame(true);
-      setTimeout(() => {
-        const mockUrl = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIGZpbGw9IiMzMzQxNTUiLz48dGV4dCB4PSIzMiIgeT0iMzYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM5NGEzYjgiIHRleHQtYW5jaG9yPSJtaWRkbGUiPk1vY2sgRnJhbWU8L3RleHQ+PC9zdmc+';
-        setLiveSteps((prev) => [
-          ...prev,
-          { type: "vision_frame", content: mockUrl, step_number: prev.length + 1 },
-        ]);
-        setIsPushingFrame(false);
-      }, 300);
-      return;
-    }
 
     setIsPushingFrame(true);
     try {
@@ -604,14 +557,6 @@ export default function OrchestratorPage() {
             </div>
           )}
         </div>
-
-        {isTestMode && (
-          <div className="mb-4 rounded-lg border border-yellow-500/50 bg-yellow-900/20 p-3 text-sm text-yellow-300">
-            <strong>TEST MODE</strong> — Supabase bypassed (NEXT_PUBLIC_BYPASS_SUPABASE_CHECK=true).<br />
-            Full UI visible for visual testing of composer toggles, camera preview (real-time vision), Life OS, physical integration, emotional awareness, etc.
-            Auth/persistence disabled. Camera requires HTTPS + user permission.
-          </div>
-        )}
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
           {/* COMPOSER - extracted (next layer) */}

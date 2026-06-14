@@ -8,18 +8,7 @@ export async function createClient() {
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
   if (!url || !key) {
-    // For test bypass or build, return a stub that won't crash basic flows
-    return {
-      auth: {
-        getUser: async () => ({ data: { user: null }, error: null }),
-      },
-      from: () => ({
-        select: () => ({ eq: () => ({ order: () => ({ limit: () => Promise.resolve({ data: [], error: null }) }) }) }),
-        insert: () => Promise.resolve({ error: null }),
-        update: () => Promise.resolve({ error: null }),
-      }),
-      rpc: async () => ({ data: null, error: null }),
-    } as any
+    throw new Error('Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY. Supabase is required.')
   }
 
   return createServerClient(

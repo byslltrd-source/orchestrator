@@ -21,6 +21,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { uploadUserFile, type StoredAsset, STORAGE_BUCKET } from '@/lib/supabase/storage';
 import { OrchestratorError, ValidationError, QuotaError } from '@/lib/errors';
 import { resolveOrchestratorLLM } from '@/lib/ai/client';
+import { syncToolsToSupabase } from '@/lib/agent/tools';
 
 export async function POST(request: NextRequest) {
   try {
@@ -31,6 +32,10 @@ export async function POST(request: NextRequest) {
     if (!user) {
       return NextResponse.json({ error: "Please sign in to use Orchestrator" }, { status: 401 });
     }
+
+    // Ensure all tools (including new proprietary/orchestra_tool) are registered in Supabase
+    // (code on GitHub + persisted on Supabase)
+    syncToolsToSupabase().catch(() => {});
 
     // Basic rate limit (next layer polish) - 10 calls per minute per user (in-memory, resets on deploy)
     const rateLimitMap = (globalThis as any).__orchestratorRateLimit || new Map();

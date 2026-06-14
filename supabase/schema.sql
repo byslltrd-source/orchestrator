@@ -199,6 +199,50 @@ create index if not exists usage_events_created_at_idx on public.usage_events(cr
 -- Note: For production, add a cron or background worker to clean old steps/memories per plan limits.
 
 -- ============================================
+-- 8. Tools Registry (for every new tool to be on Supabase)
+-- Tools are defined in code (GitHub) but registered here for persistence, discovery,
+-- usage tracking, and admin visibility. New tools (including proprietary/orchestra_tool)
+-- should be upserted here.
+-- ============================================
+create table if not exists public.tools (
+  id uuid primary key default uuid_generate_v4(),
+  name text unique not null,                    -- e.g. 'orchestra_tool', 'policy_translation_engine'
+  description text,
+  parameters jsonb default '{}',                -- JSON schema for args
+  is_proprietary boolean default false,
+  tier text default 'pro',                      -- 'free' | 'pro' | 'proprietary_ultra'
+  metadata jsonb default '{}',                  -- tags, version, etc.
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+alter table public.tools enable row level security;
+create policy "Anyone can view tools" on public.tools for select using (true);
+-- Service role / admin can manage; no user insert for now.
+
+create index if not exists tools_name_idx on public.tools(name);
+create index if not exists tools_tier_idx on public.tools(tier);
+
+-- Seed core + new proprietary tools (run this or upsert via code)
+insert into public.tools (name, description, is_proprietary, tier, parameters) values
+  ('web_search', 'Search the web for up-to-date information.', false, 'pro', '{"type":"object","properties":{"query":{"type":"string"}},"required":["query"]}'),
+  ('browse_page', 'Fetch and extract content from a URL.', false, 'pro', '{"type":"object","properties":{"url":{"type":"string"}},"required":["url"]}'),
+  ('orchestra_tool', 'The flagship native Orchestra Tool. Chains all proprietary engines for autonomous funding acquisition, opportunity hunting, tailored materials, and action plans.', true, 'proprietary_ultra', '{"type":"object","properties":{"project_summary":{"type":"string"},"funding_goals":{"type":"string"},"preferred_funder_types":{"type":"array"},"max_opportunities":{"type":"number"}},"required":["project_summary"]}'),
+  ('policy_translation_engine', 'Translates policy/messaging for different demographic tribes while preserving facts.', true, 'proprietary_ultra', '{"type":"object","properties":{"policy_text":{"type":"string"},"target_audiences":{"type":"array"}},"required":["policy_text","target_audiences"]}'),
+  ('constituent_emotion_layering', 'Maps emotional undercurrents across communications/groups/time (privacy-preserving).', true, 'proprietary_ultra', '{"type":"object","properties":{"content":{"type":"string"}}}'),
+  ('knowledge_heat_map', 'Scans memory/knowledge base for heating vs cooling topics.', true, 'proprietary_ultra', '{"type":"object","properties":{"focus":{"type":"string"}}}'),
+  ('invisible_workflow_weaver', 'Discovers undocumented workflows from digital exhaust and generates shareable playbooks.', true, 'proprietary_ultra', '{"type":"object","properties":{"lookback_days":{"type":"number"}}}'),
+  ('opportunity_decay_clock', 'Calculates half-lives and refresh actions for opportunities in memory/context.', true, 'proprietary_ultra', '{"type":"object","properties":{"context":{"type":"string"}}}'),
+  ('send_email', 'Write and send context-aware emails (Resend).', false, 'proprietary_ultra', '{"type":"object","properties":{"to":{"type":"string"},"subject":{"type":"string"},"html":{"type":"string"}},"required":["to","subject","html"]}'),
+  ('analyze_emotional_state', 'Analyze emotional state from text/vision.', false, 'pro', '{}')
+on conflict (name) do update set
+  description = excluded.description,
+  is_proprietary = excluded.is_proprietary,
+  tier = excluded.tier,
+  parameters = excluded.parameters,
+  updated_at = now();
+
+-- ============================================
 -- After running this SQL:
 -- 1. In Supabase dashboard → Database → Extensions → make sure "vector" is enabled.
 -- 2. For embeddings you will call OpenAI text-embedding-3-small (1536 dims).

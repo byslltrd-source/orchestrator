@@ -1072,3 +1072,31 @@ export async function executeTool(userId: string, name: string, args: any): Prom
     return `Tool ${name} failed: ${msg}`;
   }
 }
+
+/**
+ * Sync current tools to Supabase (best-effort).
+ * Ensures every new tool added in code (GitHub) is also registered in Supabase for persistence/tracking.
+ * Call this on server startup or before first agent run.
+ */
+export async function syncToolsToSupabase() {
+  try {
+    const svc = createServiceClient() as TypedServiceClient;
+    for (const t of tools) {
+      const isProprietary = ['orchestra_tool', 'policy_translation_engine', 'constituent_emotion_layering', 'knowledge_heat_map', 'invisible_workflow_weaver', 'opportunity_decay_clock'].includes(t.name);
+      const tier = isProprietary ? 'proprietary_ultra' : (['send_email', 'analyze_emotional_state', 'read_physical_sensor', 'execute_smart_home_action'].includes(t.name) ? 'proprietary_ultra' : 'pro');
+
+      await (svc.from('tools') as any)
+        .upsert({
+          name: t.name,
+          description: t.description,
+          parameters: t.parameters,
+          is_proprietary: isProprietary,
+          tier,
+          metadata: { synced_at: new Date().toISOString() },
+        }, { onConflict: 'name' });
+    }
+  } catch (e) {
+    // non-fatal; tools still work from code
+    console.warn('[Orchestrator] Could not sync tools to Supabase (tools still available from code):', (e as any).message);
+  }
+}

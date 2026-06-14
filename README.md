@@ -207,7 +207,7 @@ This is error-prone and doesn't auto-update when you rotate Supabase keys.
 
 ### Local Development (HTTPS for Real-time Vision)
 
-See the earlier "Run over HTTPS" section. Use the custom certificates for local camera testing of Real-time Vision + Physical features. The bypass for Supabase (`NEXT_PUBLIC_BYPASS_SUPABASE_CHECK=true`) is great for pure UI visual testing without a full local Supabase instance.
+See the earlier "Run over HTTPS" section. Use the custom certificates for local camera testing of Real-time Vision + Physical features. Supabase is now required (no bypass). Follow the Supabase setup section for a full local instance.
 
 ### Other Deployment Notes
 
