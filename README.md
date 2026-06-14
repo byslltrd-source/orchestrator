@@ -247,6 +247,20 @@ See the `LICENSE` file in the root of the repository for the full copyright noti
 
 Do not redistribute the source code without a valid license.
 
+### Quick Access: Ownership Proof Documents for Buyers
+
+For easy access to formal copyright ownership documents (with Edward Marin's name), open the central index:
+
+**→ [OWNERSHIP.md](./OWNERSHIP.md)** ← Click this file for direct links to all documents
+
+Included documents (ready to print/sign and hand over with source code):
+- Copyright Ownership Statement
+- Copyright Ownership Certificate (one-page, buyer-friendly)
+- Buyer Ownership Proof Package
+- Commercial License Agreement
+
+All source files also contain the header: `// Copyright (c) 2026 Edward Marin. All rights reserved.`
+
 ---
 
 See previous vision work in `app/api/orchestrate/route.ts` and the multi-image UI in `app/page.tsx`.
