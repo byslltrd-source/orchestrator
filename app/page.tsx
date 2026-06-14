@@ -79,6 +79,9 @@ export default function OrchestratorPage() {
   const [isLiveRunning, setIsLiveRunning] = useState(false);
   const [liveFinal, setLiveFinal] = useState<string | null>(null);
 
+  // List of tools from Supabase (so user can see every registered tool, including proprietary ultra ones)
+  const [registeredTools, setRegisteredTools] = useState<any[]>([]);
+
   // Runs and trace via best-practice hook
   const {
     recentRuns,
@@ -163,6 +166,26 @@ export default function OrchestratorPage() {
       stopCamera();
     };
   }, []);
+
+  // Load registered tools from Supabase so the list is always visible (tools live in DB + code on GitHub)
+  useEffect(() => {
+    if (!user) {
+      setRegisteredTools([]);
+      return;
+    }
+    (async () => {
+      try {
+        const { data } = await supabase
+          .from('tools')
+          .select('name, description, tier, is_proprietary')
+          .order('tier', { ascending: false })
+          .order('name');
+        if (data) setRegisteredTools(data);
+      } catch (e) {
+        // non-fatal; static list still shown in composer
+      }
+    })();
+  }, [user, supabase]);
 
   // When customer opts into real-time vision (expensive), set profile consent if not already set.
   // This acts as a master "I understand this is expensive" switch at profile level.
@@ -599,6 +622,7 @@ export default function OrchestratorPage() {
               liveRunId={liveRunId}
               isLiveRunning={isLiveRunning}
               isPushingFrame={isPushingFrame}
+              registeredTools={registeredTools}
             />
 
             {/* Premium Real-time Vision live preview.

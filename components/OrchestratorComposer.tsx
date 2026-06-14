@@ -57,6 +57,8 @@ interface OrchestratorComposerProps {
   liveRunId: string | null;
   isLiveRunning: boolean;
   isPushingFrame: boolean;
+  // List of tools registered in Supabase (populated via syncToolsToSupabase on runs + schema seed)
+  registeredTools?: any[];
 }
 
 export function OrchestratorComposer(props: OrchestratorComposerProps) {
@@ -98,6 +100,7 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
     liveRunId,
     isLiveRunning,
     isPushingFrame,
+    registeredTools = [],
   } = props;
 
   // Orchestrator Tiers & Features - integrated list with costs (free to Proprietary Ultra)
@@ -148,15 +151,23 @@ export function OrchestratorComposer(props: OrchestratorComposerProps) {
     },
   ];
 
-  const proprietaryFeatures = [
-    {
-      title: "Orchestra Tool (Proprietary Ultra)",
-      desc: "The flagship native tool of Proprietary Ultra. Autonomous funding acquisition engine built into Orchestrator that actively hunts opportunities, scores risk with decay clocks, generates tailored applications using policy translation + emotion layering, discovers workflows, and produces complete action plans. Chains all other proprietary engines.",
-    },
-    {
-      title: "Policy Translation Engine",
-      desc: "Translates complex policy into the exact language that resonates with different demographic \"tribes\" while maintaining factual integrity.",
-    },
+  // Dynamic list from Supabase `tools` table (synced on every run + seeded in schema.sql).
+  // This is how you see the list of tools (especially Proprietary Ultra ones).
+  const dbProprietary = (registeredTools || []).filter((t: any) => t.is_proprietary || t.tier === 'proprietary_ultra');
+  const proprietaryFeatures = dbProprietary.length > 0
+    ? dbProprietary.map((t: any) => ({
+        title: t.name === 'orchestra_tool' ? 'Orchestra Tool (Proprietary Ultra)' : (t.name || 'Unknown Tool'),
+        desc: t.description || 'Registered in Supabase as a native Orchestrator tool.',
+      }))
+    : [
+        {
+          title: "Orchestra Tool (Proprietary Ultra)",
+          desc: "The flagship native tool of Proprietary Ultra. Autonomous funding acquisition engine built into Orchestrator that actively hunts opportunities, scores risk with decay clocks, generates tailored applications using policy translation + emotion layering, discovers workflows, and produces complete action plans. Chains all other proprietary engines.",
+        },
+        {
+          title: "Policy Translation Engine",
+          desc: "Translates complex policy into the exact language that resonates with different demographic \"tribes\" while maintaining factual integrity.",
+        },
     {
       title: "Constituent Emotion Layering",
       desc: "Maps emotional undercurrents in constituent communications (anger, hope, fear, apathy) across regions and time without invading privacy.",
