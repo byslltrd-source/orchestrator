@@ -554,16 +554,41 @@ export default function OrchestratorPage() {
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <h2 className="text-2xl font-semibold tracking-tight">Proprietary Tools (All Included with Purchase)</h2>
-                  <p className="text-sm text-zinc-400">Native to Orchestrator. Whoever purchases the full platform receives the complete set — Orchestra Tool + all 5 proprietary engines + OMNIS — with no restrictions.</p>
+                  <p className="text-sm text-zinc-400">Native to Orchestrator. Whoever purchases the full platform receives the complete set — Orchestra Tool + all 5 proprietary engines + HEKA — with no restrictions.</p>
                 </div>
                 <div className="text-xs px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">Included with full purchase</div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {/* Special OMNIS entry - the strongest tool, focused on its capabilities. */}
+                {/* TOOKIE — username OSINT */}
+                <div className="rounded-xl border-2 border-violet-500/40 bg-gradient-to-br from-violet-950/20 to-zinc-950 p-4">
+                  <div className="font-mono text-xl tracking-[2px] text-violet-300 mb-1">TOOKIE</div>
+                  <div className="text-[10px] text-violet-400/80 leading-relaxed">
+                    Username &amp; social footprint via self-hosted Tookie-OSINT. Discovers public account URLs for CIRCL officer, confidant &amp; associate dossiers.
+                  </div>
+                </div>
+
+                {/* PHONEINFOGA — line OSINT */}
+                <div className="rounded-xl border-2 border-cyan-500/40 bg-gradient-to-br from-cyan-950/20 to-zinc-950 p-4">
+                  <div className="font-mono text-xl tracking-[2px] text-cyan-300 mb-1">PHONEINFOGA</div>
+                  <div className="text-[10px] text-cyan-400/80 leading-relaxed">
+                    Line intelligence &amp; number footprint via self-hosted PhoneInfoga engine. Validate lines, run OSINT scanners, attach footprint reports to PROVISO CIRCL confidant/associate dossiers.
+                  </div>
+                </div>
+
+                {/* PROVISO — disciplined workspace */}
+                <div className="rounded-xl border-2 border-amber-500/40 bg-gradient-to-br from-amber-950/20 to-zinc-950 p-4">
+                  <div className="font-mono text-xl tracking-[3px] text-amber-300 mb-1">PROVISO</div>
+                  <div className="text-[10px] text-amber-400/80 leading-relaxed">
+                    Proprietary disciplined workspace + CIRCL dossiers on corporate officers, associates & organizations. Shared Work, Briefcase, Private Vault, EOD briefs, associate rings.
+                  </div>
+                  <a href="/proviso" className="mt-2 inline-block text-[10px] text-amber-400 hover:underline">Open PROVISO workspace →</a>
+                </div>
+
+                {/* Special HEKA entry - the strongest tool, focused on its capabilities. */}
                 <div className="rounded-xl border-2 border-purple-500/40 bg-gradient-to-br from-purple-950/20 to-zinc-950 p-4">
-                  <div className="font-mono text-xl tracking-[3px] text-purple-300 mb-1">OMNIS</div>
-                  <div className="text-[10px] text-purple-400/70">TRULY AUTONOMOUS &amp; STRENGTHENED. Complete enterprise omniscience + omnipotence. Decides, researches, acts (e.g. autonomous emails with full sender control). The strongest tool for organizations. Sent autonomously by OMNIS.</div>
+                  <div className="font-mono text-xl tracking-[3px] text-purple-300 mb-1">HEKA</div>
+                  <div className="text-[10px] text-purple-400/70">TRULY AUTONOMOUS &amp; STRENGTHENED. Complete enterprise omniscience + omnipotence. Decides, researches, acts (e.g. autonomous emails with full sender control). The strongest tool for organizations. Sent autonomously by HEKA.</div>
                 </div>
 
                 {(registeredTools.length > 0 ? registeredTools.filter((t: any) => t.is_proprietary || t.tier === 'proprietary_ultra') : [
@@ -587,7 +612,7 @@ export default function OrchestratorPage() {
                   </div>
                 ))}
               </div>
-              <div className="mt-3 text-xs text-zinc-500">All proprietary tools, Orchestra Tool, and OMNIS are included with the full platform purchase. This owner deployment has everything unlocked. The purchaser decides how to productize or embed for their own users.</div>
+              <div className="mt-3 text-xs text-zinc-500">All proprietary tools, Orchestra Tool, and HEKA are included with the full platform purchase. This owner deployment has everything unlocked. The purchaser decides how to productize or embed for their own users.</div>
             </div>
 
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
@@ -708,7 +733,7 @@ export default function OrchestratorPage() {
 
         <div className="mt-8 text-center text-[10px] text-zinc-500">
           Steps are persisted to your Supabase DB in real time. The stream + realtime lets you watch the agent live.
-          Full platform (all tiers + OMNIS + proprietary) unlocked for the owner / purchaser instance.
+          Full platform (all tiers + HEKA + proprietary) unlocked for the owner / purchaser instance.
         </div>
       </div>
 

@@ -80,7 +80,7 @@ export type SubscriptionStatus = (typeof SUBSCRIPTION_STATUSES)[keyof typeof SUB
  * always succeed with the correct user_id even without an auth user row.
  *
  * The frontend runs fully unlocked (all features: realtime vision, physical,
- * emotional/Life OS, OMNIS, proprietary orchestra_tool + engines, unlimited storage,
+ * emotional/Life OS, HEKA, proprietary orchestra_tool + engines, unlimited storage,
  * all models). The purchaser can add their own auth layer (SSO, multi-tenancy,
  * per-customer billing, etc.) later.
  */

@@ -243,6 +243,10 @@ on conflict (name) do update set
   updated_at = now();
 
 -- ============================================
+-- 9. PROVISO (disciplined workspace) — run supabase/proviso.sql for full tables + tool seed
+-- ============================================
+
+-- ============================================
 -- After running this SQL:
 -- 1. In Supabase dashboard → Database → Extensions → make sure "vector" is enabled.
 -- 2. For embeddings you will call OpenAI text-embedding-3-small (1536 dims).

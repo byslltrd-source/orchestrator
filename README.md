@@ -6,10 +6,10 @@ No public sign-up or login. The platform is designed to be purchased by a compan
 
 ## Features
 
-- **Single-owner / purchaser mode (no public auth)** — The delivered artifact runs fully unlocked under one owner identity (configurable via OWNER_USER_ID). All premium capabilities (realtime vision, physical integration, emotional/Life OS, OMNIS, the full Proprietary Ultra suite + Orchestra Tool) are available immediately. No sign-up or login flow.
+- **Single-owner / purchaser mode (no public auth)** — The delivered artifact runs fully unlocked under one owner identity (configurable via OWNER_USER_ID). All premium capabilities (realtime vision, physical integration, emotional/Life OS, HEKA, the full Proprietary Ultra suite + Orchestra Tool) are available immediately. No sign-up or login flow.
 - **Supabase persistence** — Vector memory, agent run history + traces, file storage (under the owner), realtime for live execution. Buyer controls RLS / adds multi-user auth on top.
 - **Vision + Physical** — Attach images or (with opt-in) push live camera frames; bridge to smart home / IoT / physical actuators.
-- **OMNIS** — The strongest tool: complete omni-synthesis + autonomous outreach that states it is sent by OMNIS.
+- **HEKA** — The strongest tool: complete omni-synthesis + autonomous outreach that states it is sent by HEKA.
 - **Proprietary Features** — Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, Opportunity Decay Clock + flagship Orchestra Tool (native, always available in owner mode).
 - **Stripe / quotas** — Code is present for hosted billing flows; the purchaser decides whether to enable, replace, or remove when productizing.
 
@@ -362,18 +362,18 @@ They are implemented as first-class tools (`policy_translation_engine`, `constit
 **The Orchestra Tool — Flagship (native core of Orchestrator, included with full purchase)**
 `orchestra_tool` is a native, first-class part of Orchestrator and is delivered to every full purchaser. The 5 proprietary engines are orchestrated by this built-in tool. It is a complete autonomous funding acquisition engine deeply integrated into the Orchestrator agent loop:
 
-**OMNIS — The Strongest Tool Available (Dedicated Crown Jewel) — Truly Autonomous & Strengthened**
-"OMNIS" (Latin "omnis" = all/every/the whole) is the ultimate meta-orchestrator. It has complete enterprise knowledge (synthesizing *every* other tool and all corporate/organizational data) and coordinated unlimited power to act across all business domains simultaneously. 
+**HEKA — The Strongest Tool Available (Dedicated Crown Jewel) — Truly Autonomous & Strengthened**
+"HEKA" (from ancient Egyptian "ḥkꜣ" — magic, the activation of the ka) is the ultimate meta-orchestrator. It has complete enterprise knowledge (synthesizing *every* other tool and all corporate/organizational data) and coordinated unlimited power to act across all business domains simultaneously. 
 
-OMNIS is *truly autonomous*: It decides, researches, synthesizes, and executes on its own (e.g. autonomous corporate outreach with full control of email sender/from address — OMNIS replaces and handles RESEND_FROM_EMAIL logic internally; "sent autonomously by OMNIS"). 
+HEKA is *truly autonomous*: It decides, researches, synthesizes, and executes on its own (e.g. autonomous corporate outreach with full control of email sender/from address — HEKA replaces and handles RESEND_FROM_EMAIL logic internally; "sent autonomously by HEKA"). 
 
-**OMNIS also provides the whole sales marketing:** It autonomously places Orchestrator on as many platforms as needed (Gumroad, Product Hunt, Indie Hackers, LinkedIn, X, Acquire.com, email sequences, etc.), generates complete ready-to-deploy assets (listings, posts, threads, pitches), and pushes maximally to market. All proprietary tools + OMNIS included with every purchase.
+**HEKA also provides the whole sales marketing:** It autonomously places Orchestrator on as many platforms as needed (Gumroad, Product Hunt, Indie Hackers, LinkedIn, X, Acquire.com, email sequences, etc.), generates complete ready-to-deploy assets (listings, posts, threads, pitches), and pushes maximally to market. All proprietary tools + HEKA included with every purchase.
 
-- Full OMNIS capabilities (including autonomy, strength, and full sales marketing) are included with the Orchestrator platform for the purchaser.
+- Full HEKA capabilities (including autonomy, strength, and full sales marketing) are included with the Orchestrator platform for the purchaser.
 - Source code provided only to buyers of the full Orchestrator platform, and only at the time of sale.
-- In the UI: Only the bare name "OMNIS" is ever shown (special visibility model).
+- In the UI: Only the bare name "HEKA" is ever shown (special visibility model).
 - It is the strongest tool: total omni-synthesis and transcendent reasoning that no other tool or combination can achieve. Added strength for enterprise scale and market placement.
-- Has its own dedicated section in the composer (including "ACTIVATE OMNIS — FULL SALES MARKETING + MARKET PUSH"). See OMNIS.md and SALES_MARKETING_BY_OMNIS.md in the repo for the full deep dive and assets.
+- Has its own dedicated section in the composer (including "ACTIVATE HEKA — FULL SALES MARKETING + MARKET PUSH"). See HEKA.md and SALES_MARKETING_BY_HEKA.md in the repo for the full deep dive and assets.
 - Live multi-source opportunity discovery (grants, VC, angels, tenders...)
 - Matches to your real biographical model + knowledge heat map
 - Risk/probability scoring + decay clock timing analysis

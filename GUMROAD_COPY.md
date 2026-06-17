@@ -3,10 +3,10 @@
 ## Gumroad Product Page Copy (Ready to Copy-Paste)
 
 **Title:**  
-Orchestrator – Complete Next.js AI Agent Platform with OMNIS, Proprietary Tools, Life OS & Full Source
+Orchestrator – Complete Next.js AI Agent Platform with HEKA, Proprietary Tools, Life OS & Full Source
 
 **Subtitle / Short Description:**  
-The full production-ready Orchestrator platform: autonomous AI agent with tools, vector memory, live traces, real-time vision, physical integration, Personal Life OS, proprietary engines (including Orchestra Tool for funding), and OMNIS – the strongest all-synthesizing meta-tool. Complete source code + IP, available for outright purchase.
+The full production-ready Orchestrator platform: autonomous AI agent with tools, vector memory, live traces, real-time vision, physical integration, Personal Life OS, proprietary engines (including Orchestra Tool for funding), and HEKA – the strongest all-synthesizing meta-tool. Complete source code + IP, available for outright purchase.
 
 **For the Purchase of Orchestrator (Full Platform Acquisition):**
 
@@ -15,18 +15,18 @@ $9,999 – $49,999 (one-time, price negotiable based on valuation and buyer; ear
 Includes:
 - Full source code (Next.js 16, all features, tools, UI, docs).
 - Complete ownership transfer of "Orchestrator" name, branding, and IP.
-- Full OMNIS implementation (the strongest tool – source code delivered only at time of sale, with special visibility: UI shows only the name "OMNIS" until activated by end users).
-- All proprietary features (Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, Opportunity Decay Clock, Orchestra Tool) + full OMNIS. **Whoever purchases Orchestrator receives the complete proprietary suite with no restrictions.** Included with the platform.
+- Full HEKA implementation (the strongest tool – source code delivered only at time of sale, with special visibility: UI shows only the name "HEKA" until activated by end users).
+- All proprietary features (Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, Opportunity Decay Clock, Orchestra Tool) + full HEKA. **Whoever purchases Orchestrator receives the complete proprietary suite with no restrictions.** Included with the platform.
 - Perpetual, worldwide rights to use, modify, sell, license, or distribute the platform and derivative products (with standard restriction: do not resell the original unmodified source as-is).
 - All supporting documentation, ownership proof documents (copyright statements, certificates, buyer proof package in Edward Marin's name), commercial licenses, and setup guides.
 - Transfer of Supabase schema, Stripe integration, and deployment configs (Vercel ready).
 
-This is the complete platform for builders who want to own Orchestrator outright, resell as their own, or integrate into larger offerings. Source code and full OMNIS details provided only upon full payment and sale completion.
+This is the complete platform for builders who want to own Orchestrator outright, resell as their own, or integrate into larger offerings. Source code and full HEKA details provided only upon full payment and sale completion.
 
 **Alternative Models (if full purchase not desired):**
-- **Outright Sale (Perpetual Commercial License – Starter/Subset)**: $499–$1,499 (one-time). Limited to non-OMNIS source + basic proprietary features. Not the full platform.
-- **Subscription-Based (Hosted or Updates)**: Free tier limited; Pro $29/mo; Proprietary Ultra $99/mo (includes most features but OMNIS and full source excluded).
-- **Leasing (Enterprise White-Label / Annual)**: $4,999–$14,999/year (tiered). Full source access during term + support, but OMNIS source and permanent ownership require full purchase.
+- **Outright Sale (Perpetual Commercial License – Starter/Subset)**: $499–$1,499 (one-time). Limited to non-HEKA source + basic proprietary features. Not the full platform.
+- **Subscription-Based (Hosted or Updates)**: Free tier limited; Pro $29/mo; Proprietary Ultra $99/mo (includes most features but HEKA and full source excluded).
+- **Leasing (Enterprise White-Label / Annual)**: $4,999–$14,999/year (tiered). Full source access during term + support, but HEKA source and permanent ownership require full purchase.
 
 Contact byslltrd@gmail.com for custom quotes, demos, or full purchase negotiation. Early/strategic buyers or those acquiring the full IP may receive favorable terms.
 
@@ -41,10 +41,10 @@ Orchestrator is a production-ready, full-stack autonomous AI agent platform and 
 - Real-time vision (camera), physical world/smart home integration (sensors, actuators).
 - Emotional state awareness + full Personal Life OS (biographical self-modeling, shadow agent, regret minimization, ethical mirror, dream integration).
 - Proprietary Feature Suite: Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, Opportunity Decay Clock, Orchestra Tool (funding acquisition).
-- OMNIS – the strongest tool available (complete omni-synthesis across all data/domains; end-user access included with the platform; source code only to full platform buyers at sale, with special visibility showing only the name "OMNIS").
+- HEKA – the strongest tool available (complete omni-synthesis across all data/domains; end-user access included with the platform; source code only to full platform buyers at sale, with special visibility showing only the name "HEKA").
 - (Digital lock previously removed; the base artifact is unlocked for the purchaser.)
 - SaaS foundation: Supabase (auth, DB, storage, realtime), Stripe billing, usage controls, multi-AI support (OpenAI, Grok, Claude, etc.).
-- Modern UI with tools showcase, dedicated OMNIS section, composer, live execution.
+- Modern UI with tools showcase, dedicated HEKA section, composer, live execution.
 - Complete docs, ownership proof (Edward Marin copyright/ownership statements, certificates), commercial licenses, Vercel/HTTPS dev setup.
 
 This is not a basic starter – it is a complete, defensible platform with unique proprietary IP, ready for immediate productization, white-labeling, or integration. All source, IP, and supporting materials transfer upon full purchase.
@@ -52,11 +52,11 @@ This is not a basic starter – it is a complete, defensible platform with uniqu
 ### What You Get (Full Purchase)
 
 - Complete source code (Next.js 16 App Router, TypeScript, Tailwind, shadcn/ui, all features).
-- Working autonomous agent with full toolset, memory, traces, vision, physical, Life OS, proprietary tools, and OMNIS.
+- Working autonomous agent with full toolset, memory, traces, vision, physical, Life OS, proprietary tools, and HEKA.
 - All documentation, schema, deployment guides, ownership docs, and licenses.
-- Rights to the OMNIS end-user offering (included with the platform).
+- Rights to the HEKA end-user offering (included with the platform).
 - Clear, documented ownership (transfers to buyer).
-- Source code and full OMNIS details provided only at time of sale.
+- Source code and full HEKA details provided only at time of sale.
 
 ### Who This Is For
 
@@ -65,7 +65,7 @@ This is not a basic starter – it is a complete, defensible platform with uniqu
 - Enterprises needing a production agent "OS" with proprietary moats.
 - Acquirers in the AI/agent space looking for differentiated IP.
 
-Contact byslltrd@gmail.com to discuss purchase, valuation, or custom terms. Full source and OMNIS provided only upon completion of sale.
+Contact byslltrd@gmail.com to discuss purchase, valuation, or custom terms. Full source and HEKA provided only upon completion of sale.
 
 **Description:**
 
@@ -132,11 +132,11 @@ Orchestrator goes further:
 - Production-ready billing and quota system already wired up
 - **Complete Proprietary Suite (included with full purchase)**: Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, Opportunity Decay Clock + flagship `orchestra_tool`. These are the crown-jewel differentiators native to Orchestrator and are delivered in full to whoever purchases the platform. No separate tier or restrictions for the buyer. They power the built-in Orchestra Tool for live opportunity hunting, risk scoring, tailored application generation, warm intros, and complete action plans. Deeply integrated as core Orchestrator functionality.
 
-- **OMNIS — The Strongest Tool Available**: "OMNIS" (Latin "omnis" = all/every/the whole) is the ultimate corporate meta-orchestrator. Complete enterprise omniscience over organizational knowledge, workflows, opportunities, risks and market signals (synthesizing every other tool + all corporate data) + coordinated unlimited power across all business domains at scale. Omniscience • Omnipotence • Omnipresence in one tool — optimized for major organizations and corporate deployment.
+- **HEKA — The Strongest Tool Available**: "HEKA" (from ancient Egyptian "ḥkꜣ" — magic, the activation of the ka) is the ultimate corporate meta-orchestrator. Complete enterprise heka-power over organizational knowledge, workflows, opportunities, risks and market signals (synthesizing every other tool + all corporate data) + coordinated unlimited power across all business domains at scale. Activation • Omniscience • Omnipotence • Omnipresence in one tool — optimized for major organizations and corporate deployment.
 
-  Full OMNIS capabilities are included with the Orchestrator platform for the owner/purchaser. Source code provided *only* to buyers of the full Orchestrator platform at time of sale. In the UI and tool definitions: *only the bare name "OMNIS" is ever visible* (special visibility model). Has its own dedicated section. This is the crown jewel that makes the entire platform the strongest possible for enterprise use.
+  Full HEKA capabilities are included with the Orchestrator platform for the owner/purchaser. Source code provided *only* to buyers of the full Orchestrator platform at time of sale. In the UI and tool definitions: *only the bare name "HEKA" is ever visible* (special visibility model). Has its own dedicated section. This is the crown jewel that makes the entire platform the strongest possible for enterprise use.
 
-  Built on enterprise memory, strategic tools, proprietary engines, and the full toolset; delivers unmatched ROI through total corporate/organizational synthesis at scale. See OMNIS.md in the source for the deep etymology and implementation. OMNIS is positioned for corporate and enterprise buyers.
+  Built on enterprise memory, strategic tools, proprietary engines, and the full toolset; delivers unmatched ROI through total corporate/organizational synthesis at scale. See HEKA.md in the source for the deep etymology and implementation. HEKA is positioned for corporate and enterprise buyers.
 
 This is the foundation I wish I had when I started building agent tools.
 

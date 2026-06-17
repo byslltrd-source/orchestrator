@@ -3,7 +3,8 @@
 // Copyright (c) 2026 Edward Marin. All rights reserved.
 // This source code is proprietary. See LICENSE and the Commercial License Agreement for usage rights.
 
-import { Brain } from "lucide-react";
+import Link from "next/link";
+import { Brain, Shield } from "lucide-react";
 
 /**
  * Simplified header for single-owner / commercial purchaser deployments.
@@ -29,8 +30,15 @@ export function Header(_props: HeaderProps) {
           </div>
         </div>
 
-        <div className="flex items-center gap-3 text-sm text-zinc-400">
-          Full platform unlocked (all features + OMNIS)
+        <div className="flex items-center gap-4 text-sm text-zinc-400">
+          <Link
+            href="/proviso"
+            className="inline-flex items-center gap-1.5 hover:text-amber-300 transition-colors"
+          >
+            <Shield className="h-4 w-4" />
+            PROVISO
+          </Link>
+          <span className="hidden sm:inline">Full platform unlocked (all features + HEKA)</span>
         </div>
       </div>
     </div>

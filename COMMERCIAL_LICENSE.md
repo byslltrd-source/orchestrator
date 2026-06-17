@@ -13,12 +13,12 @@ This Commercial License Agreement ("Agreement") is entered into by and between t
 Subject to the terms of this Agreement and the purchased model, the Owner grants the Licensor a non-exclusive, non-transferable license as follows:
 
 **A. Full Outright Purchase of Orchestrator (Complete Platform Acquisition)**  
-For a one-time purchase price (to be agreed at time of sale, based on current valuation including all proprietary IP such as OMNIS), the Owner transfers:
+For a one-time purchase price (to be agreed at time of sale, based on current valuation including all proprietary IP such as HEKA), the Owner transfers:
 - The complete source code and all related materials for the Orchestrator platform.
 - Full ownership and rights to the "Orchestrator" name, branding, and associated IP (subject to any retained rights for personal use if specified).
-- Full access to all features, including the complete OMNIS implementation (the strongest tool) and all proprietary tools (Orchestra Tool + the five engines: Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, Opportunity Decay Clock), with source code delivered only at the time of sale.
+- Full access to all features, including the complete HEKA implementation (the strongest tool) and all proprietary tools (Orchestra Tool + the five engines: Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, Opportunity Decay Clock), with source code delivered only at the time of sale.
 
-- End-user access to full OMNIS capabilities is included with the platform (no separate end-user lifetime access fee).
+- End-user access to full HEKA capabilities is included with the platform (no separate end-user lifetime access fee).
 - Perpetual, worldwide license to use, modify, deploy, sell, license, or distribute the Software and End Products built with it, for internal or client use, and to resell or sublicense under your own terms (with the restriction below on redistributing the original unmodified source).
 
 **B. Outright Sale (One-time, Perpetual Commercial License for the Starter Kit)**  
@@ -39,7 +39,7 @@ Annual renewable license with:
 - Same usage rights as Outright during the term.
 - Full rights to deploy the complete Proprietary Feature Suite (Policy Translation Engine, Constituent Emotion Layering, Knowledge Heat Map, Invisible Workflow Weaver, Opportunity Decay Clock) + the Orchestra Tool as key value drivers.
 
-- OMNIS (the strongest corporate intelligence tool) and all proprietary tools are included with the full platform purchase. Full source code for OMNIS + Orchestra Tool + the five proprietary engines is provided *only* to buyers of the complete Orchestrator platform at the time of sale, with special visibility (UI shows only the name "OMNIS"). In single-owner purchaser deployments, all capabilities are available with no restrictions.
+- HEKA (the strongest corporate intelligence tool) and all proprietary tools are included with the full platform purchase. Full source code for HEKA + Orchestra Tool + the five proprietary engines is provided *only* to buyers of the complete Orchestrator platform at the time of sale, with special visibility (UI shows only the name "HEKA"). In single-owner purchaser deployments, all capabilities are available with no restrictions.
 
 - Use the Software (the "Orchestrator" source code and related materials) to create, modify, and deploy derivative works.
 - Sell, license, or distribute End Products built with the Software.
